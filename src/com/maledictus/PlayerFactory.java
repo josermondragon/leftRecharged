@@ -1,11 +1,11 @@
 package com.maledictus;
 
-public class Player {
+public class PlayerFactory {
 
     // FIELDS \\
 
     // CONSTRUCTORS \\
-    public Player () {
+    public PlayerFactory() {
 
     }
 
