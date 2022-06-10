@@ -22,5 +22,9 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# Inteliji .idea
 .idea/*
+/out/production/Maledictus/META-INF/MANIFEST.MF
+/src/META-INF/MANIFEST.MF
+/out/artifacts/Maledictus_jar/MaledictusV1.1/run.cmd
+/out/artifacts/Maledictus_jar/run.cmd
+/out/artifacts/Maledictus_jar/MaledictusV1.1/data/splash_banner.txt
