@@ -21,7 +21,7 @@ public class Player {
     }
 
     public void inspectItem(String item) {
-        // Check to see if item exists in inventory
+        // Check to see if item exists in inventory, display the item if true
         if (inventory.containsKey(item)) {
             System.out.println("Item Object: " + getInventory().get(item));
         } else {
@@ -29,11 +29,11 @@ public class Player {
         }
     }
 
-    public void attack(Item item) {
-        if (item.name.equals("sword")) {
-            Item.WeaponType attackStyle = item.weaponType; // Break here
-        }
-    }
+    //    public void attack(Item item) {
+    //        if (item.name.equals("sword")) {
+    //            Item.WeaponType attackStyle = item.weaponType;
+    //        }
+    //    }
 
     //GETTERS & SETTERS \\
     public String getPlayerName() {
@@ -60,17 +60,4 @@ public class Player {
                 ", Inventory " + getInventory() +
                 '}';
     }
-
-    private class Monster {
-        String name;
-        String description;
-        Weaknesses weaknesses;
-    }
-
-    public enum Weaknesses {
-        SLASH,
-        PIERCE,
-        CRUSHING
-    }
-
 }

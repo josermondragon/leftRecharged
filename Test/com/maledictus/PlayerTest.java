@@ -16,4 +16,10 @@ public class PlayerTest {
         System.out.println(playerOne.getInventory());
     }
 
+    @Test
+    public void testPlayerFactoryCreateCharacter_shouldReturnANewPlayer_whenCreateCharacterMethodIsCalled() {
+        Player playerOne = PlayerFactory.createPlayer();
+        System.out.println(playerOne);
+    }
+
 }
