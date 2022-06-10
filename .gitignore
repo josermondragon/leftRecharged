@@ -23,3 +23,8 @@
 hs_err_pid*
 
 .idea/*
+/out/production/Maledictus/META-INF/MANIFEST.MF
+/src/META-INF/MANIFEST.MF
+/out/artifacts/Maledictus_jar/MaledictusV1.1/run.cmd
+/out/artifacts/Maledictus_jar/run.cmd
+/out/artifacts/Maledictus_jar/MaledictusV1.1/data/splash_banner.txt
