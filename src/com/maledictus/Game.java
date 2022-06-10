@@ -97,202 +97,202 @@ public class Game {
         while (round) {
 
 
-//            Scanner scanner = new Scanner(System.in);
-//            System.out.println("\nEnter a command or enter [options] to see game options: \n>>>");
-//            String userCommand = scanner.nextLine();
-//
-//            if (userCommand.equalsIgnoreCase("options")){
-//                displayOptions();
-//            }
-//            if (direction == 0){ //great hall
-//
-//            switch(userCommand.toLowerCase()) {
-//                case "go north":
-//                    direction = 3;
-//                    break;
-//                case "go east":
-//                    direction = 1;
-//                    break;
-//                case "go west":
-//                    direction = 5;
-//                    break;
-//                }
-//            }
-//
-//            else if (direction == 1){ //dining room
-//                switch(userCommand.toLowerCase()) {
-//                    case "go north":
-//                        direction = 2; //kitchen
-//                        break;
-//                    case "go west":
-//                        direction = 0; //great hall
-//                        break;
-//                }
-//            }
-//
-//            else if (direction ==2){ //Kitchen
-//                switch(userCommand.toLowerCase()) {
-//                    case "go south":
-//                        direction = 1; //dining room
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 3){ //Courtyard
-//                switch(userCommand.toLowerCase()) {
-//                    case "go north":
-//                        direction = 4; //ball room
-//                        break;
-//                    case "go south":
-//                        direction = 0; //great hall
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 4){ //Ball room
-//                switch(userCommand.toLowerCase()) {
-//                    case "go south":
-//                        direction = 3; //courtyard
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 5){ //Great Hall hallway
-//                switch(userCommand.toLowerCase()) {
-//                    case "go north":
-//                        direction = 6; //guard room
-//                        break;
-//                    case "go west":
-//                        direction = 7; //library
-//                        break;
-//                    case "go east":
-//                        direction = 0; //great hall
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 6){ //Guard room
-//                switch(userCommand.toLowerCase()) {
-//                    case "go south":
-//                        direction = 5; //great hall hallway
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 7){ //Library
-//                switch(userCommand.toLowerCase()) {
-//                    case "go north":
-//                        direction = 9; //foyer
-//                        break;
-//                    case "go east":
-//                        direction = 5; //great hall hallway
-//                        break;
-//                    case "go south":
-//                        direction = 8; //secret room
-//                }
-//            }
-//
-//            else if (direction == 8){ //Secret room
-//                switch(userCommand.toLowerCase()) {
-//                    case "go north":
-//                        direction = 7; //library
-//                        break;
-//                }
-//            }
-//
-//            else if (direction ==9){ //Foyer
-//                switch(userCommand.toLowerCase()) {
-//                    case "go east":
-//                        direction = 10; //kitchen
-//                        break;
-//                    case "go west":
-//                        direction = 7; //library
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 10){ //Dungeon
-//                switch(userCommand.toLowerCase()) {
-//                    case "go north":
-//                        direction = 11; //cellar
-//                        break;
-//                    case "go west":
-//                        direction = 9; //foyer
-//                        break;
-//                    case "go east":
-//                        direction = 12; //crypt
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 11){ //Cellar
-//                switch(userCommand.toLowerCase()) {
-//                    case "go south":
-//                        direction = 10; //dungeon
-//                        break;
-//                }
-//            }
-//
-//            else if (direction == 12){ //Crypt
-//                switch(userCommand.toLowerCase()) {
-//                    case "go east":
-//                        direction = 10; //dungeon
-//                        break;
-//                }
-//            }
-//
-//            currentRoom = map.get(direction);
-//            System.out.println(currentRoom.toString());
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("\nEnter a command or enter [options] to see game options: \n>>>");
+            String userCommand = scanner.nextLine();
+
+            if (userCommand.equalsIgnoreCase("options")){
+                displayOptions();
+            }
+            if (direction == 0){ //great hall
+
+            switch(userCommand.toLowerCase()) {
+                case "go north":
+                    direction = 3;
+                    break;
+                case "go east":
+                    direction = 1;
+                    break;
+                case "go west":
+                    direction = 5;
+                    break;
+                }
+            }
+
+            else if (direction == 1){ //dining room
+                switch(userCommand.toLowerCase()) {
+                    case "go north":
+                        direction = 2; //kitchen
+                        break;
+                    case "go west":
+                        direction = 0; //great hall
+                        break;
+                }
+            }
+
+            else if (direction ==2){ //Kitchen
+                switch(userCommand.toLowerCase()) {
+                    case "go south":
+                        direction = 1; //dining room
+                        break;
+                }
+            }
+
+            else if (direction == 3){ //Courtyard
+                switch(userCommand.toLowerCase()) {
+                    case "go north":
+                        direction = 4; //ball room
+                        break;
+                    case "go south":
+                        direction = 0; //great hall
+                        break;
+                }
+            }
+
+            else if (direction == 4){ //Ball room
+                switch(userCommand.toLowerCase()) {
+                    case "go south":
+                        direction = 3; //courtyard
+                        break;
+                }
+            }
+
+            else if (direction == 5){ //Great Hall hallway
+                switch(userCommand.toLowerCase()) {
+                    case "go north":
+                        direction = 6; //guard room
+                        break;
+                    case "go west":
+                        direction = 7; //library
+                        break;
+                    case "go east":
+                        direction = 0; //great hall
+                        break;
+                }
+            }
+
+            else if (direction == 6){ //Guard room
+                switch(userCommand.toLowerCase()) {
+                    case "go south":
+                        direction = 5; //great hall hallway
+                        break;
+                }
+            }
+
+            else if (direction == 7){ //Library
+                switch(userCommand.toLowerCase()) {
+                    case "go north":
+                        direction = 9; //foyer
+                        break;
+                    case "go east":
+                        direction = 5; //great hall hallway
+                        break;
+                    case "go south":
+                        direction = 8; //secret room
+                }
+            }
+
+            else if (direction == 8){ //Secret room
+                switch(userCommand.toLowerCase()) {
+                    case "go north":
+                        direction = 7; //library
+                        break;
+                }
+            }
+
+            else if (direction ==9){ //Foyer
+                switch(userCommand.toLowerCase()) {
+                    case "go east":
+                        direction = 10; //kitchen
+                        break;
+                    case "go west":
+                        direction = 7; //library
+                        break;
+                }
+            }
+
+            else if (direction == 10){ //Dungeon
+                switch(userCommand.toLowerCase()) {
+                    case "go north":
+                        direction = 11; //cellar
+                        break;
+                    case "go west":
+                        direction = 9; //foyer
+                        break;
+                    case "go east":
+                        direction = 12; //crypt
+                        break;
+                }
+            }
+
+            else if (direction == 11){ //Cellar
+                switch(userCommand.toLowerCase()) {
+                    case "go south":
+                        direction = 10; //dungeon
+                        break;
+                }
+            }
+
+            else if (direction == 12){ //Crypt
+                switch(userCommand.toLowerCase()) {
+                    case "go east":
+                        direction = 10; //dungeon
+                        break;
+                }
+            }
+
+            currentRoom = map.get(direction);
+            System.out.println(currentRoom.toString());
 
 
-//            switch (direction) {
-//                case 0: //great hall
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
-//
-//                    //combat encounter method called
-//                    //getting items logic called --> item added to list/map whatever the case may be
-//                    //approach npc method called --> json file for npc dialogue is read
-//                    break;
-//                case 1: //dining room
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n");
-//                    break;
-//                case 2: //kitchen
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 3: //courtyard
-//                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n");
-//                    break;
-//                case 4://Ballroom
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 5://Great Hall Hallway
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
-//                    break;
-//                case 6://Guard room
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 7://Library
-//                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n[go east]\n");
-//                    break;
-//                case 8://Secret room
-//                    System.out.println("\nAvailable commands:\n[go north]\n");
-//                    break;
-//                case 9://Foyer
-//                    System.out.println("\nAvailable commands:\n[go east]\n[go south]\n");
-//                    break;
-//                case 10://Dungeon
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go east]\n[go west]\n");
-//                    break;
-//                case 11://Cellar
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 12://Crypt
-//                    System.out.println("\nAvailable commands:\n[go west]\n");
-//                    break;
-//            }
-//            //SET THE ROUND TO FALSE IF PLAYER HP <= 0 TO BREAK THE LOOP
-//        }
-//    }
+            switch (direction) {
+                case 0: //great hall
+                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
+
+                    //combat encounter method called
+                    //getting items logic called --> item added to list/map whatever the case may be
+                    //approach npc method called --> json file for npc dialogue is read
+                    break;
+                case 1: //dining room
+                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n");
+                    break;
+                case 2: //kitchen
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 3: //courtyard
+                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n");
+                    break;
+                case 4://Ballroom
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 5://Great Hall Hallway
+                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
+                    break;
+                case 6://Guard room
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 7://Library
+                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n[go east]\n");
+                    break;
+                case 8://Secret room
+                    System.out.println("\nAvailable commands:\n[go north]\n");
+                    break;
+                case 9://Foyer
+                    System.out.println("\nAvailable commands:\n[go east]\n[go south]\n");
+                    break;
+                case 10://Dungeon
+                    System.out.println("\nAvailable commands:\n[go north]\n[go east]\n[go west]\n");
+                    break;
+                case 11://Cellar
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 12://Crypt
+                    System.out.println("\nAvailable commands:\n[go west]\n");
+                    break;
+            }
+            //SET THE ROUND TO FALSE IF PLAYER HP <= 0 TO BREAK THE LOOP
+        }
+    }
 
     public void displayOptions() {
         boolean waitingOnInput = true;
