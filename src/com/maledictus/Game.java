@@ -241,58 +241,58 @@ public class Game {
                 }
             }
 
-//            currentRoom = map.get(direction);
-//            System.out.println(currentRoom.toString());
-//
-//
-//            switch (direction) {
-//                case 0: //great hall
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
-//
-//                    //combat encounter method called
-//                    //getting items logic called --> item added to list/map whatever the case may be
-//                    //approach npc method called --> json file for npc dialogue is read
-//                    break;
-//                case 1: //dining room
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n");
-//                    break;
-//                case 2: //kitchen
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 3: //courtyard
-//                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n");
-//                    break;
-//                case 4://Ballroom
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 5://Great Hall Hallway
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
-//                    break;
-//                case 6://Guard room
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 7://Library
-//                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n[go east]\n");
-//                    break;
-//                case 8://Secret room
-//                    System.out.println("\nAvailable commands:\n[go north]\n");
-//                    break;
-//                case 9://Foyer
-//                    System.out.println("\nAvailable commands:\n[go east]\n[go south]\n");
-//                    break;
-//                case 10://Dungeon
-//                    System.out.println("\nAvailable commands:\n[go north]\n[go east]\n[go west]\n");
-//                    break;
-//                case 11://Cellar
-//                    System.out.println("\nAvailable commands:\n[go south]\n");
-//                    break;
-//                case 12://Crypt
-//                    System.out.println("\nAvailable commands:\n[go west]\n");
-//                    break;
-//            }
-//            //SET THE ROUND TO FALSE IF PLAYER HP <= 0 TO BREAK THE LOOP
-//        }
-//    }
+            currentRoom = map.get(direction);
+            System.out.println(currentRoom.toString());
+
+
+            switch (direction) {
+                case 0: //great hall
+                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
+
+                    //combat encounter method called
+                    //getting items logic called --> item added to list/map whatever the case may be
+                    //approach npc method called --> json file for npc dialogue is read
+                    break;
+                case 1: //dining room
+                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n");
+                    break;
+                case 2: //kitchen
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 3: //courtyard
+                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n");
+                    break;
+                case 4://Ballroom
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 5://Great Hall Hallway
+                    System.out.println("\nAvailable commands:\n[go north]\n[go west]\n[go east]\n");
+                    break;
+                case 6://Guard room
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 7://Library
+                    System.out.println("\nAvailable commands:\n[go south]\n[go north]\n[go east]\n");
+                    break;
+                case 8://Secret room
+                    System.out.println("\nAvailable commands:\n[go north]\n");
+                    break;
+                case 9://Foyer
+                    System.out.println("\nAvailable commands:\n[go east]\n[go south]\n");
+                    break;
+                case 10://Dungeon
+                    System.out.println("\nAvailable commands:\n[go north]\n[go east]\n[go west]\n");
+                    break;
+                case 11://Cellar
+                    System.out.println("\nAvailable commands:\n[go south]\n");
+                    break;
+                case 12://Crypt
+                    System.out.println("\nAvailable commands:\n[go west]\n");
+                    break;
+            }
+            //SET THE ROUND TO FALSE IF PLAYER HP <= 0 TO BREAK THE LOOP
+        }
+    }
 
     public void displayOptions() {
         boolean waitingOnInput = true;
