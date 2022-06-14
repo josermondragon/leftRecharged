@@ -20,6 +20,8 @@ public class Game {
     private Room currentRoom;
 
     public void initiateGame() {
+        displaySplash();
+        createCharacter();
         JSONParser.createItems();
         JSONParser.createRoomList();
         currentRoom = roomMap.get("Great Hall");
@@ -117,7 +119,7 @@ public class Game {
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
                 if (userInput[1].equals(direction.getKey())) {
                     roomFound = true;
-                    currentRoom = RoomFactory.getRoomMap().get(direction.getValue());
+                    currentRoom = roomMap.get(direction.getValue());
                     break;
                 }
             }
