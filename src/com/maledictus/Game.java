@@ -9,6 +9,7 @@ import com.maledictus.room.RoomFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
@@ -21,9 +22,10 @@ public class Game {
     private Map<String, String> roomDirections;
     private Room currentRoom;
 
-    public void initiateGame() {
+    public void initiateGame() throws IOException, ParseException, org.json.simple.parser.ParseException {
         displaySplash();
         createCharacter();
+        Json.jsonWrite();
         Json.createItems();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
@@ -50,10 +52,10 @@ public class Game {
         System.out.println("Welcome to Maledictus.  A game created by Lefties.\n");
 
         while (play) {
-//            Scanner scanner = new Scanner(System.in);
+
             System.out.println("Select [1] to start game.");
             System.out.println("Select [2] to quit game.\n>>>");
-//            String startGame = scanner.nextLine();
+
             String startGame = scannerUserInput();
 
             if (startGame.equals("1")) {
@@ -68,11 +70,10 @@ public class Game {
         }
     }
 
-    private void start() {
+    private void start() throws IOException, ParseException, org.json.simple.parser.ParseException {
         boolean round = true;
         while (round) {
-            // TODO: Put scanner logic into separate class
-//            Scanner scanner = new Scanner(System.in);
+
             System.out.println("\nEnter a command or enter [options] to see game options: \n>>>");
             String userCommand = scannerUserInput();
 
@@ -142,14 +143,13 @@ public class Game {
             }
     }
 
-    private void displayOptions() {
+    private void displayOptions() throws IOException, ParseException, org.json.simple.parser.ParseException {
         boolean waitingOnInput = true;
         while (waitingOnInput) {
 
-//            Scanner scanner = new Scanner(System.in);
             System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to resume game.");
-//            String optionInput = scanner.nextLine();
             String optionInput = scannerUserInput();
+
             if (optionInput.equals("1")) {
                 // Still needs work.
                 RoomFactory.clearRoomMap();
