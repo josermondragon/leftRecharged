@@ -1,12 +1,19 @@
 package com.maledictus.item;
 
+import com.maledictus.item.key.KeyType;
+import com.maledictus.item.potion.PotionType;
+import com.maledictus.item.weapon.WeaponType;
+
+import javax.swing.*;
+
 public class Item {
 
     private final String name;
     private final String description;
     private final ItemType itemType;
-    private WeaponType weaponType;
+    private WeaponType  weaponType;
     private KeyType keyType;
+
 
     public Item (String name, String description, ItemType itemType) {
         this.name = name;
@@ -19,10 +26,14 @@ public class Item {
         this.weaponType = weaponType;
     }
 
-    public Item (String name, String description, ItemType itemType, KeyType keyType) {
+    public Item (String name, String description, ItemType itemType, PotionType potionType) {
         this(name, description, itemType);
-        this.keyType = keyType;
     }
+
+//    public Item (String name, String description, ItemType itemType, KeyType keyType) {
+//        this(name, description, itemType);
+//        this.keyType = keyType;
+//    }
 
     public String getName() {
         return name;
@@ -44,6 +55,19 @@ public class Item {
         return weaponType;
     }
 
+
+//    public PotionType getPotionType() {
+//        return potionType;
+//    }
+//
+//    public void setPotionType(PotionType potionType) {
+//        this.potionType = potionType;
+//    }
+
+    public void use() {
+
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -53,22 +77,4 @@ public class Item {
                 ", WeaponType = " + weaponType +
                 '}';
     }
-
-    public enum ItemType {
-        POTION,
-        KEY,
-        WEAPON
-    }
-
-    public enum WeaponType {
-        SLASH,
-        PIERCE,
-        CRUSHING,
-    }
-
-    public enum KeyType {
-        THRONE_ROOM,
-        DUNGEON
-    }
-
 }

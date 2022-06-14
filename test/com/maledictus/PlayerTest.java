@@ -1,19 +1,23 @@
 package com.maledictus;
 
 import com.maledictus.item.Item;
+import com.maledictus.item.ItemType;
+import com.maledictus.item.potion.Potion;
+import com.maledictus.item.weapon.Weapon;
+import com.maledictus.item.weapon.WeaponType;
 import com.maledictus.player.Player;
 import com.maledictus.player.PlayerFactory;
 import org.junit.Test;
 
 public class PlayerTest {
     Player playerOne = new Player("Ryan");
-    Item sword = new Item("Iron Sword", "A sharp sword made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.SLASH);
-    Item hammer = new Item("Iron War Hammer", "A blunt heavy war hammer made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.CRUSHING);
+    //Item sword = new Weapon("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
+    //Item hammer = new Potion("Iron War Hammer", "A blunt heavy war hammer made of the finest iron", ItemType.WEAPON, WeaponType.BLUNT);
 
     @Test
     public void testAddItem_shouldPutTheItemIntoPlayerInventory_whenItemIsPassedIntoMethod() {
-        playerOne.addItem(sword);
-        playerOne.addItem(hammer);
+        //playerOne.addItem(sword);
+        //playerOne.addItem(hammer);
         System.out.println(playerOne.getInventory());
     }
 

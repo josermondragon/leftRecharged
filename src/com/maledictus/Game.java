@@ -20,12 +20,12 @@ public class Game {
     private Room currentRoom;
 
     public void initiateGame() {
-        JSONParser.createItems();
+        // JSONParser.createItems();
         JSONParser.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
 
-        start();
+        //start();
     }
 
     public void createCharacter() {
