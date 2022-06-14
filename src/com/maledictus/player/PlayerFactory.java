@@ -20,4 +20,11 @@ public class PlayerFactory {
         return new Player(name);
     }
 
+    public static Player createPlayer(String name) {
+
+        System.out.println("Username is: " + name);
+
+        return new Player(name);
+    }
+
 }

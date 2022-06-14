@@ -8,6 +8,7 @@ import com.maledictus.item.potion.PotionType;
 import com.maledictus.item.weapon.Weapon;
 import com.maledictus.item.weapon.WeaponType;
 import com.maledictus.room.RoomFactory;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileNotFoundException;
@@ -23,8 +24,6 @@ public class Json {
 
     public static ArrayList<Item> items = new ArrayList<>();
     public static ArrayList<Item> items2 = new ArrayList<>();
-
-
 
     public static void jsonWrite() throws FileNotFoundException {
         JSONObject rooms = new JSONObject();
@@ -90,7 +89,6 @@ public class Json {
         return roomDescription;
     }
 
-
     public static void createItems() {
         Item ironSword = ItemFactory.createItem("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
         Item potion = ItemFactory.createItem("Healing Potion", "A vial filled with red liquid", ItemType.POTION, PotionType.HEALING);
@@ -103,6 +101,7 @@ public class Json {
     }
 
     public static void createRoomList () throws IOException, ParseException, org.json.simple.parser.ParseException {
+
         Map<String, String> greatHall = new HashMap<>();
         greatHall.put("north", "Courtyard");
         greatHall.put("east", "Dining room");
@@ -152,8 +151,6 @@ public class Json {
 
         Map<String, String> crypt = new HashMap<>();
         crypt.put("west", "Dungeon");
-
-
 
         RoomFactory.createRoom(returnRoomName("0"), returnRoomDescription("0"), greatHall, items);
 

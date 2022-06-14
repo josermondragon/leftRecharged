@@ -9,23 +9,39 @@ import com.maledictus.player.Player;
 import com.maledictus.player.PlayerFactory;
 import org.junit.Test;
 
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 public class PlayerTest {
-    Player playerOne = new Player("Ryan");
-    //Item sword = new Weapon("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
-    //Item hammer = new Potion("Iron War Hammer", "A blunt heavy war hammer made of the finest iron", ItemType.WEAPON, WeaponType.BLUNT);
+
+    private final File text = new File("test/PlayerTest.txt");
+    String[] items;
+
+    private final Player playerOne = new Player("Ryan");
+    private final Item sword = new Item("Iron Sword", "A sharp sword made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.SLASH);
+    private final Item hammer = new Item("Iron War Hammer", "A blunt heavy war hammer made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.CRUSHING);
 
     @Test
     public void testAddItem_shouldPutTheItemIntoPlayerInventory_whenItemIsPassedIntoMethod() {
-        //playerOne.addItem(sword);
-        //playerOne.addItem(hammer);
-        System.out.println(playerOne.getInventory());
+        playerOne.addItem(sword);
+        playerOne.addItem(hammer);
+        items = new String[]{};
+        System.out.println(playerOne.getInventory().keySet());
+//        assertEquals(playerOne.getInventory().keySet(), "[Iron Sword, Iron War Hammer]");
     }
 
-    // Need to add input txt to scanner functionality (for testing)
     @Test
-    public void testPlayerFactoryCreateCharacter_shouldReturnANewPlayer_whenCreateCharacterMethodIsCalled() {
-        Player playerOne = PlayerFactory.createPlayer();
-        System.out.println(playerOne);
+    public void testPlayerFactoryCreateCharacter_shouldAssertEqualsValue_whenCreatePlayerMethodIsCalled() {
+        Player playerOne = PlayerFactory.createPlayer(Input.scannerTextInput(text));
+        assertEquals(playerOne.getPlayerName(), "Bryan");
+    }
+
+    @Test
+    public void testPlayerFactoryCreateCharacter_shouldAssertNotEqualsValue_whenCreatePlayerMethodIsCalled() {
+        Player playerOne = PlayerFactory.createPlayer(Input.scannerTextInput(text));
+        assertNotEquals(playerOne.getPlayerName(), "Ryan");
     }
 
 }

@@ -28,4 +28,8 @@ public class RoomFactory {
         return roomMap;
     }
 
+    public static void clearRoomMap() {
+       roomMap.clear();
+    }
+
 }
