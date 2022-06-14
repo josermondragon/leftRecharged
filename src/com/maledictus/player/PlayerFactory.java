@@ -1,7 +1,6 @@
 package com.maledictus.player;
 
 import com.maledictus.player.Player;
-
 import java.util.Scanner;
 
 public class PlayerFactory {
@@ -23,8 +22,6 @@ public class PlayerFactory {
     public static Player createPlayer(String name) {
 
         System.out.println("Username is: " + name);
-
         return new Player(name);
     }
-
 }

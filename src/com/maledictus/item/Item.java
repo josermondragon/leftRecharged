@@ -1,27 +1,19 @@
 package com.maledictus.item;
 
+import com.maledictus.item.key.KeyType;
+import com.maledictus.item.potion.PotionType;
+import com.maledictus.item.weapon.WeaponType;
+
 public class Item {
 
     private final String name;
     private final String description;
     private final ItemType itemType;
-    private WeaponType weaponType;
-    private KeyType keyType;
 
     public Item (String name, String description, ItemType itemType) {
         this.name = name;
         this.description = description;
         this.itemType = itemType;
-    }
-
-    public Item (String name, String description, ItemType itemType, WeaponType weaponType) {
-        this(name, description, itemType);
-        this.weaponType = weaponType;
-    }
-
-    public Item (String name, String description, ItemType itemType, KeyType keyType) {
-        this(name, description, itemType);
-        this.keyType = keyType;
     }
 
     public String getName() {
@@ -36,12 +28,8 @@ public class Item {
         return itemType;
     }
 
-    public KeyType getKeyType() {
-        return keyType;
-    }
+    public void use() {
 
-    public WeaponType getWeaponType() {
-        return weaponType;
     }
 
     @Override
@@ -50,25 +38,6 @@ public class Item {
                 "Name = " + name + '\'' +
                 ", Description = " + description +
                 ", ItemType = " + itemType +
-                ", WeaponType = " + weaponType +
                 '}';
     }
-
-    public enum ItemType {
-        POTION,
-        KEY,
-        WEAPON
-    }
-
-    public enum WeaponType {
-        SLASH,
-        PIERCE,
-        CRUSHING,
-    }
-
-    public enum KeyType {
-        THRONE_ROOM,
-        DUNGEON
-    }
-
 }
