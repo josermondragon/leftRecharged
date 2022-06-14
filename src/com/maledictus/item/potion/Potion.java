@@ -10,7 +10,6 @@ public class Potion extends Item {
     public Potion (String name, String description, ItemType itemType, PotionType potionType) {
         super(name, description, itemType);
         this.potionType = potionType;
-
     }
     @Override
     public void use() {

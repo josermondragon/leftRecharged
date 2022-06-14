@@ -1,8 +1,10 @@
 package com.maledictus.item;
 
+import com.maledictus.item.key.Key;
 import com.maledictus.item.key.KeyType;
 import com.maledictus.item.potion.Potion;
 import com.maledictus.item.potion.PotionType;
+import com.maledictus.item.weapon.Weapon;
 import com.maledictus.item.weapon.WeaponType;
 
 import java.util.Map;
@@ -22,21 +24,21 @@ public class ItemFactory {
 //        return item;
 //    }
 
-//    public static Item createItem(String name, String description, ItemType itemType, WeaponType weaponType) {
-//        Item item = null;
-//        if(weaponType != null) {
-//            item = new Item(name, description, itemType, weaponType);
-//        }
-//        return item;
-//    }
+    public static Weapon createItem(String name, String description, ItemType itemType, WeaponType weaponType) {
+        Weapon item = null;
+        if(weaponType != null) {
+            item = new Weapon(name, description, itemType, weaponType);
+        }
+        return item;
+    }
 
-//    public static Item createItem(String name, String description, ItemType itemType, KeyType keyType) {
-//        Item item = null;
-//        if(keyType != null) {
-//            item = new Item(name, description, itemType, keyType);
-//        }
-//        return item;
-//    }
+    public static Key createItem(String name, String description, ItemType itemType, KeyType keyType) {
+        Key item = null;
+        if(keyType != null) {
+            item = new Key(name, description, itemType, keyType);
+        }
+        return item;
+    }
 
     public static Potion createItem(String name, String description, ItemType itemType, PotionType potionType) {
         Potion item = null;

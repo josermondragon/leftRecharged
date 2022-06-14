@@ -11,8 +11,8 @@ public class Item {
     private final String name;
     private final String description;
     private final ItemType itemType;
-    private WeaponType  weaponType;
-    private KeyType keyType;
+
+
 
 
     public Item (String name, String description, ItemType itemType) {
@@ -21,14 +21,13 @@ public class Item {
         this.itemType = itemType;
     }
 
-    public Item (String name, String description, ItemType itemType, WeaponType weaponType) {
-        this(name, description, itemType);
-        this.weaponType = weaponType;
-    }
-
-    public Item (String name, String description, ItemType itemType, PotionType potionType) {
-        this(name, description, itemType);
-    }
+//    public Item (String name, String description, ItemType itemType, WeaponType weaponType) {
+//        this(name, description, itemType);
+//    }
+//
+//    public Item (String name, String description, ItemType itemType, PotionType potionType) {
+//        this(name, description, itemType);
+//    }
 
 //    public Item (String name, String description, ItemType itemType, KeyType keyType) {
 //        this(name, description, itemType);
@@ -46,16 +45,6 @@ public class Item {
     public ItemType getItemType() {
         return itemType;
     }
-
-    public KeyType getKeyType() {
-        return keyType;
-    }
-
-    public WeaponType getWeaponType() {
-        return weaponType;
-    }
-
-
 //    public PotionType getPotionType() {
 //        return potionType;
 //    }
@@ -74,7 +63,6 @@ public class Item {
                 "Name = " + name + '\'' +
                 ", Description = " + description +
                 ", ItemType = " + itemType +
-                ", WeaponType = " + weaponType +
                 '}';
     }
 }
