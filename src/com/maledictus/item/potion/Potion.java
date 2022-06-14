@@ -1,7 +1,6 @@
 package com.maledictus.item.potion;
 
-import com.maledictus.item.Item;
-import com.maledictus.item.ItemType;
+import com.maledictus.item.*;
 
 public class Potion extends Item {
 

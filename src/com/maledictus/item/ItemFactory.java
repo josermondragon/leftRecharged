@@ -1,12 +1,8 @@
 package com.maledictus.item;
 
-import com.maledictus.item.key.Key;
-import com.maledictus.item.key.KeyType;
-import com.maledictus.item.potion.Potion;
-import com.maledictus.item.potion.PotionType;
-import com.maledictus.item.weapon.Weapon;
-import com.maledictus.item.weapon.WeaponType;
-
+import com.maledictus.item.key.*;
+import com.maledictus.item.potion.*;
+import com.maledictus.item.weapon.*;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,12 +13,6 @@ public class ItemFactory {
     ItemFactory () {
 
     }
-
-//    public static Item createItem(String name, String description, ItemType itemType) {
-//        Item item = null;
-//        item = new Item(name, description, itemType);
-//        return item;
-//    }
 
     public static Weapon createItem(String name, String description, ItemType itemType, WeaponType weaponType) {
         Weapon item = null;

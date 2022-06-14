@@ -15,5 +15,4 @@ public class Key extends Item {
     public void use() {
         System.out.println("You used your Key!");
     }
-
 }

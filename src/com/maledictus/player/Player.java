@@ -1,4 +1,5 @@
 package com.maledictus.player;
+
 import com.maledictus.item.Item;
 import java.util.HashMap;
 import java.util.Map;

@@ -71,7 +71,7 @@ public class Game {
         }
     }
 
-    private void start() throws IOException, ParseException, org.json.simple.parser.ParseException {
+    private void start() throws IOException, ParseException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean round = true;
         while (round) {
 
@@ -144,7 +144,7 @@ public class Game {
             }
     }
 
-    private void displayOptions() throws IOException, ParseException, org.json.simple.parser.ParseException {
+    private void displayOptions() throws IOException, ParseException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean waitingOnInput = true;
         while (waitingOnInput) {
 

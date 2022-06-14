@@ -1,13 +1,10 @@
 package com.maledictus;
 
-import com.maledictus.item.Item;
+import com.maledictus.item.*;
 import com.maledictus.item.ItemFactory;
-import com.maledictus.item.ItemType;
 import com.maledictus.item.key.KeyType;
-import com.maledictus.item.potion.Potion;
-import com.maledictus.item.potion.PotionType;
-import com.maledictus.item.weapon.Weapon;
-import com.maledictus.item.weapon.WeaponType;
+import com.maledictus.item.potion.*;
+import com.maledictus.item.weapon.*;
 import org.junit.Test;
 
 public class ItemTest {

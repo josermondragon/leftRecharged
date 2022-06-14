@@ -1,12 +1,9 @@
 package com.maledictus;
 
-import com.maledictus.item.Item;
-import com.maledictus.item.ItemType;
-import com.maledictus.item.potion.Potion;
-import com.maledictus.item.weapon.Weapon;
-import com.maledictus.item.weapon.WeaponType;
-import com.maledictus.player.Player;
-import com.maledictus.player.PlayerFactory;
+import com.maledictus.item.*;
+import com.maledictus.item.potion.*;
+import com.maledictus.item.weapon.*;
+import com.maledictus.player.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -20,8 +17,8 @@ public class PlayerTest {
     String[] items;
 
     private final Player playerOne = new Player("Ryan");
-    private final Item sword = new Item("Iron Sword", "A sharp sword made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.SLASH);
-    private final Item hammer = new Item("Iron War Hammer", "A blunt heavy war hammer made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.CRUSHING);
+    private final Item sword = new Weapon("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
+    private final Item hammer = new Weapon("Iron War Hammer", "A blunt heavy war hammer made of the finest iron", ItemType.WEAPON, WeaponType.BLUNT);
 
     @Test
     public void testAddItem_shouldPutTheItemIntoPlayerInventory_whenItemIsPassedIntoMethod() {
@@ -43,5 +40,4 @@ public class PlayerTest {
         Player playerOne = PlayerFactory.createPlayer(Input.scannerTextInput(text));
         assertNotEquals(playerOne.getPlayerName(), "Ryan");
     }
-
 }
