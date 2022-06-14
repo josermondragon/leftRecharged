@@ -9,6 +9,7 @@ import com.maledictus.room.RoomFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.*;
 
 public class Game {
@@ -19,9 +20,12 @@ public class Game {
     private Map<String, String> roomDirections;
     private Room currentRoom;
 
-    public void initiateGame() {
-        JSONParser.createItems();
-        JSONParser.createRoomList();
+    public void initiateGame() throws IOException, ParseException, org.json.simple.parser.ParseException {
+        displaySplash();
+        createCharacter();
+        Json.jsonWrite();
+        Json.createItems();
+        Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
 
