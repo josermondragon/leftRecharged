@@ -66,6 +66,7 @@ public class Game {
     private void start() {
         boolean round = true;
         while (round) {
+            // TODO: Put scanner logic into separate class
             Scanner scanner = new Scanner(System.in);
             System.out.println("\nEnter a command or enter [options] to see game options: \n>>>");
             String userCommand = scanner.nextLine();
@@ -81,7 +82,7 @@ public class Game {
             if (userInput.length == 2) {
                 getUserInput(userInput);
             }  else {
-                System.out.println("INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go north')");
+                System.out.println("INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go south')");
             }
 
             displayConsoleCommands();
@@ -106,7 +107,7 @@ public class Game {
             }
         }
         if (!itemFound) {
-            System.out.println("INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again.");
+            System.out.println("INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')");
         }
     }
 
@@ -121,7 +122,7 @@ public class Game {
                 }
             }
             if (!roomFound) {
-                System.out.println("INVALID ITEM ERROR: You wrote go '" + userInput[1] + "' that is not a valid room option, please try again.");
+                System.out.println("INVALID ITEM ERROR: You wrote go '" + userInput[1] + "' that is not a valid room option, please try again. (Example: 'go north')");
             }
         }
 
@@ -194,7 +195,7 @@ public class Game {
     }
 
     private void displayConsoleCommands() {
-        System.out.println("============================================================DESCRIPTION============================================================");
+        System.out.println("============================================================DESCRIPTION===========================================================");
         System.out.println(currentRoom.toString());
         System.out.println("==================================================================================================================================");
         System.out.println("=============================================================COMMANDS=============================================================");
