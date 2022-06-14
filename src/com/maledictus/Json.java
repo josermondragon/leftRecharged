@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JSONParser {
+public class Json {
 
     public static ArrayList<Item> items = new ArrayList<>();
     public static ArrayList<Item> items2 = new ArrayList<>();

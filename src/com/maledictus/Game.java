@@ -24,8 +24,8 @@ public class Game {
     public void initiateGame() {
         displaySplash();
         createCharacter();
-        JSONParser.createItems();
-        JSONParser.createRoomList();
+        Json.createItems();
+        Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
 
@@ -153,8 +153,8 @@ public class Game {
             if (optionInput.equals("1")) {
                 // Still needs work.
                 RoomFactory.clearRoomMap();
-                JSONParser.items.clear(); // temp
-                JSONParser.items2.clear(); // temp
+                Json.items.clear(); // temp
+                Json.items2.clear(); // temp
                 // Reset player inventory too.
                 initiateGame();
                 waitingOnInput = false;
