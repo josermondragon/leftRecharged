@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 
+import static com.maledictus.Input.scannerUserInput;
+
 public class Game {
 
     private final Map<String, Room> roomMap = RoomFactory.getRoomMap();
@@ -50,10 +52,11 @@ public class Game {
         System.out.println("Welcome to Maledictus.  A game created by Lefties.\n");
 
         while (play) {
-            Scanner scanner = new Scanner(System.in);
+
             System.out.println("Select [1] to start game.");
             System.out.println("Select [2] to quit game.\n>>>");
-            String startGame = scanner.nextLine();
+
+            String startGame = scannerUserInput();
 
             if (startGame.equals("1")) {
                 displayIntroText();
@@ -67,13 +70,12 @@ public class Game {
         }
     }
 
-    private void start() {
+    private void start() throws IOException, ParseException, org.json.simple.parser.ParseException {
         boolean round = true;
         while (round) {
-            // TODO: Put scanner logic into separate class
-            Scanner scanner = new Scanner(System.in);
+
             System.out.println("\nEnter a command or enter [options] to see game options: \n>>>");
-            String userCommand = scanner.nextLine();
+            String userCommand = scannerUserInput();
 
             if (userCommand.equalsIgnoreCase("options")){
                 displayOptions();
@@ -121,7 +123,7 @@ public class Game {
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
                 if (userInput[1].equals(direction.getKey())) {
                     roomFound = true;
-                    currentRoom = RoomFactory.getRoomMap().get(direction.getValue());
+                    currentRoom = roomMap.get(direction.getValue());
                     break;
                 }
             }
@@ -141,15 +143,20 @@ public class Game {
             }
     }
 
-    private void displayOptions() {
+    private void displayOptions() throws IOException, ParseException, org.json.simple.parser.ParseException {
         boolean waitingOnInput = true;
         while (waitingOnInput) {
 
-            Scanner scanner = new Scanner(System.in);
             System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to resume game.");
-            String optionInput = scanner.nextLine();
+            String optionInput = scannerUserInput();
+
             if (optionInput.equals("1")) {
-                displaySplash(); //starts a new game
+                // Still needs work.
+                RoomFactory.clearRoomMap();
+                Json.items.clear(); // temp
+                Json.items2.clear(); // temp
+                // Reset player inventory too.
+                initiateGame();
                 waitingOnInput = false;
             } else if (optionInput.equals("2")) {
                 System.out.println("Exiting game.  Thank you for playing.");
