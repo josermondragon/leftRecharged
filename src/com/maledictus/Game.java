@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
+import static com.maledictus.Json.returnGameText;
 
 public class Game {
 
@@ -23,9 +24,10 @@ public class Game {
     private Room currentRoom;
 
     public void initiateGame() throws IOException, ParseException, org.json.simple.parser.ParseException {
+
+        Json.jsonWrite();
         displaySplash();
         createCharacter();
-        Json.jsonWrite();
         Json.createItems();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
@@ -38,7 +40,7 @@ public class Game {
         playerOne = PlayerFactory.createPlayer();
     }
 
-    public void displaySplash() {
+    public void displaySplash() throws IOException, org.json.simple.parser.ParseException {
 
         boolean play = true;
 
@@ -49,12 +51,12 @@ public class Game {
             e.printStackTrace();
         }
         System.out.println(titleBanner);
-        System.out.println("Welcome to Maledictus.  A game created by Lefties.\n");
+        System.out.println(returnGameText("2") + "\n");
 
         while (play) {
 
-            System.out.println("Select [1] to start game.");
-            System.out.println("Select [2] to quit game.\n>>>");
+            System.out.println(returnGameText("3"));
+            System.out.println(returnGameText("4") + "\n>>>");
 
             String startGame = scannerUserInput();
 
@@ -174,10 +176,8 @@ public class Game {
         }
     }
 
-    private void displayIntroText() {
-        System.out.println("\nYou made it, the castle looks old and abandoned, but is an immaculate piece of architecture. There is an uneasy feeling in the air, a rush of\n" +
-                "wind picks up the leaves around you. Will you be the first to claim King Berengars treasure? Or will you join the cursed souls that linger\n" +
-                "within...\n");
+    private void displayIntroText() throws IOException, org.json.simple.parser.ParseException {
+        System.out.println(returnGameText("1") + "\n");
     }
 
     private void displayCurrentRoomActions() {

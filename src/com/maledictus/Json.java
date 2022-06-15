@@ -11,9 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Json {
 
@@ -21,51 +19,133 @@ public class Json {
     public static ArrayList<Item> items2 = new ArrayList<>();
 
     public static void jsonWrite() throws FileNotFoundException {
-        JSONObject rooms = new JSONObject();
-        rooms.put("room0", "Great Hall");
-        rooms.put("room0Description", "The main area of the castle.");
+        JSONObject data = new JSONObject();
+        data.put("room0", "Great Hall");
+        data.put("room0Description", "The main area of the castle.");
 
-        rooms.put("room1", "Dining room");
-        rooms.put("room1Description", "A long, rectangular dining table set with the finest silver cutlery and porcelain tableware fills the room.  A fireplace is built into the east wall behind the head of the table.  A large, crystal chandelier hangs perfectly centered in the room.");
+        data.put("room1", "Dining room");
+        data.put("room1Description", "A long, rectangular dining table set with the finest silver cutlery and porcelain tableware fills the room.  A fireplace is built into the east wall behind the head of the table.  A large, crystal chandelier hangs perfectly centered in the room.");
 
-        rooms.put("room2", "Kitchen");
-        rooms.put("room2Description", "Bundles of herbs hang from the ceiling.  A large stone oven is built into the north wall. The mixed aroma of burnt wood and fresh herbs linger.");
+        data.put("room2", "Kitchen");
+        data.put("room2Description", "Bundles of herbs hang from the ceiling.  A large stone oven is built into the north wall. The mixed aroma of burnt wood and fresh herbs linger.");
 
-        rooms.put("room3", "Courtyard");
-        rooms.put("room3Description", "The smell of fresh flowers fills the air and the sound of flowing water can be heard.  Four large oak trees sit in each corner surrounded by garden flowers. A hedge-lined path leads to the center of the courtyard where a large water fountain sits.");
+        data.put("room3", "Courtyard");
+        data.put("room3Description", "The smell of fresh flowers fills the air and the sound of flowing water can be heard.  Four large oak trees sit in each corner surrounded by garden flowers. A hedge-lined path leads to the center of the courtyard where a large water fountain sits.");
 
-        rooms.put("room4", "Ball room");
-        rooms.put("room4Description", "Crystal chandeliers spiral down from the arched sky-blue ceiling illuminating the luxurious golden walls and a floor so polished it looks like an iced-over lake.");
+        data.put("room4", "Ball room");
+        data.put("room4Description", "Crystal chandeliers spiral down from the arched sky-blue ceiling illuminating the luxurious golden walls and a floor so polished it looks like an iced-over lake.");
 
-        rooms.put("room5", "Great Hall hallway");
-        rooms.put("room5Description", "A long and narrow hallway, with a floor of solid white marble.  Numerous antique paintings hang on the wall.");
+        data.put("room5", "Great Hall hallway");
+        data.put("room5Description", "A long and narrow hallway, with a floor of solid white marble.  Numerous antique paintings hang on the wall.");
 
-        rooms.put("room6", "Guard room");
-        rooms.put("room6Description", "A place where arms and military equipment are stored. You see a ghostly soldier sitting in a wooden chair.");
+        data.put("room6", "Guard room");
+        data.put("room6Description", "A place where arms and military equipment are stored. You see a ghostly soldier sitting in a wooden chair.");
 
-        rooms.put("room7", "Library");
-        rooms.put("room7Description", "You see book shelves throughout the room, and at the center of it all, you see a ghostly librarian sitting on the floor with a sea of books scattered around him. He seems to be reading something.");
+        data.put("room7", "Library");
+        data.put("room7Description", "You see book shelves throughout the room, and at the center of it all, you see a ghostly librarian sitting on the floor with a sea of books scattered around him. He seems to be reading something.");
 
-        rooms.put("room8", "Secret room");
-        rooms.put("room8Description", "Description placeholder for secret room");
+        data.put("room8", "Secret room");
+        data.put("room8Description", "Description placeholder for secret room");
 
-        rooms.put("room9", "Foyer");
-        rooms.put("room9Description", "A large, vacant room dimly lit by a few torches lining the stone walls.  You feel an immediate drop in temperature as a freezing chill crawls up your back. You get the sense that this may be your last chance to turn back from what lies ahead...");
+        data.put("room9", "Foyer");
+        data.put("room9Description", "A large, vacant room dimly lit by a few torches lining the stone walls.  You feel an immediate drop in temperature as a freezing chill crawls up your back. You get the sense that this may be your last chance to turn back from what lies ahead...");
 
-        rooms.put("room10", "Dungeon");
-        rooms.put("room10Description", "A dark, damp room filled with multiple iron bared cells for holding prisoners. The foundation resembles more of a cavernous system than a stone wall. The smell of death is pungent and overwhelming.");
+        data.put("room10", "Dungeon");
+        data.put("room10Description", "A dark, damp room filled with multiple iron bared cells for holding prisoners. The foundation resembles more of a cavernous system than a stone wall. The smell of death is pungent and overwhelming.");
 
-        rooms.put("room11", "Cellar");
-        rooms.put("room11Description", "You see rows of Wine racks as far as the eye can see. A large layer of dust sits atop the exposed wine bottles. You hear a bottle smash in the distance. You are not alone in here...");
+        data.put("room11", "Cellar");
+        data.put("room11Description", "You see rows of Wine racks as far as the eye can see. A large layer of dust sits atop the exposed wine bottles. You hear a bottle smash in the distance. You are not alone in here...");
 
-        rooms.put("room12", "Crypt");
-        rooms.put("room12Description", "Description placeholder for the crypt.");
+        data.put("room12", "Crypt");
+        data.put("room12Description", "Description placeholder for the crypt.");
+
+        ///game text///
+
+        data.put("text1", "You made it, the castle looks old and abandoned, but is an immaculate piece of architecture. " +
+                "There is an uneasy feeling in the air, a rush of wind picks up the leaves around you. Will you be the first to claim King Berengars treasure? Or will you join the cursed souls that linger within...");
+        data.put("text2", "Welcome to Maledictus.  A game created by Lefties.");
+        data.put("text3", "Select [1] to start game.");
+        data.put("text4", "Select [2] to quit game.");
+
+        //room direction maps///
+
+        Map greatHall = new HashMap();
+        greatHall.put("north", "Courtyard");
+        greatHall.put("east", "Dining room");
+        greatHall.put("west", "Great Hall hallway");
+        data.put("roomDirection0", greatHall);
+
+        Map diningRoom = new HashMap();
+        diningRoom.put("north", "Kitchen");
+        diningRoom.put("west", "Great Hall");
+        data.put("roomDirection1", diningRoom);
+
+        Map kitchen = new HashMap();
+        kitchen.put("south", "Dining room");
+        data.put("roomDirection2", kitchen);
+
+        Map courtyard = new HashMap();
+        courtyard.put("north", "Ball room");
+        courtyard.put("south", "Great Hall");
+        data.put("roomDirection3", courtyard);
+
+        Map ballroom = new HashMap();
+        ballroom.put("south", "Courtyard");
+        data.put("roomDirection4", ballroom);
+
+        Map greatHallHallway = new HashMap();
+        greatHallHallway.put("north", "Guard room");
+        greatHallHallway.put("east", "Great Hall");
+        greatHallHallway.put("west", "Library");
+        data.put("roomDirection5", greatHallHallway);
+
+        Map guardRoom = new HashMap();
+        guardRoom.put("south", "Great Hall hallway");
+        data.put("roomDirection6", guardRoom);
+
+        Map library = new HashMap();
+        library.put("north", "Foyer");
+        library.put("east", "Great Hall hallway");
+        library.put("south", "Secret room");
+        data.put("roomDirection7", library);
+
+        Map secretRoom = new HashMap();
+        secretRoom.put("north", "Library");
+        data.put("roomDirection8", secretRoom);
+
+        Map foyer = new HashMap();
+        foyer.put("south", "Library");
+        foyer.put("east", "Dungeon");
+        data.put("roomDirection9", foyer);
+
+        Map dungeon = new HashMap();
+        dungeon.put("north", "Cellar");
+        dungeon.put("east", "Crypt");
+        dungeon.put("west", "Foyer");
+        data.put("roomDirection10", dungeon);
+
+        Map cellar = new HashMap();
+        cellar.put("south", "Dungeon");
+        data.put("roomDirection11", cellar);
+
+        Map crypt = new HashMap();
+        crypt.put("west", "Dungeon");
+        data.put("roomDirection12", crypt);
+
 
         PrintWriter pw = new PrintWriter("GameData.json");
-        pw.write(rooms.toJSONString());
+        pw.write(data.toJSONString());
 
         pw.flush(); //clear the stream of any element that may be or may not be inside the stream
         pw.close(); //closes the stream
+    }
+
+    public static Map returnRoomDirections(String roomNumber) throws IOException, org.json.simple.parser.ParseException {
+        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
+        JSONObject jo = (JSONObject) obj;
+        Map roomDirections = ((Map)jo.get("roomDirection" + roomNumber));
+
+        return roomDirections;
     }
 
     public static String returnRoomName(String roomNumber) throws IOException, ParseException, org.json.simple.parser.ParseException {
@@ -84,6 +164,15 @@ public class Json {
         return roomDescription;
     }
 
+    public static String returnGameText(String textNumber) throws IOException, org.json.simple.parser.ParseException {
+        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
+        JSONObject jo = (JSONObject) obj;
+    /////add intro and other game text variables here
+        String gameText;
+        gameText = (String) jo.get("text" + textNumber);
+        return gameText;
+    }
+
     public static void createItems() {
         Item ironSword = ItemFactory.createItem("Iron Sword", "A sharp sword made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.SLASH);
         Item potion = ItemFactory.createItem("Healing Potion", "A vial filled with red liquid", Item.ItemType.POTION);
@@ -97,81 +186,32 @@ public class Json {
 
     public static void createRoomList () throws IOException, ParseException, org.json.simple.parser.ParseException {
 
-        Map<String, String> greatHall = new HashMap<>();
-        greatHall.put("north", "Courtyard");
-        greatHall.put("east", "Dining room");
-        greatHall.put("west", "Great Hall hallway");
 
-        Map<String, String> diningRoom = new HashMap<>();
-        diningRoom.put("north", "Kitchen");
-        diningRoom.put("west", "Great Hall");
+        RoomFactory.createRoom(returnRoomName("0"), returnRoomDescription("0"), returnRoomDirections("0"), items);
 
-        Map<String, String> kitchen = new HashMap<>();
-        kitchen.put("south", "Dining room");
+        RoomFactory.createRoom(returnRoomName("1"), returnRoomDescription("1"), returnRoomDirections("1"), items2);
 
-        Map<String, String> courtyard = new HashMap<>();
-        courtyard.put("north", "Ball room");
-        courtyard.put("south", "Great Hall");
+        RoomFactory.createRoom(returnRoomName("2"), returnRoomDescription("2"), returnRoomDirections("2"));
 
-        Map<String, String> ballroom = new HashMap<>();
-        ballroom.put("south", "Courtyard");
+        RoomFactory.createRoom(returnRoomName("3"), returnRoomDescription("3"), returnRoomDirections("3"));
 
-        Map<String, String> greatHallHallway = new HashMap<>();
-        greatHallHallway.put("north", "Guard room");
-        greatHallHallway.put("east", "Great Hall");
-        greatHallHallway.put("west", "Library");
+        RoomFactory.createRoom(returnRoomName("4"), returnRoomDescription("4"), returnRoomDirections("4"));
 
-        Map<String, String> guardRoom = new HashMap<>();
-        guardRoom.put("south", "Great Hall hallway");
+        RoomFactory.createRoom(returnRoomName("5"), returnRoomDescription("5"), returnRoomDirections("5"));
 
-        Map<String, String> library = new HashMap<>();
-        library.put("north", "Foyer");
-        library.put("east", "Great Hall hallway");
-        library.put("south", "Secret room");
+        RoomFactory.createRoom(returnRoomName("6"), returnRoomDescription("6"), returnRoomDirections("6"));
 
-        Map<String, String> secretRoom = new HashMap<>();
-        secretRoom.put("north", "Library");
+        RoomFactory.createRoom(returnRoomName("7"), returnRoomDescription("7"), returnRoomDirections("7"));
 
-        Map<String, String> foyer = new HashMap<>();
-        foyer.put("south", "Library");
-        foyer.put("east", "Dungeon");
+        RoomFactory.createRoom(returnRoomName("8"), returnRoomDescription("8"), returnRoomDirections("8"));
 
-        Map<String, String> dungeon = new HashMap<>();
-        dungeon.put("north", "Cellar");
-        dungeon.put("east", "Crypt");
-        dungeon.put("west", "Foyer");
+        RoomFactory.createRoom(returnRoomName("9"), returnRoomDescription("9"), returnRoomDirections("9"));
 
-        Map<String, String> cellar = new HashMap<>();
-        cellar.put("south", "Dungeon");
+        RoomFactory.createRoom(returnRoomName("10"), returnRoomDescription("10"), returnRoomDirections("10"));
 
-        Map<String, String> crypt = new HashMap<>();
-        crypt.put("west", "Dungeon");
+        RoomFactory.createRoom(returnRoomName("11"), returnRoomDescription("11"), returnRoomDirections("11"));
 
-        RoomFactory.createRoom(returnRoomName("0"), returnRoomDescription("0"), greatHall, items);
-
-        RoomFactory.createRoom(returnRoomName("1"), returnRoomDescription("1"), diningRoom, items2);
-
-        RoomFactory.createRoom(returnRoomName("2"), returnRoomDescription("2"), kitchen);
-
-        RoomFactory.createRoom(returnRoomName("3"), returnRoomDescription("3"), courtyard);
-
-        RoomFactory.createRoom(returnRoomName("4"), returnRoomDescription("4"), ballroom);
-
-        RoomFactory.createRoom(returnRoomName("5"), returnRoomDescription("5"), greatHallHallway);
-
-        RoomFactory.createRoom(returnRoomName("6"), returnRoomDescription("6"), guardRoom);
-
-        RoomFactory.createRoom(returnRoomName("7"), returnRoomDescription("7"), library);
-
-        RoomFactory.createRoom(returnRoomName("8"), returnRoomDescription("8"), secretRoom);
-
-        RoomFactory.createRoom(returnRoomName("9"), returnRoomDescription("9"), foyer);
-
-        RoomFactory.createRoom(returnRoomName("10"), returnRoomDescription("10"), dungeon);
-
-        RoomFactory.createRoom(returnRoomName("11"), returnRoomDescription("11"), cellar);
-
-        RoomFactory.createRoom(returnRoomName("12"), returnRoomDescription("12"), crypt);
+        RoomFactory.createRoom(returnRoomName("12"), returnRoomDescription("12"), returnRoomDirections("12"));
 
     }
 
