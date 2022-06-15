@@ -159,7 +159,7 @@ public class Game {
         boolean roomFound = false;
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                if (userInput[1].equals(direction.getKey())) {
+                if (userInput[1].equalsIgnoreCase(direction.getKey())) {
                     roomFound = true;
                     currentRoom = roomMap.get(direction.getValue());
                     break;
