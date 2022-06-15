@@ -23,11 +23,12 @@ public class Game {
     private ArrayList<Item> roomItems;
     private Map<String, String> roomDirections;
     private Room currentRoom;
+    private String errorMsg = null;
 
     public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+        Json.jsonWrite();
         displaySplash();
         createCharacter();
-        Json.jsonWrite();
         Json.createItems();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
@@ -35,6 +36,10 @@ public class Game {
 
         start();
     }
+
+//    private void clearConsole() {
+//        System.out.println(System.lineSeparator().repeat(100));
+//    }
 
     public void createCharacter() {
         playerOne = PlayerFactory.createPlayer();
@@ -67,15 +72,15 @@ public class Game {
                 System.out.println("Exiting the game...");
                 System.exit(1);
             } else {
-                System.out.println("Invalid Selection.  Please enter [1] to start game or [2] to quit.\n>>>");
+                errorMsg = "Invalid Selection.  Please enter [1] to start game or [2] to quit.\n>>>";
             }
         }
     }
 
-    private void start() throws IOException, ParseException, org.json.simple.parser.ParseException, java.text.ParseException {
+    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean round = true;
         while (round) {
-
+            printErrorMsg();
             System.out.println("\nEnter a command or enter [options] to see game options: \n>>>");
             String userCommand = scannerUserInput();
 
@@ -90,7 +95,7 @@ public class Game {
             if (userInput.length == 2) {
                 getUserInput(userInput);
             }  else {
-                System.out.println("INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go south')");
+                errorMsg = "INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go south')";
             }
 
             displayConsoleCommands();
@@ -98,6 +103,39 @@ public class Game {
             //Temporary false logic to stop loop
             if (playerOne.getHitPoints() == 0) {
                 round = false;
+            }
+
+
+        }
+    }
+
+    private void inspectItem(String[] userInput) {
+        boolean itemFound = false;
+
+        while (!itemFound) {
+            // Search for item through player inventory
+            for (Map.Entry<String, Item> invItem : playerOne.getInventory().entrySet()) {
+                if(userInput[1].equalsIgnoreCase(invItem.getKey())) {
+                    itemFound = true;
+                    System.out.println(invItem.getValue().getDescription());
+                    break;
+                }
+            }
+            if (itemFound) break;
+
+            // Search for item in current room
+            for (Item item : roomItems) {
+                if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
+                    itemFound = true;
+                    System.out.println(item.getDescription());
+                    break;
+                }
+            }
+            if (itemFound) {
+                break;
+            } else if (!itemFound) {
+                errorMsg = "INVALID ITEM ERROR: You wrote inspect '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')";
+                break;
             }
         }
     }
@@ -115,7 +153,7 @@ public class Game {
             }
         }
         if (!itemFound) {
-            System.out.println("INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')");
+            errorMsg = "INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')";
         }
     }
 
@@ -130,7 +168,7 @@ public class Game {
                 }
             }
             if (!roomFound) {
-                System.out.println("INVALID ITEM ERROR: You wrote go '" + userInput[1] + "' that is not a valid room option, please try again. (Example: 'go north')");
+                errorMsg = "INVALID LOCATION ERROR: You wrote go '" + userInput[1] + "' that is not a valid room option, please try again. (Example: 'go north')";
             }
         }
 
@@ -140,12 +178,14 @@ public class Game {
                 moveRoom(userInput);
             } else if(userInput[0].equalsIgnoreCase("take")) {
                 takeItem(userInput);
-            } else {
-                System.out.println("INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')");
+            } else if(userInput[0].equalsIgnoreCase("inspect")) {
+                inspectItem(userInput);
+            }  else {
+                errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
             }
     }
 
-    private void displayOptions() throws IOException, ParseException, org.json.simple.parser.ParseException, java.text.ParseException {
+    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean waitingOnInput = true;
         while (waitingOnInput) {
 
@@ -171,7 +211,7 @@ public class Game {
                 break; //resumes current game
             }
             else {
-                System.out.println("Invalid Selection.  Please try again.");
+                errorMsg = "Invalid Selection.  Please try again.";
             }
         }
     }
@@ -202,6 +242,13 @@ public class Game {
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
                 System.out.println("[go " + direction.getKey() + "]");
             }
+        }
+    }
+
+    private void printErrorMsg() {
+        if (errorMsg != null) {
+            System.out.println(errorMsg);
+            errorMsg = null;
         }
     }
 
