@@ -6,10 +6,11 @@ import com.maledictus.player.PlayerFactory;
 import com.maledictus.room.Room;
 import com.maledictus.room.RoomFactory;
 
+import org.json.simple.parser.ParseException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
@@ -23,11 +24,10 @@ public class Game {
     private Map<String, String> roomDirections;
     private Room currentRoom;
 
-    public void initiateGame() throws IOException, ParseException, org.json.simple.parser.ParseException {
-
-        Json.jsonWrite();
+    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         displaySplash();
         createCharacter();
+        Json.jsonWrite();
         Json.createItems();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
@@ -72,7 +72,7 @@ public class Game {
         }
     }
 
-    private void start() throws IOException, ParseException, org.json.simple.parser.ParseException {
+    private void start() throws IOException, ParseException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean round = true;
         while (round) {
 
@@ -145,7 +145,7 @@ public class Game {
             }
     }
 
-    private void displayOptions() throws IOException, ParseException, org.json.simple.parser.ParseException {
+    private void displayOptions() throws IOException, ParseException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean waitingOnInput = true;
         while (waitingOnInput) {
 

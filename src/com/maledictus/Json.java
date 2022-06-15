@@ -1,7 +1,10 @@
 package com.maledictus;
 
-import com.maledictus.item.Item;
+import com.maledictus.item.*;
 import com.maledictus.item.ItemFactory;
+import com.maledictus.item.key.KeyType;
+import com.maledictus.item.potion.PotionType;
+import com.maledictus.item.weapon.*;
 import com.maledictus.room.RoomFactory;
 
 import org.json.simple.JSONObject;
@@ -174,10 +177,10 @@ public class Json {
     }
 
     public static void createItems() {
-        Item ironSword = ItemFactory.createItem("Iron Sword", "A sharp sword made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.SLASH);
-        Item potion = ItemFactory.createItem("Healing Potion", "A vial filled with red liquid", Item.ItemType.POTION);
-        Item spear = ItemFactory.createItem("Iron Spear", "A sharp pointy spear made of the finest iron", Item.ItemType.WEAPON, Item.WeaponType.PIERCE);
-        Item key = ItemFactory.createItem("Brass Key", "A key", Item.ItemType.KEY, Item.KeyType.DUNGEON);
+        Item ironSword = ItemFactory.createItem("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
+        Item potion = ItemFactory.createItem("Healing Potion", "A vial filled with red liquid", ItemType.POTION, PotionType.HEALING);
+        Item spear = ItemFactory.createItem("Iron Spear", "A sharp pointy spear made of the finest iron", ItemType.WEAPON, WeaponType.PIERCING);
+        Item key = ItemFactory.createItem("Brass Key", "A key", ItemType.KEY, KeyType.DUNGEON);
         items.add(ironSword);
         items.add(potion);
         items2.add(spear);

@@ -1,7 +1,6 @@
 package com.maledictus.room;
 
 import com.maledictus.item.Item;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,5 +30,4 @@ public class RoomFactory {
     public static void clearRoomMap() {
        roomMap.clear();
     }
-
 }
