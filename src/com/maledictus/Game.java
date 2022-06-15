@@ -25,14 +25,13 @@ public class Game {
     private Room currentRoom;
 
     public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+        Json.jsonWrite();
         displaySplash();
         createCharacter();
-        Json.jsonWrite();
         Json.createItems();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
-
         start();
     }
 
