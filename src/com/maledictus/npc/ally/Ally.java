@@ -4,8 +4,8 @@ import java.util.Queue;
 
 public interface Ally {
 
-    void giveQuest(String quest);
-    void talk();
+    void assignQuest(String quest);
+    void talk(int playerChoice);
     void giveItem();
 
 }

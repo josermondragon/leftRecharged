@@ -7,8 +7,8 @@ public class Spider extends NPC implements Enemy {
 
     EnemyType enemyType;
 
-    Spider(int id, int hitPoints, String name, String description, boolean isHostile, EnemyType enemyType) {
-        super(id, hitPoints, name, description, isHostile);
+    Spider(int id, int hitPoints, String name, String description, boolean isHostile, Species species, EnemyType enemyType) {
+        super(id, hitPoints, name, description, isHostile, species);
     }
 
     @Override

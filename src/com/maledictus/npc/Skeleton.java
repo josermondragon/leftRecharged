@@ -7,8 +7,8 @@ public class Skeleton extends NPC implements Enemy {
 
     EnemyType enemyType;
 
-    public Skeleton(int id, int hitPoints, String name, String description, boolean isHostile, EnemyType enemyType) {
-        super(id, hitPoints, name, description, isHostile);
+    public Skeleton(int id, int hitPoints, String name, String description, boolean isHostile, Species species, EnemyType enemyType) {
+        super(id, hitPoints, name, description, isHostile, species);
     }
 
     @Override

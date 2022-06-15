@@ -9,8 +9,8 @@ public class Banshee extends NPC implements Enemy {
     int hitPoints;
     WeaponType weakness = WeaponType.SLASHING;
 
-    Banshee(int id, int hitPoints, String name, String description, boolean isHostile, EnemyType enemyType) {
-        super(id, hitPoints, name, description, isHostile);
+    Banshee(int id, int hitPoints, String name, String description, boolean isHostile, Species species, EnemyType enemyType) {
+        super(id, hitPoints, name, description, isHostile, species);
     }
 
     @Override

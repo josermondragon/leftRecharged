@@ -7,17 +7,15 @@ public class NPC {
     String name;
     String description;
     boolean isHostile;
+    Species species;
 
-    NPC(int id, String name, String description, boolean isHostile) {
+    public NPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species) {
         this.id = id;
+        this.hitPoints = hitPoints;
         this.name = name;
         this.description = description;
         this.isHostile = isHostile;
-    }
-
-    NPC(int id, int hitPoints, String name, String description, boolean isHostile) {
-        this(id, name, description, isHostile);
-        this.hitPoints = hitPoints;
+        this.species = species;
     }
 
     public String getName() {
