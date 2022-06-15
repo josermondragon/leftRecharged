@@ -33,7 +33,6 @@ public class Game {
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
-
         start();
     }
 

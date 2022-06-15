@@ -7,6 +7,7 @@ import com.maledictus.item.potion.PotionType;
 import com.maledictus.item.weapon.*;
 import com.maledictus.room.RoomFactory;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileNotFoundException;
@@ -135,6 +136,20 @@ public class Json {
         crypt.put("west", "Dungeon");
         data.put("roomDirection12", crypt);
 
+        ////items/////
+        data.put("item1", "Iron Sword");
+        data.put("item1Description", "A sharp sword made of the finest iron");
+
+        data.put("item2", "Healing Potion");
+        data.put("item2Description", "A vial filled with red liquid");
+
+        data.put("item3", "Iron Spear");
+        data.put("item3Description", "A sharp pointy spear made of the finest iron");
+
+        data.put("item4", "Brass Key");
+        data.put("item4Description", "A key");
+
+
 
         PrintWriter pw = new PrintWriter("GameData.json");
         pw.write(data.toJSONString());
@@ -142,6 +157,8 @@ public class Json {
         pw.flush(); //clear the stream of any element that may be or may not be inside the stream
         pw.close(); //closes the stream
     }
+
+    ///JSON read methods///
 
     public static Map returnRoomDirections(String roomNumber) throws IOException, org.json.simple.parser.ParseException {
         Object obj = new JSONParser().parse(new FileReader("GameData.json"));
@@ -170,17 +187,42 @@ public class Json {
     public static String returnGameText(String textNumber) throws IOException, org.json.simple.parser.ParseException {
         Object obj = new JSONParser().parse(new FileReader("GameData.json"));
         JSONObject jo = (JSONObject) obj;
-    /////add intro and other game text variables here
         String gameText;
         gameText = (String) jo.get("text" + textNumber);
         return gameText;
     }
 
-    public static void createItems() {
-        Item ironSword = ItemFactory.createItem("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
-        Item potion = ItemFactory.createItem("Healing Potion", "A vial filled with red liquid", ItemType.POTION, PotionType.HEALING);
-        Item spear = ItemFactory.createItem("Iron Spear", "A sharp pointy spear made of the finest iron", ItemType.WEAPON, WeaponType.PIERCING);
-        Item key = ItemFactory.createItem("Brass Key", "A key", ItemType.KEY, KeyType.DUNGEON);
+    public static Map returnNpcDialogue(String dialogueNumber) throws IOException, org.json.simple.parser.ParseException {
+        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
+        JSONObject jo = (JSONObject) obj;
+        Map npcDialogue = ((Map)jo.get(""));
+
+        return npcDialogue;
+    }
+
+    public static String returnItemName(String itemNumber) throws IOException, ParseException, org.json.simple.parser.ParseException {
+        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
+        JSONObject jo = (JSONObject) obj;
+        String itemName;
+        itemName = (String) jo.get("item" + itemNumber);
+        return itemName;
+    }
+
+    public static String returnItemDescription(String itemNumber) throws IOException, org.json.simple.parser.ParseException {
+        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
+        JSONObject jo = (JSONObject) obj;
+        String itemDescription;
+        itemDescription = (String) jo.get("item" + itemNumber + "Description");
+        return itemDescription;
+    }
+
+    /////////create item/room methods/////////
+
+    public static void createItems() throws IOException, ParseException, org.json.simple.parser.ParseException {
+        Item ironSword = ItemFactory.createItem(returnItemName("1"), returnItemDescription("1"), ItemType.WEAPON, WeaponType.SLASHING);
+        Item potion = ItemFactory.createItem(returnItemName("2"), returnItemDescription("2"), ItemType.POTION, PotionType.HEALING);
+        Item spear = ItemFactory.createItem(returnItemName("3"), returnItemDescription("3"), ItemType.WEAPON, WeaponType.PIERCING);
+        Item key = ItemFactory.createItem(returnItemName("4"), returnItemDescription("4"), ItemType.KEY, KeyType.DUNGEON);
         items.add(ironSword);
         items.add(potion);
         items2.add(spear);
