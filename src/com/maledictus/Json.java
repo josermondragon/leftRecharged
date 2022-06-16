@@ -73,61 +73,61 @@ public class Json {
 
         //room direction maps///
 
-        Map greatHall = new HashMap();
+        Map greatHall = new HashMap<>();
         greatHall.put("north", "Courtyard");
         greatHall.put("east", "Dining room");
         greatHall.put("west", "Great Hall hallway");
         data.put("roomDirection0", greatHall);
 
-        Map diningRoom = new HashMap();
+        Map diningRoom = new HashMap<>();
         diningRoom.put("north", "Kitchen");
         diningRoom.put("west", "Great Hall");
         data.put("roomDirection1", diningRoom);
 
-        Map kitchen = new HashMap();
+        Map kitchen = new HashMap<>();
         kitchen.put("south", "Dining room");
         data.put("roomDirection2", kitchen);
 
-        Map courtyard = new HashMap();
+        Map courtyard = new HashMap<>();
         courtyard.put("north", "Ball room");
         courtyard.put("south", "Great Hall");
         data.put("roomDirection3", courtyard);
 
-        Map ballroom = new HashMap();
+        Map ballroom = new HashMap<>();
         ballroom.put("south", "Courtyard");
         data.put("roomDirection4", ballroom);
 
 
-        Map guardRoom = new HashMap();
+        Map guardRoom = new HashMap<>();
         guardRoom.put("south", "Great Hall hallway");
         data.put("roomDirection6", guardRoom);
 
-        Map library = new HashMap();
+        Map library = new HashMap<>();
         library.put("north", "Foyer");
         library.put("east", "Great Hall hallway");
         library.put("south", "Secret room");
         data.put("roomDirection7", library);
 
-        Map secretRoom = new HashMap();
+        Map secretRoom = new HashMap<>();
         secretRoom.put("north", "Library");
         data.put("roomDirection8", secretRoom);
 
-        Map foyer = new HashMap();
+        Map foyer = new HashMap<>();
         foyer.put("south", "Library");
         foyer.put("east", "Dungeon");
         data.put("roomDirection9", foyer);
 
-        Map dungeon = new HashMap();
+        Map dungeon = new HashMap<>();
         dungeon.put("north", "Cellar");
         dungeon.put("east", "Crypt");
         dungeon.put("west", "Foyer");
         data.put("roomDirection10", dungeon);
 
-        Map cellar = new HashMap();
+        Map cellar = new HashMap<>();
         cellar.put("south", "Dungeon");
         data.put("roomDirection11", cellar);
 
-        Map crypt = new HashMap();
+        Map crypt = new HashMap<>();
         crypt.put("west", "Dungeon");
         data.put("roomDirection12", crypt);
 
@@ -147,12 +147,18 @@ public class Json {
         ///npc dialogue///
 
 //        ghost man/woman -- kitchen//
-        data.put("npc1", "Ghost man");
-        data.put("npc2", "Ghost woman");
 
-        data.put("npc1dialogue", "I knew I had it on in the kitchen before I prepared the stone oven to heat up a civet.");
-        data.put("npc1dialogue2", "Oh my...you've found my wedding ring! Gramercy! You don't know how much trouble and heartache you've put me out of stranger.  I'd like to give you a reward for your kindness. Hale be thou!");
-        data.put("npc2dialogue", "I can't believe you lost it!  After all these years...hundreds of years! I told you to never take it off.  Where did you last see it?");
+        data.put("npc1", "Ghost man chef");
+        Map dialogue1 = new HashMap<>();
+        dialogue1.put("dialogue1", "I knew I had it on in the kitchen before I prepared the stone oven to heat up a civet.");
+        dialogue1.put("dialogue2", "Oh my...you've found my wedding ring! Gramercy! You don't know how much trouble and heartache you've put me out of stranger.  I'd like to give you a reward for your kindness. Hale be thou!");
+        data.put("npc1dialogue", dialogue1);
+
+
+        data.put("npc2", "Ghost woman chef");
+        Map dialogue2 = new HashMap<>();
+        dialogue2.put("dialogue1", "I can't believe you lost it!  After all these years...hundreds of years! I told you to never take it off.  Where did you last see it?");
+        data.put("npc2dialogue", dialogue2);
 
         //ballroom ghost -- ballroom//
         data.put("npc3", "Ballroom ghost");
@@ -163,7 +169,7 @@ public class Json {
 
         //Soldier -- guard room//
         data.put("npc4", "Soldier");
-        Map dialogue4 = new HashMap();
+        Map dialogue4 = new HashMap<>();
         dialogue4.put("dialogue1", "This castle used to be a beacon of hope, now it's filled with dread. But that was years ago, it's hard to remember what life was like before all of this...madness.");
         dialogue4.put("dialogue2", "King Berengar was such a great King, he was always so involved in our lives, a genuine and kind man. He would listen to his subjects no matter their status, he really cared about all citizens under his rule. But not anymore.. now he's locked away in his keep, and will not let anyone inside. It's like this castle took on a mind of it's own.. the dead began to come alive, and the living unable to die. Those who were able to leave in time... they suffered the worst fate of all. As soon you step foot outside the castle walls your mind is completely lost while your body slowly begins to rot, now they roam the world aimlessly feasting on other human's flesh, never to be satisfied.");
         dialogue4.put("dialogue3", "Hey what do you think you're doing? You want a weapon? You could've just asked. But before you do, how about we test out your sword skills with a friendly duel?");
@@ -172,7 +178,7 @@ public class Json {
 
         //Librarian -- library//
         data.put("npc5", "Librarian");
-        Map dialogue5 = new HashMap();
+        Map dialogue5 = new HashMap<>();
         dialogue5.put("dialogue1", "Look, I'm very busy, I have read every book at least 10,038... *closes book* okay make that 10,039 times, and I am still not any closer to figuring out a cure for this treacherous curse.");
         dialogue5.put("dialogue2", "If you want to go down to the dungeon you will need a key. But I don't have it! I hid it away! Isn't it already bad enough I have to be near the entrance? Why would I want to let whatever is down there up here? It's locked for a reason.. death, death and more death... no thank you. I mean it's almost as bad as the ballroom, too many people and not enough books, that is the LAST place I would want to be right now. The only benefit of the ballroom is that if you hide something there they wouldn't think to bring it here. Ballroom people and libraries just don't mix.");
         dialogue5.put("dialogue3", "The curse? Yeah I'm not sure if you noticed but a human is not supposed to be translucent. It's been this way ever since King Berengar came back from his last expedition 200 years ago. The king seems to have gotten the worst of it, he hasn't been the same ever since...");
@@ -180,7 +186,7 @@ public class Json {
 
         //Prisoner -- dungeon//
         data.put("npc6", "Prisoner");
-        Map dialogue6 = new HashMap();
+        Map dialogue6 = new HashMap<>();
         dialogue6.put("dialogue1", "You there! I don't believe it...a human visitor! Please, please! come hither.  I've been locked away in this cage for centuries! The king himself damned thee here.  Accused me of being a glos pautonnier.  Afraid i'd steal his riches! Sentenced me to rot away here for all eternity. Madness I tell you! Worst of all, the cellar sits across thee! Tempting me for a taste of wine.  Enough to drive a man mad! Could you do me a favor, and retrieve some wine for thee from the Cellar?");
         dialogue6.put("dialogue2", "Ahhh, blessed be! I've longed for the taste of wine so fine.  Just imagine, I watched it age for 200 years! No one deserves a taste more than thee. Damned it be! I've forgotten, i'm a hollow ghost who can't consume anything! Why am I cursed with such fate! By god's bone, I am innocent!");
 

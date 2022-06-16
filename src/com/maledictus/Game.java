@@ -5,6 +5,8 @@ import com.maledictus.player.Player;
 import com.maledictus.player.PlayerFactory;
 import com.maledictus.room.Room;
 import com.maledictus.room.RoomFactory;
+import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
