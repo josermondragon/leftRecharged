@@ -5,9 +5,6 @@ import com.maledictus.player.Player;
 import com.maledictus.player.PlayerFactory;
 import com.maledictus.room.Room;
 import com.maledictus.room.RoomFactory;
-
-import org.json.simple.parser.ParseException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,6 +21,7 @@ public class Game {
     private Map<String, String> roomDirections;
     private Room currentRoom;
     private String errorMsg = null;
+    private String successMsg = null;
 
     public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         Json.jsonWrite();
@@ -35,10 +33,6 @@ public class Game {
         displayConsoleCommands();
         start();
     }
-
-//    private void clearConsole() {
-//        System.out.println(System.lineSeparator().repeat(100));
-//    }
 
     public void createCharacter() {
         playerOne = PlayerFactory.createPlayer();
@@ -60,7 +54,7 @@ public class Game {
         while (play) {
 
             System.out.println(returnGameText("3"));
-            System.out.println(returnGameText("4") + "\n>>>");
+            System.out.println(returnGameText("4"));
 
             String startGame = scannerUserInput();
 
@@ -71,7 +65,7 @@ public class Game {
                 System.out.println("Exiting the game...");
                 System.exit(1);
             } else {
-                errorMsg = "Invalid Selection.  Please enter [1] to start game or [2] to quit.\n>>>";
+                errorMsg = "Invalid Selection.  Please enter [1] to start game or [2] to quit.";
             }
         }
     }
@@ -79,8 +73,13 @@ public class Game {
     private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean round = true;
         while (round) {
+
+            // Methods will check if an error or success message needs to be printed
+            printSuccessMsg();
             printErrorMsg();
-            System.out.println("\nEnter a command or enter [options] to see game options: \n>>>");
+            System.out.println("\nEnter a command or enter [options] to see game options: ");
+
+            // Take in user input and run through scanner
             String userCommand = scannerUserInput();
 
             if (userCommand.equalsIgnoreCase("options")){
@@ -97,17 +96,18 @@ public class Game {
                 errorMsg = "INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go south')";
             }
 
-            displayConsoleCommands();
+            if (errorMsg == null && successMsg == null) {
+                displayConsoleCommands();
+            }
 
-            //Temporary false logic to stop loop
+            // TODO: Finish end game scenario
             if (playerOne.getHitPoints() == 0) {
                 round = false;
             }
 
-
         }
     }
-
+    // TODO: inspect item applies to all items in room and inventory, currently no way for user to know about inv.
     private void inspectItem(String[] userInput) {
         boolean itemFound = false;
 
@@ -126,7 +126,7 @@ public class Game {
             for (Item item : roomItems) {
                 if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
                     itemFound = true;
-                    System.out.println(item.getDescription());
+                    successMsg = item.getDescription();
                     break;
                 }
             }
@@ -146,8 +146,7 @@ public class Game {
                 itemFound = true;
                 playerOne.addItem(item);
                 roomItems.remove(item);
-                System.out.println(userInput[1] + " was added to your inventory.");
-                System.out.println("Remaining Items: " + roomItems); //TODO: Need to work on toString for better display of items.
+                successMsg = userInput[1] + " was added to your inventory.";
                 break;
             }
         }
@@ -160,7 +159,7 @@ public class Game {
         boolean roomFound = false;
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                if (userInput[1].equals(direction.getKey())) {
+                if (userInput[1].equalsIgnoreCase(direction.getKey())) {
                     roomFound = true;
                     currentRoom = roomMap.get(direction.getValue());
                     break;
@@ -230,7 +229,7 @@ public class Game {
         if (currentRoom.getItems() != null) {
             roomItems = currentRoom.getItems();
             for (Item item : roomItems) {
-                System.out.println("[take " + item.getName() + "]");
+                System.out.println("[take/inspect " + item.getName() + "]");
             }
         }
     }
@@ -251,13 +250,22 @@ public class Game {
         }
     }
 
+    private void printSuccessMsg() {
+        if (successMsg != null) {
+            System.out.println(successMsg);
+            successMsg = null;
+        }
+    }
+
     private void displayConsoleCommands() {
-        System.out.println("============================================================DESCRIPTION===========================================================");
+        System.out.println("-----------");
+        System.out.println("DESCRIPTION:");
+        System.out.println("-----------");
         System.out.println(currentRoom.toString());
-        System.out.println("==================================================================================================================================");
-        System.out.println("=============================================================COMMANDS=============================================================");
+        System.out.println("--------");
+        System.out.println("COMMANDS:");
+        System.out.println("--------");
         displayCurrentRoomActions();
-        System.out.println("==================================================================================================================================");
     }
 
 }

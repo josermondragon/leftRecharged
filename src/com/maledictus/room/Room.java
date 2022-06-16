@@ -36,6 +36,6 @@ public class Room {
 
     @Override
     public String toString() {
-        return "You have entered the " + name + ".\n" + "\n" + description;
+        return "You have entered the " + name + ".\n" + description;
     }
 }
