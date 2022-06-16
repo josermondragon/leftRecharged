@@ -15,6 +15,7 @@ import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
 import static com.maledictus.Json.returnGameText;
+import static com.maledictus.Json.returnNpcDialogue;
 
 public class Game {
 
@@ -243,6 +244,15 @@ public class Game {
             }
         }
     }
+
+    private void displayNpcDialogue(String npcNumber, String dialogueNumber) throws IOException, ParseException {
+            Map npc;
+            String npcDialogue;
+            npc = returnNpcDialogue(npcNumber);
+            npcDialogue =  npc.get("dialogue" + dialogueNumber).toString();
+            System.out.println(npcDialogue);
+    }
+
 
     private void printErrorMsg() {
         if (errorMsg != null) {

@@ -97,11 +97,6 @@ public class Json {
         ballroom.put("south", "Courtyard");
         data.put("roomDirection4", ballroom);
 
-        Map greatHallHallway = new HashMap();
-        greatHallHallway.put("north", "Guard room");
-        greatHallHallway.put("east", "Great Hall");
-        greatHallHallway.put("west", "Library");
-        data.put("roomDirection5", greatHallHallway);
 
         Map guardRoom = new HashMap();
         guardRoom.put("south", "Great Hall hallway");
@@ -149,6 +144,51 @@ public class Json {
         data.put("item4", "Brass Key");
         data.put("item4Description", "A key");
 
+        ///npc dialogue///
+
+//        ghost man/woman -- kitchen//
+        data.put("npc1", "Ghost man");
+        data.put("npc2", "Ghost woman");
+
+        data.put("npc1dialogue", "I knew I had it on in the kitchen before I prepared the stone oven to heat up a civet.");
+        data.put("npc1dialogue2", "Oh my...you've found my wedding ring! Gramercy! You don't know how much trouble and heartache you've put me out of stranger.  I'd like to give you a reward for your kindness. Hale be thou!");
+        data.put("npc2dialogue", "I can't believe you lost it!  After all these years...hundreds of years! I told you to never take it off.  Where did you last see it?");
+
+        //ballroom ghost -- ballroom//
+        data.put("npc3", "Ballroom ghost");
+        Map dialogue3 = new HashMap<>();
+        dialogue3.put("dialogue1", "This room has hosted some of the grandest parties the kingdom has ever known.  Indeed, years and years of delightful memories I have had here.  Now its just a vacant, lifeless room.  Kind of sounds like my soul! hah! ehhem..... Folks don't come around here anymore, ever since the old king lost his wits.  Shame, I tell ya! By my troth, the king used to be a honorable and respected man!");
+        dialogue3.put("dialogue2", "Ah yes, an old key you say? hah, I do remember coming across this old thing.  It was sitting right in the middle of this ballroom floor, as if it were placed! stuck out like a sore thumb.  Had it in my pocket ever since.  Here, you can take it off my hands! Go thy way! ");
+        data.put("npc3dialogue", dialogue3);
+
+        //Soldier -- guard room//
+        data.put("npc4", "Soldier");
+        Map dialogue4 = new HashMap();
+        dialogue4.put("dialogue1", "This castle used to be a beacon of hope, now it's filled with dread. But that was years ago, it's hard to remember what life was like before all of this...madness.");
+        dialogue4.put("dialogue2", "King Berengar was such a great King, he was always so involved in our lives, a genuine and kind man. He would listen to his subjects no matter their status, he really cared about all citizens under his rule. But not anymore.. now he's locked away in his keep, and will not let anyone inside. It's like this castle took on a mind of it's own.. the dead began to come alive, and the living unable to die. Those who were able to leave in time... they suffered the worst fate of all. As soon you step foot outside the castle walls your mind is completely lost while your body slowly begins to rot, now they roam the world aimlessly feasting on other human's flesh, never to be satisfied.");
+        dialogue4.put("dialogue3", "Hey what do you think you're doing? You want a weapon? You could've just asked. But before you do, how about we test out your sword skills with a friendly duel?");
+        dialogue4.put("dialogue4", "Certain weapons are more efficient depending on the enemy. A true Warrior is willing to explore all of the options they have at their disposal. Best of luck, this is truly a dangerous place you've come to..");
+        data.put("npc4dialogue", dialogue4);
+
+        //Librarian -- library//
+        data.put("npc5", "Librarian");
+        Map dialogue5 = new HashMap();
+        dialogue5.put("dialogue1", "Look, I'm very busy, I have read every book at least 10,038... *closes book* okay make that 10,039 times, and I am still not any closer to figuring out a cure for this treacherous curse.");
+        dialogue5.put("dialogue2", "If you want to go down to the dungeon you will need a key. But I don't have it! I hid it away! Isn't it already bad enough I have to be near the entrance? Why would I want to let whatever is down there up here? It's locked for a reason.. death, death and more death... no thank you. I mean it's almost as bad as the ballroom, too many people and not enough books, that is the LAST place I would want to be right now. The only benefit of the ballroom is that if you hide something there they wouldn't think to bring it here. Ballroom people and libraries just don't mix.");
+        dialogue5.put("dialogue3", "The curse? Yeah I'm not sure if you noticed but a human is not supposed to be translucent. It's been this way ever since King Berengar came back from his last expedition 200 years ago. The king seems to have gotten the worst of it, he hasn't been the same ever since...");
+        data.put("npc5dialogue", dialogue5);
+
+        //Prisoner -- dungeon//
+        data.put("npc6", "Prisoner");
+        Map dialogue6 = new HashMap();
+        dialogue6.put("dialogue1", "You there! I don't believe it...a human visitor! Please, please! come hither.  I've been locked away in this cage for centuries! The king himself damned thee here.  Accused me of being a glos pautonnier.  Afraid i'd steal his riches! Sentenced me to rot away here for all eternity. Madness I tell you! Worst of all, the cellar sits across thee! Tempting me for a taste of wine.  Enough to drive a man mad! Could you do me a favor, and retrieve some wine for thee from the Cellar?");
+        dialogue6.put("dialogue2", "Ahhh, blessed be! I've longed for the taste of wine so fine.  Just imagine, I watched it age for 200 years! No one deserves a taste more than thee. Damned it be! I've forgotten, i'm a hollow ghost who can't consume anything! Why am I cursed with such fate! By god's bone, I am innocent!");
+
+
+
+
+
+
 
 
         PrintWriter pw = new PrintWriter("GameData.json");
@@ -184,6 +224,8 @@ public class Json {
         return roomDescription;
     }
 
+    ////game text method////
+
     public static String returnGameText(String textNumber) throws IOException, org.json.simple.parser.ParseException {
         Object obj = new JSONParser().parse(new FileReader("GameData.json"));
         JSONObject jo = (JSONObject) obj;
@@ -192,13 +234,7 @@ public class Json {
         return gameText;
     }
 
-    public static Map returnNpcDialogue(String dialogueNumber) throws IOException, org.json.simple.parser.ParseException {
-        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
-        JSONObject jo = (JSONObject) obj;
-        Map npcDialogue = ((Map)jo.get(""));
-
-        return npcDialogue;
-    }
+    ////item methods////
 
     public static String returnItemName(String itemNumber) throws IOException, ParseException, org.json.simple.parser.ParseException {
         Object obj = new JSONParser().parse(new FileReader("GameData.json"));
@@ -216,8 +252,25 @@ public class Json {
         return itemDescription;
     }
 
-    /////////create item/room methods/////////
+    ////npc methods////
+    public static String returnNpcName(String npcNumber) throws IOException, ParseException, org.json.simple.parser.ParseException {
+        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
+        JSONObject jo = (JSONObject) obj;
+        String npcName;
+        npcName = (String) jo.get("item" + npcNumber);
+        return npcName;
+    }
 
+    public static Map returnNpcDialogue(String dialogueNumber) throws IOException, org.json.simple.parser.ParseException {
+        Object obj = new JSONParser().parse(new FileReader("GameData.json"));
+        JSONObject jo = (JSONObject) obj;
+        Map npcDialogue = ((Map)jo.get("npc" + dialogueNumber +"dialogue" ));
+
+        return npcDialogue;
+    }
+
+
+    ////////create item/room methods/////////
     public static void createItems() throws IOException, ParseException, org.json.simple.parser.ParseException {
         Item ironSword = ItemFactory.createItem(returnItemName("1"), returnItemDescription("1"), ItemType.WEAPON, WeaponType.SLASHING);
         Item potion = ItemFactory.createItem(returnItemName("2"), returnItemDescription("2"), ItemType.POTION, PotionType.HEALING);
@@ -228,6 +281,7 @@ public class Json {
         items2.add(spear);
         items2.add(key);
     }
+
 
     public static void createRoomList () throws IOException, ParseException, org.json.simple.parser.ParseException {
 
