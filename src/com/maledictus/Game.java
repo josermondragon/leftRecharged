@@ -158,6 +158,20 @@ public class Game {
         }
     }
 
+    private void useItem(String[] userInput) {
+        boolean itemFound = false;
+        for (Item item : playerOne.getInventory().values()) {
+            if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
+                itemFound = true;
+                playerOne.removeItem(item);
+                break;
+            }
+        }
+        if(!itemFound) {
+            errorMsg = userInput[1] + " is not in your inventory!";
+        }
+    }
+
     private void moveRoom (String[] userInput) {
         boolean roomFound = false;
             roomDirections = currentRoom.getDirections();
@@ -177,10 +191,14 @@ public class Game {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
             if(userInput[0].equalsIgnoreCase("go")) {
                 moveRoom(userInput);
-            } else if(userInput[0].equalsIgnoreCase("take")) {
+            } else if(userInput[0].equalsIgnoreCase("take") || userInput[0].equalsIgnoreCase("grab")) {
                 takeItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("inspect")) {
                 inspectItem(userInput);
+            } else if(userInput[0].equalsIgnoreCase("use")) {
+                useItem(userInput);
+            } else if(userInput[0].equalsIgnoreCase("heal")) {
+                useItem(userInput);
             }  else {
                 errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
             }
