@@ -275,6 +275,7 @@ public class Game {
         }
     }
 
+
     private void printErrorMsg() {
         if (errorMsg != null) {
             System.out.println(errorMsg);
