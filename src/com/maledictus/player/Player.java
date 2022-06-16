@@ -35,12 +35,22 @@ public class Player {
         return hitPoints;
     }
 
-    public void setHitPoints(int hitPoints) {
-        this.hitPoints = hitPoints;
+    public void heal(int potValue) {
+        if((hitPoints + potValue) > 100) {
+            this.hitPoints = 100;
+        } else {
+            this.hitPoints += potValue;
+        }
     }
 
     public Map<String, Item> getInventory() {
         return inventory;
+    }
+
+
+
+    public void removeItem(Item item) {
+        inventory.remove(item.getName());
     }
 
     //    public void attack(Item item) {
