@@ -14,9 +14,9 @@ public class Input {
     public static String scannerUserInput() {
         Scanner scanner;
         String line = "If you see this.. you FAILED!";
-        scanner = new Scanner(System.in);
+        System.out.print(">>>");
+        scanner = new Scanner( System.in);
         line = scanner.nextLine();
-        System.out.println(line);
         return line;
     }
 
@@ -26,7 +26,6 @@ public class Input {
         try {
             scanner = new Scanner(text);
             line = scanner.nextLine();
-            System.out.println(line);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
