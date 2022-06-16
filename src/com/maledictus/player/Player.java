@@ -1,23 +1,21 @@
-package com.maledictus;
+package com.maledictus.player;
 
+import com.maledictus.item.Item;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Player {
 
-    // FIELDS \\
-    String playerName;
-    int hitPoints = 100;
-    Map<String, Item> inventory = new HashMap<>();
+    private final String playerName;
+    private final Map<String, Item> inventory = new HashMap<>();
+    private int hitPoints = 100;
 
-    // CONSTRUCTORS \\
-    public Player (String playerName) {
-    setPlayerName(playerName);
+    public Player(String playerName) {
+    this.playerName = playerName;
     }
 
-    // BUSINESS METHODS \\
     public void addItem(Item item) {
-        inventory.put(item.name, item);
+        inventory.put(item.getName(), item);
     }
 
     public void inspectItem(String item) {
@@ -29,28 +27,27 @@ public class Player {
         }
     }
 
-    //    public void attack(Item item) {
-    //        if (item.name.equals("sword")) {
-    //            Item.WeaponType attackStyle = item.weaponType;
-    //        }
-    //    }
-
-    //GETTERS & SETTERS \\
     public String getPlayerName() {
         return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
     }
 
     public int getHitPoints() {
         return hitPoints;
     }
 
+    public void setHitPoints(int hitPoints) {
+        this.hitPoints = hitPoints;
+    }
+
     public Map<String, Item> getInventory() {
         return inventory;
     }
+
+    //    public void attack(Item item) {
+    //        if (item.name.equals("sword")) {
+    //            Item.WeaponType attackStyle = item.weaponType;
+    //        }
+    //    }
 
     @Override
     public String toString() {
