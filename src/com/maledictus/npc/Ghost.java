@@ -41,4 +41,12 @@ public class Ghost extends NPC implements Ally {
     public void giveItem() {
 
     }
+
+    @Override
+    public String toString() {
+        return "Ghost{" +
+                "quest=" + quest +
+                ", dialog=" + dialog +
+                '}';
+    }
 }

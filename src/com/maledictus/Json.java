@@ -21,6 +21,7 @@ public class Json {
 
     public static ArrayList<Item> items = new ArrayList<>();
     public static ArrayList<Item> items2 = new ArrayList<>();
+    public static ArrayList<Item> empty = new ArrayList<>();
 
     public static void jsonWrite() throws FileNotFoundException {
         JSONObject data = new JSONObject();
@@ -217,7 +218,6 @@ public class Json {
     }
 
     /////////create item/room methods/////////
-
     public static void createItems() throws IOException, ParseException, org.json.simple.parser.ParseException {
         Item ironSword = ItemFactory.createItem(returnItemName("1"), returnItemDescription("1"), ItemType.WEAPON, WeaponType.SLASHING);
         Item potion = ItemFactory.createItem(returnItemName("2"), returnItemDescription("2"), ItemType.POTION, PotionType.HEALING);
@@ -230,33 +230,31 @@ public class Json {
     }
 
     public static void createRoomList () throws IOException, ParseException, org.json.simple.parser.ParseException {
+        RoomFactory.createRoom(returnRoomName("0"), returnRoomDescription("0"), returnRoomDirections("0"), false, KeyType.DUNGEON, items);
 
+        RoomFactory.createRoom(returnRoomName("1"), returnRoomDescription("1"), returnRoomDirections("1"), false, KeyType.DUNGEON, items2);
 
-        RoomFactory.createRoom(returnRoomName("0"), returnRoomDescription("0"), returnRoomDirections("0"), items);
+        RoomFactory.createRoom(returnRoomName("2"), returnRoomDescription("2"), returnRoomDirections("2"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("1"), returnRoomDescription("1"), returnRoomDirections("1"), items2);
+        RoomFactory.createRoom(returnRoomName("3"), returnRoomDescription("3"), returnRoomDirections("3"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("2"), returnRoomDescription("2"), returnRoomDirections("2"));
+        RoomFactory.createRoom(returnRoomName("4"), returnRoomDescription("4"), returnRoomDirections("4"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("3"), returnRoomDescription("3"), returnRoomDirections("3"));
+        RoomFactory.createRoom(returnRoomName("5"), returnRoomDescription("5"), returnRoomDirections("5"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("4"), returnRoomDescription("4"), returnRoomDirections("4"));
+        RoomFactory.createRoom(returnRoomName("6"), returnRoomDescription("6"), returnRoomDirections("6"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("5"), returnRoomDescription("5"), returnRoomDirections("5"));
+        RoomFactory.createRoom(returnRoomName("7"), returnRoomDescription("7"), returnRoomDirections("7"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("6"), returnRoomDescription("6"), returnRoomDirections("6"));
+        RoomFactory.createRoom(returnRoomName("8"), returnRoomDescription("8"), returnRoomDirections("8"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("7"), returnRoomDescription("7"), returnRoomDirections("7"));
+        RoomFactory.createRoom(returnRoomName("9"), returnRoomDescription("9"), returnRoomDirections("9"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("8"), returnRoomDescription("8"), returnRoomDirections("8"));
+        RoomFactory.createRoom(returnRoomName("10"), returnRoomDescription("10"), returnRoomDirections("10"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("9"), returnRoomDescription("9"), returnRoomDirections("9"));
+        RoomFactory.createRoom(returnRoomName("11"), returnRoomDescription("11"), returnRoomDirections("11"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("10"), returnRoomDescription("10"), returnRoomDirections("10"));
-
-        RoomFactory.createRoom(returnRoomName("11"), returnRoomDescription("11"), returnRoomDirections("11"));
-
-        RoomFactory.createRoom(returnRoomName("12"), returnRoomDescription("12"), returnRoomDirections("12"));
+        RoomFactory.createRoom(returnRoomName("12"), returnRoomDescription("12"), returnRoomDirections("12"), false, KeyType.DUNGEON);
 
     }
 

@@ -49,6 +49,10 @@ public class Player {
     //        }
     //    }
 
+    public void removeItem(Item item) {
+        inventory.remove(item.getName());
+    }
+
     @Override
     public String toString() {
         return "{" +
