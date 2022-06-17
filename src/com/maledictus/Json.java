@@ -97,6 +97,11 @@ public class Json {
         ballroom.put("south", "Courtyard");
         data.put("roomDirection4", ballroom);
 
+        Map greatHallHallway = new HashMap<>();
+        greatHallHallway.put("north", "Guard room");
+        greatHallHallway.put("west", "Library");
+        greatHallHallway.put("east", "Great Hall");
+        data.put("roomDirection5", greatHallHallway);
 
         Map guardRoom = new HashMap<>();
         guardRoom.put("south", "Great Hall hallway");
