@@ -335,7 +335,7 @@ public class Json {
 
         RoomFactory.createRoom(returnRoomName("2"), returnRoomDescription("2"), returnRoomDirections("2"), false, KeyType.DUNGEON);
 
-        RoomFactory.createRoom(returnRoomName("3"), returnRoomDescription("3"), returnRoomDirections("3"), false, KeyType.DUNGEON, items3, dungeonNpcMap);
+        RoomFactory.createRoom(returnRoomName("3"), returnRoomDescription("3"), returnRoomDirections("3"), true, KeyType.DUNGEON, items3, dungeonNpcMap);
 
         RoomFactory.createRoom(returnRoomName("4"), returnRoomDescription("4"), returnRoomDirections("4"), false, KeyType.DUNGEON);
 

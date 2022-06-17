@@ -1,6 +1,10 @@
 package com.maledictus.player;
 
 import com.maledictus.item.Item;
+import com.maledictus.item.ItemType;
+import com.maledictus.item.key.Key;
+import com.maledictus.item.key.KeyType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,13 +22,16 @@ public class Player {
         inventory.put(item.getName(), item);
     }
 
-    public void inspectItem(String item) {
-        // Check to see if item exists in inventory, display the item if true
-        if (inventory.containsKey(item)) {
-            System.out.println("Item Object: " + getInventory().get(item));
-        } else {
-            System.out.println("You do not have this item in your inventory: " + item);
+    public Key getDoorKey(KeyType keyType) {
+        for (Item item : this.getInventory().values()) {
+            if (item.getItemType() == ItemType.KEY) {
+                Key key = (Key) item;
+                if (key.getKeyType() == keyType) {
+                    return key;
+                }
+            }
         }
+        return null;
     }
 
     public String getPlayerName() {
@@ -47,17 +54,9 @@ public class Player {
         return inventory;
     }
 
-
-
     public void removeItem(Item item) {
         inventory.remove(item.getName());
     }
-
-    //    public void attack(Item item) {
-    //        if (item.name.equals("sword")) {
-    //            Item.WeaponType attackStyle = item.weaponType;
-    //        }
-    //    }
 
     @Override
     public String toString() {

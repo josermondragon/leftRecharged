@@ -3,6 +3,7 @@ package com.maledictus;
 import com.maledictus.item.Item;
 import com.maledictus.music.BattleMusic;
 import com.maledictus.music.GameMusic;
+import com.maledictus.item.key.Key;
 import com.maledictus.npc.Ghost;
 import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
@@ -209,12 +210,25 @@ public class Game {
         boolean roomFound = false;
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                if (userInput[1].equalsIgnoreCase(direction.getKey())) {
+                Room targetRoom = roomMap.get(direction.getValue());
+                String targetDirection = direction.getKey();
+                if (userInput[1].equalsIgnoreCase(targetDirection) && targetRoom.isLocked()) {
+                    roomFound = true;
+                    Key foundKey = playerOne.getDoorKey(targetRoom.getRequiredKeyType());
+                    if (foundKey != null) {
+                        targetRoom.unlockRoom(foundKey.getKeyType());
+                        currentRoom = roomMap.get(direction.getValue());
+                        roomItems = currentRoom.getItems();
+                        successMsg = "You used the " + foundKey.getName() + " and unlocked the door to the " + targetRoom.getName() + ".\nYou went " + targetDirection + " into the " + targetRoom.getName();
+                    } else {
+                        successMsg = "WARNING: You tried to go to the room located in the " + targetDirection + " direction. The door to this room is locked, you must find the proper key first. \nCome back when you have the right key.";
+                        break;
+                    }
+                } else if (userInput[1].equalsIgnoreCase(targetDirection) && !targetRoom.isLocked()) {
                     roomFound = true;
                     currentRoom = roomMap.get(direction.getValue());
                     roomItems = currentRoom.getItems();
-                    successMsg = "You went " + direction.getKey() + " into the " + direction.getValue();
-                    break;
+                    successMsg = "You went " + targetDirection + " into the " + targetRoom.getName();
                 }
             }
             if (!roomFound) {
