@@ -16,7 +16,6 @@ import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
 import static com.maledictus.Json.returnGameText;
-import static com.maledictus.Json.returnNpcDialogue;
 
 public class Game {
 
@@ -81,6 +80,7 @@ public class Game {
         boolean round = true;
         while (round) {
 
+            displayConsoleCommands();
             // Methods will check if an error or success message needs to be printed
             printSuccessMsg();
             printErrorMsg();
@@ -101,10 +101,6 @@ public class Game {
                 getUserInput(userInput);
             }  else {
                 errorMsg = "INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go south')";
-            }
-
-            if (errorMsg == null && successMsg == null) {
-                displayConsoleCommands();
             }
 
             // TODO: Finish end game scenario
@@ -220,7 +216,7 @@ public class Game {
             } else if(userInput[0].equalsIgnoreCase("heal")) {
                 useItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("talk")) {
-                talkToNPC(userInput);
+                talkToNpc(userInput);
             } else if(userInput[0].equalsIgnoreCase("attack")) {
                 System.out.println("attacked!");
             } else {
@@ -228,7 +224,7 @@ public class Game {
             }
     }
 
-    private void talkToNPC(String[] userInput) {
+    private void talkToNpc(String[] userInput) {
         boolean npcFound = false;
         for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
             if (userInput[1].equalsIgnoreCase(npc.getValue().getName())) {
@@ -244,47 +240,47 @@ public class Game {
     }
 
     private void chooseDialog(NPC targetNpc) {
-
         Ghost npc = (Ghost) targetNpc;
 
-        if (npc.getQuest() == null || (!npc.getQuestActive() && !npc.getQuest().isCompleted())) {
-            System.out.println(npc.talk(1));
+        if (npc.getQuest() == null || (!npc.getQuestStatus() && !npc.getQuest().isCompleted())) {
+            System.out.println(npc.getName() + ": " + npc.talk(1));
             for (int i = 2; i < npc.getDialog().entrySet().size() + 1; i++) {
                 System.out.println("Press [1] to continue talking. \nPress [2] to exit.");
                  String dialogChoice = scannerUserInput();
                 if (dialogChoice.equals("1")) {
-                    System.out.println(npc.talk(i));
+                    System.out.println(npc.getName() + ": " + npc.talk(i));
                  } else if (dialogChoice.equals("2")) {
                      break;
                 }
             }
             if (npc.getQuest() != null) {
                 System.out.println("Press [1] Accept Quest? \nPress [2] to exit.");
-                String dialogChoice = scannerUserInput();
-                if (dialogChoice.equals("1")) {
-                    npc.setQuestActive(true);
+                String questDialogChoice = scannerUserInput();
+                if (questDialogChoice.equals("1")) {
+                    npc.assignQuest(true);
                 }
+            } else {
+                System.out.println("Press [2] to exit.");
+                scannerUserInput();
             }
-        } else if (npc.getQuestActive() && !npc.getQuest().isCompleted()) {
-               successMsg =  npc.questTalk(1);
+        } else if (npc.getQuestStatus() && !npc.getQuest().isCompleted()) {
+               successMsg = npc.getName() + ": " + npc.questTalk(1);
                 System.out.println("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
-                String dialogChoice = scannerUserInput();
-                if (dialogChoice.equals("1") && playerOne.getInventory().containsKey(npc.getQuestWinCondition())) {
+                String questDialogChoice = scannerUserInput();
+                if (questDialogChoice.equals("1") && playerOne.getInventory().containsKey(npc.getQuestWinCondition())) {
                     playerOne.removeItem(playerOne.getInventory().get(npc.getQuestWinCondition()));
-                    successMsg = npc.questTalk(2);
+                    successMsg = npc.getName() + ": " + npc.questTalk(2) + "\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName();
                     npc.setQuestCompleted(true);
-                    npc.setQuestActive(false);
-                    playerOne.addItem(npc.getQuest().getReward());
+                    npc.assignQuest(false);
+                    playerOne.addItem(npc.giveQuestReward());
                     System.out.println("You received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
                 } else  {
-                   successMsg = npc.questTalk(3);
+                   successMsg = npc.getName() + ": " + npc.questTalk(3);
                 }
         } else {
-           successMsg = npc.questTalk(4);
+           successMsg = npc.getName() + ": " + npc.questTalk(4);
         }
     }
-
-
 
     private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean waitingOnInput = true;
@@ -299,9 +295,7 @@ public class Game {
                     // Still needs work.
                     RoomFactory.clearRoomMap();
                     Json.items.clear(); // temp
-
                     Json.items2.clear(); // temp
-
                     // Reset player inventory too.
                     initiateGame();
                     waitingOnInput = false;
@@ -330,6 +324,7 @@ public class Game {
         if(currentRoom != null) {
             displayRoomDirections();
             displayRoomItems();
+            displayAllRoomNpc();
         }
     }
 
@@ -343,12 +338,17 @@ public class Game {
     }
 
     private void displayRoomDirections() {
+        List<String> displayList = new ArrayList<>();
         if (currentRoom.getDirections() != null) {
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                System.out.println("[go " + direction.getKey() + "]");
+                // System.out.println("go " + direction.getKey());
+                displayList.add("go " + direction.getKey());
             }
+            // System.out.println("go" + currentRoom.getDirections().keySet());
+
         }
+        System.out.println("Directions: " + displayList);
     }
 
     private void displayAllRoomNpc() {
@@ -364,33 +364,22 @@ public class Game {
         }
     }
 
-    private void displayNpcDialogue(String npcNumber, String dialogueNumber) throws IOException, ParseException {
-            Map npc;
-            String npcDialogue;
-            npc = returnNpcDialogue(npcNumber);
-            npcDialogue =  npc.get("dialogue" + dialogueNumber).toString();
-            System.out.println(npcDialogue);
-    }
-
-
     private void printErrorMsg() {
         if (errorMsg != null) {
-            System.out.println(errorMsg);
+            System.out.println("\n" + errorMsg);
             errorMsg = null;
         }
     }
 
     private void printSuccessMsg() {
         if (successMsg != null) {
-            System.out.println(successMsg);
+            System.out.println("\n" + successMsg);
             successMsg = null;
         }
     }
 
     private void displayInventory() {
-        for (Map.Entry<String, Item> item : playerOne.getInventory().entrySet()) {
-                System.out.println(item.getValue().getName());
-            }
+        System.out.println(playerOne.getInventory().keySet());
     }
 
     private void displayConsoleCommands() {
@@ -409,7 +398,7 @@ public class Game {
         System.out.println("COMMANDS:");
         System.out.println("---------");
         displayCurrentRoomActions();
-        displayAllRoomNpc();
+
     }
 
 }

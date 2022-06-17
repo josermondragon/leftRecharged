@@ -1,5 +1,6 @@
 package com.maledictus.npc;
 
+import com.maledictus.item.Item;
 import com.maledictus.npc.ally.Ally;
 import com.maledictus.npc.ally.Quest;
 
@@ -10,7 +11,6 @@ public class Ghost extends NPC implements Ally {
     Quest quest;
     Map<Integer, String> dialogue;
 
-
     public Ghost(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue) {
         super(id, hitPoints, name, description, isHostile, species);
         this.dialogue = dialogue;
@@ -20,30 +20,6 @@ public class Ghost extends NPC implements Ally {
         super(id, hitPoints, name, description, isHostile, species);
         this.dialogue = dialogue;
         this.quest = quest;
-    }
-
-    public Map<Integer, String> getDialog() {
-        return dialogue;
-    }
-
-    public Map<Integer, String> getQuestDialog() {
-        return quest.getQuestDialogue();
-    }
-
-    public String getQuestWinCondition() {
-        return quest.getWinCondition();
-    }
-
-    public boolean getQuestActive() {
-        return quest.isActive();
-    }
-
-    public void setQuestCompleted(boolean completed) {
-        this.quest.setCompleted(completed);
-    }
-
-    public void setQuestActive(boolean active) {
-        this.quest.setActive(active);
     }
 
     public String questTalk(int playerChoice) {
@@ -61,6 +37,30 @@ public class Ghost extends NPC implements Ally {
         return quest;
     }
 
+    public void assignQuest(boolean active) {
+        this.quest.setActive(active);
+    }
+
+    public String getQuestWinCondition() {
+        return quest.getWinCondition();
+    }
+
+    public boolean getQuestStatus() {
+        return quest.isActive();
+    }
+
+    public void setQuestCompleted(boolean completed) {
+        this.quest.setCompleted(completed);
+    }
+
+    public Item giveQuestReward() {
+        return quest.getReward();
+    }
+
+    public Map<Integer, String> getQuestDialog() {
+        return quest.getQuestDialogue();
+    }
+
     @Override
     public String talk(int playerChoice) {
         String result = null;
@@ -74,13 +74,8 @@ public class Ghost extends NPC implements Ally {
     }
 
     @Override
-    public void assignQuest(boolean quest) {
-
-    }
-
-    @Override
-    public void giveItem() {
-
+    public Map<Integer, String> getDialog() {
+        return dialogue;
     }
 
     @Override
