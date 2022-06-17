@@ -82,6 +82,26 @@ public class Game {
         }
     }
 
+    public void displayGameMap() {
+        String gameMap = null;
+        System.out.println("Enter [1] for Main floor map, [2] for downstairs map");
+        try {
+            String displayMap = scannerUserInput();
+            if(displayMap.equals("1")) {
+                gameMap = Files.readString(Path.of("resources/data/mainfloor_map.txt"));
+            }
+            else if(displayMap.equals("2")){
+                gameMap = Files.readString(Path.of("resources/data/downstairs-map.txt"));
+            }
+            else {
+                errorMsg = "Invalid Selection.  Please enter [1] to display Main floor map, or  [2] to display downstairs map.";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(gameMap);
+    }
+
     private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean round = true;
         while (round) {
@@ -221,7 +241,11 @@ public class Game {
                 //Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
                 //System.out.println(currentNPCs);
                 // Battle battle = new Battle(playerOne, currentRoom.getNpcMap());
-            } else {
+            }
+            else if (userInput[0].equalsIgnoreCase("map")) {
+            displayGameMap();
+        }
+            else {
                 errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
             }
     }
@@ -289,7 +313,7 @@ public class Game {
 
         while (waitingOnInput) {
 
-            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to resume game.");
+            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.");
             String optionInput = scannerUserInput();
 
             switch (optionInput) {
@@ -315,6 +339,9 @@ public class Game {
                     music.playMusic();
                     break;
                 case "6":
+                    displayGameMap();
+                    break;
+                case "7":
                     waitingOnInput = false;
                     break;
                 default:
@@ -383,6 +410,7 @@ public class Game {
         }
         System.out.println("NPCs: " +displayList);
     }
+
 
     private void printErrorMsg() {
         if (errorMsg != null) {
