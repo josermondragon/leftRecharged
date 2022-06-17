@@ -42,6 +42,20 @@ public class Room {
         this.npcMap = npcMap;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void unlockRoom(KeyType keyType) {
+        if (keyType.equals(requiredKeyType)) {
+            this.isLocked = false;
+        }
+    }
+
+    public KeyType getRequiredKeyType() {
+        return requiredKeyType;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,12 +70,6 @@ public class Room {
 
     public Map<String, String> getDirections() {
         return directions;
-    }
-
-    public void unlockRoom(KeyType keyType) {
-        if (keyType.equals(requiredKeyType)) {
-            this.isLocked = false;
-        }
     }
 
     public Map<Integer, NPC> getNpcMap() {

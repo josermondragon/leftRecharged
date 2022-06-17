@@ -3,6 +3,7 @@ package com.maledictus;
 import com.maledictus.item.Item;
 import com.maledictus.music.BattleMusic;
 import com.maledictus.music.GameMusic;
+import com.maledictus.item.key.Key;
 import com.maledictus.npc.Ghost;
 import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
@@ -84,6 +85,26 @@ public class Game {
                 errorMsg = "Invalid Selection.  Please enter [1] to start game or [2] to quit.";
             }
         }
+    }
+
+    public void displayGameMap() {
+        String gameMap = null;
+        System.out.println("Enter [1] for Main floor map, [2] for downstairs map");
+        try {
+            String displayMap = scannerUserInput();
+            if(displayMap.equals("1")) {
+                gameMap = Files.readString(Path.of("resources/data/mainfloor_map.txt"));
+            }
+            else if(displayMap.equals("2")){
+                gameMap = Files.readString(Path.of("resources/data/downstairs-map.txt"));
+            }
+            else {
+                errorMsg = "Invalid Selection.  Please enter [1] to display Main floor map, or  [2] to display downstairs map.";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(gameMap);
     }
 
     private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
@@ -201,12 +222,25 @@ public class Game {
         boolean roomFound = false;
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                if (userInput[1].equalsIgnoreCase(direction.getKey())) {
+                Room targetRoom = roomMap.get(direction.getValue());
+                String targetDirection = direction.getKey();
+                if (userInput[1].equalsIgnoreCase(targetDirection) && targetRoom.isLocked()) {
+                    roomFound = true;
+                    Key foundKey = playerOne.getDoorKey(targetRoom.getRequiredKeyType());
+                    if (foundKey != null) {
+                        targetRoom.unlockRoom(foundKey.getKeyType());
+                        currentRoom = roomMap.get(direction.getValue());
+                        roomItems = currentRoom.getItems();
+                        successMsg = "You used the " + foundKey.getName() + " and unlocked the door to the " + targetRoom.getName() + ".\nYou went " + targetDirection + " into the " + targetRoom.getName();
+                    } else {
+                        successMsg = "WARNING: You tried to go to the room located in the " + targetDirection + " direction. The door to this room is locked, you must find the proper key first. \nCome back when you have the right key.";
+                        break;
+                    }
+                } else if (userInput[1].equalsIgnoreCase(targetDirection) && !targetRoom.isLocked()) {
                     roomFound = true;
                     currentRoom = roomMap.get(direction.getValue());
                     roomItems = currentRoom.getItems();
-                    successMsg = "You went " + direction.getKey() + " into the " + direction.getValue();
-                    break;
+                    successMsg = "You went " + targetDirection + " into the " + targetRoom.getName();
                 }
             }
             if (!roomFound) {
@@ -312,7 +346,7 @@ public class Game {
 
         while (waitingOnInput) {
 
-            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop GameMusic.\nPress [5] to play GameMusic.\nPress [6] to resume game.");
+            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.");
             String optionInput = scannerUserInput();
 
             switch (optionInput) {
@@ -338,6 +372,9 @@ public class Game {
                     gameMusic.playMusic();
                     break;
                 case "6":
+                    displayGameMap();
+                    break;
+                case "7":
                     waitingOnInput = false;
                     break;
                 default:
