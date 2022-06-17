@@ -36,7 +36,6 @@ public class Game {
         Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
-        displayConsoleCommands();
         start();
     }
 
@@ -329,12 +328,14 @@ public class Game {
     }
 
     private void displayRoomItems() {
+        List<String> displayList = new ArrayList<>();
         if (currentRoom.getItems() != null) {
             roomItems = currentRoom.getItems();
             for (Item item : roomItems) {
-                System.out.println("[take/inspect " + item.getName() + "]");
+                displayList.add("take/inspect " + item.getName());
             }
         }
+        System.out.println("Room Items: " + displayList);
     }
 
     private void displayRoomDirections() {
@@ -342,26 +343,25 @@ public class Game {
         if (currentRoom.getDirections() != null) {
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                // System.out.println("go " + direction.getKey());
                 displayList.add("go " + direction.getKey());
             }
-            // System.out.println("go" + currentRoom.getDirections().keySet());
-
         }
         System.out.println("Directions: " + displayList);
     }
 
     private void displayAllRoomNpc() {
+        List<String> displayList = new ArrayList<>();
         if (currentRoom.getNpcMap() != null) {
             npcMap = currentRoom.getNpcMap();
             for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
                 if (!npc.getValue().getIsHostile()) {
-                    System.out.println("[talk " + npc.getValue().getName() + "]");
+                    displayList.add("talk " + npc.getValue().getName());
                 } else {
-                    System.out.println("[battle " + npc.getValue().getName() + "]");
+                    displayList.add("battle " + npc.getValue().getName());
                 }
             }
         }
+        System.out.println("NPCs: " +displayList);
     }
 
     private void printErrorMsg() {
