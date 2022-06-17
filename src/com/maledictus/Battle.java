@@ -5,7 +5,7 @@ import com.maledictus.player.Player;
 
 public class Battle {
 
-    Battle(Player player, NPC npc) {
+     public Battle(Player player, NPC npc) {
 
     }
 

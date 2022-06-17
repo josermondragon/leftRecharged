@@ -9,6 +9,8 @@ import com.maledictus.room.Room;
 import com.maledictus.room.RoomFactory;
 import org.json.simple.parser.ParseException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,8 +29,12 @@ public class Game {
     private Room currentRoom;
     private String errorMsg = null;
     private String successMsg = null;
+    private Music music = new Music();
 
-    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+    public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    }
+
+    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         Json.jsonWrite();
         displaySplash();
         createCharacter();
@@ -36,7 +42,7 @@ public class Game {
         Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
-        displayConsoleCommands();
+        music.playMusic();
         start();
     }
 
@@ -76,7 +82,7 @@ public class Game {
         }
     }
 
-    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean round = true;
         while (round) {
 
@@ -219,6 +225,10 @@ public class Game {
                 talkToNpc(userInput);
             } else if(userInput[0].equalsIgnoreCase("attack")) {
                 System.out.println("attacked!");
+            } else if(userInput[0].equalsIgnoreCase("battle")) {
+                //Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
+                //System.out.println(currentNPCs);
+                // Battle battle = new Battle(playerOne, currentRoom.getNpcMap());
             } else {
                 errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
             }
@@ -282,12 +292,12 @@ public class Game {
         }
     }
 
-    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean waitingOnInput = true;
         label:
         while (waitingOnInput) {
 
-            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to resume game.");
+            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to resume game.");
             String optionInput = scannerUserInput();
 
             switch (optionInput) {
@@ -303,12 +313,18 @@ public class Game {
                 case "2":
                     System.out.println("Exiting game. Thank you for playing.");
                     System.exit(1);
+                    break;
                 case "3":
                     System.out.println("Maledictus is a console text-adventure game. You are a treasure hunter is seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n");
                     break;
                 case "4":
+                    music.stopMusic();
+                    break;
+                case "5":
+                    music.playMusic();
+                    break;
+                case "6":
                     break label;
-
                 default:
                     errorMsg = "Invalid Selection.  Please try again.";
                     break;
