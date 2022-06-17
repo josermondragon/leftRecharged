@@ -12,8 +12,8 @@ import static org.junit.Assert.assertTrue;
 
 public class NPCTest {
 
-    private final Map<Integer, NPC> npcList = NPCFactory.getNPCList();
-    Map<Integer, NPC> npcList2 = new HashMap<>();
+    private final Map<Integer, NPC> npcMap = NPCFactory.getNPCList();
+    Map<Integer, NPC> npcMap2 = new HashMap<>();
     Map<Integer, String> dialog;
 
     @Before
@@ -24,19 +24,19 @@ public class NPCTest {
 
         NPCFactory.createNPC(1,100, "ghostly librarian", "A semi translucent librarian, it seems to be focused on something.", false, Species.GHOST, dialog, null);
         NPCFactory.createNPC(2, 100, "Skeleton guard", "A bone guy.", true, Species.SKELETON, EnemyType.STANDARD);
-        Ghost ghost = (Ghost) npcList.get(1);
+        Ghost ghost = (Ghost) npcMap.get(1); // Grab NPC by ID
         ghost.talk(1);
+        ghost.talk(2);
 
         NPC npc = new Ghost(1,100, "ghostly librarian", "A semi translucent librarian, it seems to be focused on something.", false, Species.GHOST, dialog);
         Skeleton npc2 = new Skeleton(2, 100, "Skeleton guard", "A bone guy.", true, Species.SKELETON, EnemyType.STANDARD);
-        npcList2.put(1, npc);
-        npcList2.put(2, npc2);
+        npcMap2.put(1, npc);
+        npcMap2.put(2, npc2);
     }
 
     @Test
     public void testPlayerFactoryCreateNPC_shouldCreateListOfNPCs_whenCreateNPCMethodIsCalled() {
-        // assertEquals(npcList.values(), npcList2.values());
-         assertEquals(npcList.keySet(), npcList2.keySet());
+         assertEquals(npcMap.keySet(), npcMap2.keySet());
     }
 
 }

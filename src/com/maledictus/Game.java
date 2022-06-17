@@ -1,6 +1,8 @@
 package com.maledictus;
 
 import com.maledictus.item.Item;
+import com.maledictus.npc.Ghost;
+import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
 import com.maledictus.player.PlayerFactory;
 import com.maledictus.room.Room;
@@ -19,6 +21,7 @@ import static com.maledictus.Json.returnNpcDialogue;
 public class Game {
 
     private final Map<String, Room> roomMap = RoomFactory.getRoomMap();
+    private Map<Integer, NPC> npcMap;
     private Player playerOne;
     private ArrayList<Item> roomItems;
     private Map<String, String> roomDirections;
@@ -31,6 +34,7 @@ public class Game {
         displaySplash();
         createCharacter();
         Json.createItems();
+        Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
@@ -47,7 +51,7 @@ public class Game {
 
         String titleBanner = null;
         try {
-            titleBanner = Files.readString(Path.of("data/splash_banner.txt"));
+            titleBanner = Files.readString(Path.of("resources/data/splash_banner.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,6 +175,20 @@ public class Game {
         }
     }
 
+    private void useItem(String[] userInput) {
+        boolean itemFound = false;
+        for (Item item : playerOne.getInventory().values()) {
+            if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
+                itemFound = true;
+                playerOne.removeItem(item);
+                break;
+            }
+        }
+        if(!itemFound) {
+            errorMsg = userInput[1] + " is not in your inventory!";
+        }
+    }
+
     private void moveRoom (String[] userInput) {
         boolean roomFound = false;
             roomDirections = currentRoom.getDirections();
@@ -191,16 +209,82 @@ public class Game {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
             if(userInput[0].equalsIgnoreCase("go")) {
                 moveRoom(userInput);
-            } else if(userInput[0].equalsIgnoreCase("take")) {
+            } else if(userInput[0].equalsIgnoreCase("take") || userInput[0].equalsIgnoreCase("grab")) {
                 takeItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("inspect")) {
                 inspectItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("drop")) {
                 dropItem(userInput);
+            } else if(userInput[0].equalsIgnoreCase("use")) {
+                useItem(userInput);
+            } else if(userInput[0].equalsIgnoreCase("heal")) {
+                useItem(userInput);
+            } else if(userInput[0].equalsIgnoreCase("talk")) {
+                talkToNPC(userInput);
+            } else if(userInput[0].equalsIgnoreCase("attack")) {
+                System.out.println("attacked!");
             } else {
                 errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
             }
     }
+
+    private void talkToNPC(String[] userInput) {
+        boolean npcFound = false;
+        for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
+            if (userInput[1].equalsIgnoreCase(npc.getValue().getName())) {
+                NPC targetNpc = npc.getValue();
+                chooseDialog(targetNpc);
+                npcFound = true;
+                break;
+            }
+        }
+        if (!npcFound) {
+            errorMsg = "INVALID NPC ERROR: You wrote go '" + userInput[1] + "' that is not a valid NPC option, please try again. (Example: 'talk ghostly soldier')";
+        }
+    }
+
+    private void chooseDialog(NPC targetNpc) {
+
+        Ghost npc = (Ghost) targetNpc;
+
+        if (npc.getQuest() == null || (!npc.getQuestActive() && !npc.getQuest().isCompleted())) {
+            System.out.println(npc.talk(1));
+            for (int i = 2; i < npc.getDialog().entrySet().size() + 1; i++) {
+                System.out.println("Press [1] to continue talking. \nPress [2] to exit.");
+                 String dialogChoice = scannerUserInput();
+                if (dialogChoice.equals("1")) {
+                    System.out.println(npc.talk(i));
+                 } else if (dialogChoice.equals("2")) {
+                     break;
+                }
+            }
+            if (npc.getQuest() != null) {
+                System.out.println("Press [1] Accept Quest? \nPress [2] to exit.");
+                String dialogChoice = scannerUserInput();
+                if (dialogChoice.equals("1")) {
+                    npc.setQuestActive(true);
+                }
+            }
+        } else if (npc.getQuestActive() && !npc.getQuest().isCompleted()) {
+               successMsg =  npc.questTalk(1);
+                System.out.println("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
+                String dialogChoice = scannerUserInput();
+                if (dialogChoice.equals("1") && playerOne.getInventory().containsKey(npc.getQuestWinCondition())) {
+                    playerOne.removeItem(playerOne.getInventory().get(npc.getQuestWinCondition()));
+                    successMsg = npc.questTalk(2);
+                    npc.setQuestCompleted(true);
+                    npc.setQuestActive(false);
+                    playerOne.addItem(npc.getQuest().getReward());
+                    System.out.println("You received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
+                } else  {
+                   successMsg = npc.questTalk(3);
+                }
+        } else {
+           successMsg = npc.questTalk(4);
+        }
+    }
+
+
 
     private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean waitingOnInput = true;
@@ -249,14 +333,6 @@ public class Game {
         }
     }
 
-    private void displayNpcDialogue(String npcNumber, String dialogueNumber) throws IOException, ParseException {
-        Map npc;
-        String npcDialogue;
-        npc = returnNpcDialogue(npcNumber);
-        npcDialogue =  npc.get("dialogue" + dialogueNumber).toString();
-        System.out.println(npcDialogue);
-    }
-
     private void displayRoomItems() {
         if (currentRoom.getItems() != null) {
             roomItems = currentRoom.getItems();
@@ -273,6 +349,27 @@ public class Game {
                 System.out.println("[go " + direction.getKey() + "]");
             }
         }
+    }
+
+    private void displayAllRoomNpc() {
+        if (currentRoom.getNpcMap() != null) {
+            npcMap = currentRoom.getNpcMap();
+            for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
+                if (!npc.getValue().getIsHostile()) {
+                    System.out.println("[talk " + npc.getValue().getName() + "]");
+                } else {
+                    System.out.println("[battle " + npc.getValue().getName() + "]");
+                }
+            }
+        }
+    }
+
+    private void displayNpcDialogue(String npcNumber, String dialogueNumber) throws IOException, ParseException {
+            Map npc;
+            String npcDialogue;
+            npc = returnNpcDialogue(npcNumber);
+            npcDialogue =  npc.get("dialogue" + dialogueNumber).toString();
+            System.out.println(npcDialogue);
     }
 
 
@@ -312,6 +409,7 @@ public class Game {
         System.out.println("COMMANDS:");
         System.out.println("---------");
         displayCurrentRoomActions();
+        displayAllRoomNpc();
     }
 
 }
