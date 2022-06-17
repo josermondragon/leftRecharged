@@ -15,6 +15,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
@@ -201,7 +202,7 @@ public class Game {
             }
         }
 
-    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException {
+    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException, org.json.simple.parser.ParseException {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
             if(userInput[0].equalsIgnoreCase("go")) {
                 moveRoom(userInput);
