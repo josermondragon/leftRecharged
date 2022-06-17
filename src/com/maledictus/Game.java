@@ -95,19 +95,12 @@ public class Game {
             // Take in user input and run through scanner
             String userCommand = scannerUserInput();
 
-            if (userCommand.equalsIgnoreCase("options")){
-                displayOptions();
-            }
-
             // Splitting userCommand into two separate strings. (Verb, Noun)
             String[] userInput = userCommand.split(" ", 2);
 
             // Check to see if user input is expected array format
-            if (userInput.length == 2) {
+
                 getUserInput(userInput);
-            }  else {
-                errorMsg = "INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go south')";
-            }
 
             // TODO: Finish end game scenario
             if (playerOne.getHitPoints() == 0) {
@@ -124,8 +117,7 @@ public class Game {
                 itemFound = true;
                 playerOne.removeItem(item);
                 roomItems.add(item);
-                System.out.println(userInput[1] + " was dropped from your inventory.");
-                System.out.println("Remaining Items: " + playerOne.getInventory()); //TODO: Need to work on toString for better display of items.
+                successMsg = item.getName() + " was dropped from your inventory.";
                 break;
             }
         }
@@ -134,7 +126,6 @@ public class Game {
         }
     }
 
-    // TODO: inspect item applies to all items in room and inventory, currently no way for user to know about inv.
     private void inspectItem(String[] userInput) {
         boolean itemFound = false;
 
@@ -142,7 +133,7 @@ public class Game {
             for (Map.Entry<String, Item> item : playerOne.getInventory().entrySet()) {
                 if(userInput[1].equalsIgnoreCase(item.getKey())) {
                     itemFound = true;
-                    successMsg = (item.getValue().getDescription());
+                    successMsg = "Inspect: " +  item.getValue().getDescription();
                     break;
                 }
             }
@@ -150,7 +141,7 @@ public class Game {
                 for (Item item : roomItems) {
                     if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
                         itemFound = true;
-                        successMsg = item.getDescription();
+                        successMsg = "Inspect: " + item.getDescription();
                         break;
                     }
                 }
@@ -168,7 +159,7 @@ public class Game {
                 itemFound = true;
                 playerOne.addItem(item);
                 roomItems.remove(item);
-                successMsg = userInput[1] + " was added to your inventory.";
+                successMsg = item.getName() + " was added to your inventory.";
                 break;
             }
         }
@@ -199,6 +190,7 @@ public class Game {
                     roomFound = true;
                     currentRoom = roomMap.get(direction.getValue());
                     roomItems = currentRoom.getItems();
+                    successMsg = "You went " + direction.getKey() + " into the " + direction.getValue();
                     break;
                 }
             }
@@ -207,7 +199,7 @@ public class Game {
             }
         }
 
-    private void getUserInput(String[] userInput) {
+    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
             if(userInput[0].equalsIgnoreCase("go")) {
                 moveRoom(userInput);
@@ -223,8 +215,8 @@ public class Game {
                 useItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("talk")) {
                 talkToNpc(userInput);
-            } else if(userInput[0].equalsIgnoreCase("attack")) {
-                System.out.println("attacked!");
+            } else if(userInput[0].equalsIgnoreCase("options")) {
+                displayOptions();
             } else if(userInput[0].equalsIgnoreCase("battle")) {
                 //Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
                 //System.out.println(currentNPCs);
@@ -294,7 +286,7 @@ public class Game {
 
     private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean waitingOnInput = true;
-        label:
+
         while (waitingOnInput) {
 
             System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to resume game.");
@@ -302,11 +294,10 @@ public class Game {
 
             switch (optionInput) {
                 case "1":
-                    // Still needs work.
+                    //TODO: Test and confirm reset works.
                     RoomFactory.clearRoomMap();
-                    Json.items.clear(); // temp
-                    Json.items2.clear(); // temp
-                    // Reset player inventory too.
+                    Json.items.clear();
+                    Json.items2.clear();
                     initiateGame();
                     waitingOnInput = false;
                     break;
@@ -324,9 +315,10 @@ public class Game {
                     music.playMusic();
                     break;
                 case "6":
-                    break label;
+                    waitingOnInput = false;
+                    break;
                 default:
-                    errorMsg = "Invalid Selection.  Please try again.";
+                    errorMsg = "Invalid Selection. Please try again.";
                     break;
             }
         }
@@ -340,17 +332,30 @@ public class Game {
         if(currentRoom != null) {
             displayRoomDirections();
             displayRoomItems();
+            displayInventoryActions();
             displayAllRoomNpc();
         }
     }
 
     private void displayRoomItems() {
+        List<String> displayList = new ArrayList<>();
         if (currentRoom.getItems() != null) {
             roomItems = currentRoom.getItems();
             for (Item item : roomItems) {
-                System.out.println("[take/inspect " + item.getName() + "]");
+                displayList.add("take/inspect " + item.getName());
             }
         }
+        System.out.println("Room Items: " + displayList);
+    }
+
+    private void displayInventoryActions() {
+        List<String> displayList = new ArrayList<>();
+        if (playerOne.getInventory() != null) {
+            for (Map.Entry<String, Item> item  : playerOne.getInventory().entrySet()) {
+                displayList.add("use/drop/inspect " + item.getValue().getName());
+            }
+        }
+        System.out.println("Inventory Items: " + displayList);
     }
 
     private void displayRoomDirections() {
@@ -358,26 +363,25 @@ public class Game {
         if (currentRoom.getDirections() != null) {
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                // System.out.println("go " + direction.getKey());
                 displayList.add("go " + direction.getKey());
             }
-            // System.out.println("go" + currentRoom.getDirections().keySet());
-
         }
         System.out.println("Directions: " + displayList);
     }
 
     private void displayAllRoomNpc() {
+        List<String> displayList = new ArrayList<>();
         if (currentRoom.getNpcMap() != null) {
             npcMap = currentRoom.getNpcMap();
             for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
                 if (!npc.getValue().getIsHostile()) {
-                    System.out.println("[talk " + npc.getValue().getName() + "]");
+                    displayList.add("talk " + npc.getValue().getName());
                 } else {
-                    System.out.println("[battle " + npc.getValue().getName() + "]");
+                    displayList.add("battle " + npc.getValue().getName());
                 }
             }
         }
+        System.out.println("NPCs: " +displayList);
     }
 
     private void printErrorMsg() {
@@ -399,22 +403,22 @@ public class Game {
     }
 
     private void displayConsoleCommands() {
-        System.out.println("------------");
+        System.out.println("-------------");
         System.out.println("CURRENT ROOM:");
-        System.out.println("------------");
+        System.out.println("-------------");
         System.out.println(currentRoom.getName());
         System.out.println(currentRoom.getDescription());
-        if(playerOne.getInventory().size() > 0) {
-            System.out.println("----------");
-            System.out.println("INVENTORY:");
-            System.out.println("----------");
-            displayInventory();
-        }
-        System.out.println("---------");
-        System.out.println("COMMANDS:");
-        System.out.println("---------");
-        displayCurrentRoomActions();
 
+        System.out.println("-------------");
+        System.out.println("INVENTORY:");
+        System.out.println("-------------");
+        displayInventory();
+
+        System.out.println("-------------");
+        System.out.println("COMMANDS:");
+        System.out.println("-------------");
+        displayCurrentRoomActions();
+        System.out.println("-------------");
     }
 
 }
