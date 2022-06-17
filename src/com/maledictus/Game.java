@@ -7,6 +7,8 @@ import com.maledictus.room.Room;
 import com.maledictus.room.RoomFactory;
 import org.json.simple.parser.ParseException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,7 +28,7 @@ public class Game {
     private String errorMsg = null;
     private String successMsg = null;
 
-    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         Json.jsonWrite();
         displaySplash();
         createCharacter();
@@ -34,7 +36,13 @@ public class Game {
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
+        buildAudio();
         start();
+    }
+
+    public void buildAudio() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        PlayMusic music = new PlayMusic();
+        music.playMusic();
     }
 
     public void createCharacter() {
@@ -73,7 +81,7 @@ public class Game {
         }
     }
 
-    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean round = true;
         while (round) {
 
@@ -204,7 +212,7 @@ public class Game {
             }
     }
 
-    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
+    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean waitingOnInput = true;
         while (waitingOnInput) {
 
