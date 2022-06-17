@@ -5,8 +5,8 @@ import com.maledictus.player.Player;
 
 public class Battle {
 
-    private Player player;
-    private NPC npc;
+    private final Player player;
+    private final NPC npc;
 
      public Battle(Player player, NPC npc) {
         this.player = player;
