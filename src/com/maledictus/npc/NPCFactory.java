@@ -13,22 +13,21 @@ public class NPCFactory {
 
     }
 
-    public static void createNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialog, Quest quest) {
+    public static NPC createNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Quest quest) {
 
         Ghost npc = null;
 
         if (quest == null) {
-            npc = new Ghost(id, hitPoints, name, description, false, species, dialog);
+            npc = new Ghost(id, hitPoints, name, description, false, species, dialogue);
         } else {
-            npc = new Ghost(id, hitPoints, name, description, false, species, dialog, quest);
-        }
-        if (npc != null) {
-            npcList.put(npc.getId(), npc);
+            npc = new Ghost(id, hitPoints, name, description, false, species, dialogue, quest);
         }
 
+        npcList.put(npc.getId(), npc);
+        return npc;
     }
 
-    public static void createNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, EnemyType enemyType) {
+    public static NPC createNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, EnemyType enemyType) {
 
         NPC npc = null;
 
@@ -49,9 +48,10 @@ public class NPCFactory {
                 npc = new Zombie(id, hitPoints, name, description, true, species, enemyType);
                 break;
         }
-        if (npc != null) {
-            npcList.put(npc.getId(), npc);
-        }
+
+        assert npc != null;
+        npcList.put(npc.getId(), npc);
+        return npc;
     }
 
     public static Map<Integer, NPC> getNPCList() {

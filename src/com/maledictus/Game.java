@@ -1,14 +1,14 @@
 package com.maledictus;
 
 import com.maledictus.item.Item;
+import com.maledictus.npc.Ghost;
+import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
 import com.maledictus.player.PlayerFactory;
 import com.maledictus.room.Room;
 import com.maledictus.room.RoomFactory;
 import org.json.simple.parser.ParseException;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,11 +16,11 @@ import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
 import static com.maledictus.Json.returnGameText;
-import static com.maledictus.Json.returnNpcDialogue;
 
 public class Game {
 
     private final Map<String, Room> roomMap = RoomFactory.getRoomMap();
+    private Map<Integer, NPC> npcMap;
     private Player playerOne;
     private ArrayList<Item> roomItems;
     private Map<String, String> roomDirections;
@@ -28,21 +28,16 @@ public class Game {
     private String errorMsg = null;
     private String successMsg = null;
 
-    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         Json.jsonWrite();
         displaySplash();
         createCharacter();
         Json.createItems();
+        Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         displayConsoleCommands();
-        buildAudio();
         start();
-    }
-
-    public void buildAudio() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        PlayMusic music = new PlayMusic();
-        music.playMusic();
     }
 
     public void createCharacter() {
@@ -55,7 +50,7 @@ public class Game {
 
         String titleBanner = null;
         try {
-            titleBanner = Files.readString(Path.of("data/splash_banner.txt"));
+            titleBanner = Files.readString(Path.of("resources/data/splash_banner.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,10 +76,11 @@ public class Game {
         }
     }
 
-    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean round = true;
         while (round) {
 
+            displayConsoleCommands();
             // Methods will check if an error or success message needs to be printed
             printSuccessMsg();
             printErrorMsg();
@@ -107,10 +103,6 @@ public class Game {
                 errorMsg = "INVALID COMMAND ERROR: user input of '" + userCommand + "' is invalid usage of the command syntax. (Example: 'go south')";
             }
 
-            if (errorMsg == null && successMsg == null) {
-                displayConsoleCommands();
-            }
-
             // TODO: Finish end game scenario
             if (playerOne.getHitPoints() == 0) {
                 round = false;
@@ -118,36 +110,49 @@ public class Game {
 
         }
     }
+
+    private void dropItem(String[] userInput) {
+        boolean itemFound = false;
+        for(Item item : playerOne.getInventory().values()) {
+            if(item.getName().equalsIgnoreCase(userInput[1])) {
+                itemFound = true;
+                playerOne.removeItem(item);
+                roomItems.add(item);
+                System.out.println(userInput[1] + " was dropped from your inventory.");
+                System.out.println("Remaining Items: " + playerOne.getInventory()); //TODO: Need to work on toString for better display of items.
+                break;
+            }
+        }
+        if (!itemFound) {
+            System.out.println("INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')");
+        }
+    }
+
     // TODO: inspect item applies to all items in room and inventory, currently no way for user to know about inv.
     private void inspectItem(String[] userInput) {
         boolean itemFound = false;
 
-        while (!itemFound) {
             // Search for item through player inventory
-            for (Map.Entry<String, Item> invItem : playerOne.getInventory().entrySet()) {
-                if(userInput[1].equalsIgnoreCase(invItem.getKey())) {
+            for (Map.Entry<String, Item> item : playerOne.getInventory().entrySet()) {
+                if(userInput[1].equalsIgnoreCase(item.getKey())) {
                     itemFound = true;
-                    System.out.println(invItem.getValue().getDescription());
+                    successMsg = (item.getValue().getDescription());
                     break;
                 }
             }
-            if (itemFound) break;
+            if (!itemFound) {
+                for (Item item : roomItems) {
+                    if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
+                        itemFound = true;
+                        successMsg = item.getDescription();
+                        break;
+                    }
+                }
+            }
 
-            // Search for item in current room
-            for (Item item : roomItems) {
-                if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
-                    itemFound = true;
-                    successMsg = item.getDescription();
-                    break;
-                }
-            }
-            if (itemFound) {
-                break;
-            } else if (!itemFound) {
+            if (!itemFound) {
                 errorMsg = "INVALID ITEM ERROR: You wrote inspect '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')";
-                break;
             }
-        }
     }
 
     private void takeItem(String[] userInput) {
@@ -187,6 +192,7 @@ public class Game {
                 if (userInput[1].equalsIgnoreCase(direction.getKey())) {
                     roomFound = true;
                     currentRoom = roomMap.get(direction.getValue());
+                    roomItems = currentRoom.getItems();
                     break;
                 }
             }
@@ -203,42 +209,109 @@ public class Game {
                 takeItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("inspect")) {
                 inspectItem(userInput);
+            } else if(userInput[0].equalsIgnoreCase("drop")) {
+                dropItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("use")) {
                 useItem(userInput);
             } else if(userInput[0].equalsIgnoreCase("heal")) {
                 useItem(userInput);
-            }  else {
+            } else if(userInput[0].equalsIgnoreCase("talk")) {
+                talkToNpc(userInput);
+            } else if(userInput[0].equalsIgnoreCase("attack")) {
+                System.out.println("attacked!");
+            } else {
                 errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
             }
     }
 
-    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    private void talkToNpc(String[] userInput) {
+        boolean npcFound = false;
+        for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
+            if (userInput[1].equalsIgnoreCase(npc.getValue().getName())) {
+                NPC targetNpc = npc.getValue();
+                chooseDialog(targetNpc);
+                npcFound = true;
+                break;
+            }
+        }
+        if (!npcFound) {
+            errorMsg = "INVALID NPC ERROR: You wrote go '" + userInput[1] + "' that is not a valid NPC option, please try again. (Example: 'talk ghostly soldier')";
+        }
+    }
+
+    private void chooseDialog(NPC targetNpc) {
+        Ghost npc = (Ghost) targetNpc;
+
+        if (npc.getQuest() == null || (!npc.getQuestStatus() && !npc.getQuest().isCompleted())) {
+            System.out.println(npc.getName() + ": " + npc.talk(1));
+            for (int i = 2; i < npc.getDialog().entrySet().size() + 1; i++) {
+                System.out.println("Press [1] to continue talking. \nPress [2] to exit.");
+                 String dialogChoice = scannerUserInput();
+                if (dialogChoice.equals("1")) {
+                    System.out.println(npc.getName() + ": " + npc.talk(i));
+                 } else if (dialogChoice.equals("2")) {
+                     break;
+                }
+            }
+            if (npc.getQuest() != null) {
+                System.out.println("Press [1] Accept Quest? \nPress [2] to exit.");
+                String questDialogChoice = scannerUserInput();
+                if (questDialogChoice.equals("1")) {
+                    npc.assignQuest(true);
+                }
+            } else {
+                System.out.println("Press [2] to exit.");
+                scannerUserInput();
+            }
+        } else if (npc.getQuestStatus() && !npc.getQuest().isCompleted()) {
+               successMsg = npc.getName() + ": " + npc.questTalk(1);
+                System.out.println("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
+                String questDialogChoice = scannerUserInput();
+                if (questDialogChoice.equals("1") && playerOne.getInventory().containsKey(npc.getQuestWinCondition())) {
+                    playerOne.removeItem(playerOne.getInventory().get(npc.getQuestWinCondition()));
+                    successMsg = npc.getName() + ": " + npc.questTalk(2) + "\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName();
+                    npc.setQuestCompleted(true);
+                    npc.assignQuest(false);
+                    playerOne.addItem(npc.giveQuestReward());
+                    System.out.println("You received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
+                } else  {
+                   successMsg = npc.getName() + ": " + npc.questTalk(3);
+                }
+        } else {
+           successMsg = npc.getName() + ": " + npc.questTalk(4);
+        }
+    }
+
+    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException {
         boolean waitingOnInput = true;
+        label:
         while (waitingOnInput) {
 
             System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to resume game.");
             String optionInput = scannerUserInput();
 
-            if (optionInput.equals("1")) {
-                // Still needs work.
-                RoomFactory.clearRoomMap();
-                Json.items.clear(); // temp
-                Json.items2.clear(); // temp
-                // Reset player inventory too.
-                initiateGame();
-                waitingOnInput = false;
-            } else if (optionInput.equals("2")) {
-                System.out.println("Exiting game.  Thank you for playing.");
-                System.exit(1);
-            }
-            else if (optionInput.equals("3")) {
-                System.out.println("Maledictus is a console text-adventure game.  You are a treasure hunter is seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n");
-            }
-            else if (optionInput.equals("4")){
-                break; //resumes current game
-            }
-            else {
-                errorMsg = "Invalid Selection.  Please try again.";
+            switch (optionInput) {
+                case "1":
+                    // Still needs work.
+                    RoomFactory.clearRoomMap();
+                    Json.items.clear(); // temp
+                    Json.items2.clear(); // temp
+                    // Reset player inventory too.
+                    initiateGame();
+                    waitingOnInput = false;
+                    break;
+                case "2":
+                    System.out.println("Exiting game. Thank you for playing.");
+                    System.exit(1);
+                case "3":
+                    System.out.println("Maledictus is a console text-adventure game. You are a treasure hunter is seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n");
+                    break;
+                case "4":
+                    break label;
+
+                default:
+                    errorMsg = "Invalid Selection.  Please try again.";
+                    break;
             }
         }
     }
@@ -251,6 +324,7 @@ public class Game {
         if(currentRoom != null) {
             displayRoomDirections();
             displayRoomItems();
+            displayAllRoomNpc();
         }
     }
 
@@ -264,46 +338,67 @@ public class Game {
     }
 
     private void displayRoomDirections() {
+        List<String> displayList = new ArrayList<>();
         if (currentRoom.getDirections() != null) {
             roomDirections = currentRoom.getDirections();
             for (Map.Entry<String, String> direction : roomDirections.entrySet()) {
-                System.out.println("[go " + direction.getKey() + "]");
+                // System.out.println("go " + direction.getKey());
+                displayList.add("go " + direction.getKey());
+            }
+            // System.out.println("go" + currentRoom.getDirections().keySet());
+
+        }
+        System.out.println("Directions: " + displayList);
+    }
+
+    private void displayAllRoomNpc() {
+        if (currentRoom.getNpcMap() != null) {
+            npcMap = currentRoom.getNpcMap();
+            for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
+                if (!npc.getValue().getIsHostile()) {
+                    System.out.println("[talk " + npc.getValue().getName() + "]");
+                } else {
+                    System.out.println("[battle " + npc.getValue().getName() + "]");
+                }
             }
         }
     }
 
-    private void displayNpcDialogue(String npcNumber, String dialogueNumber) throws IOException, ParseException {
-            Map npc;
-            String npcDialogue;
-            npc = returnNpcDialogue(npcNumber);
-            npcDialogue =  npc.get("dialogue" + dialogueNumber).toString();
-            System.out.println(npcDialogue);
-    }
-
-
     private void printErrorMsg() {
         if (errorMsg != null) {
-            System.out.println(errorMsg);
+            System.out.println("\n" + errorMsg);
             errorMsg = null;
         }
     }
 
     private void printSuccessMsg() {
         if (successMsg != null) {
-            System.out.println(successMsg);
+            System.out.println("\n" + successMsg);
             successMsg = null;
         }
     }
 
+    private void displayInventory() {
+        System.out.println(playerOne.getInventory().keySet());
+    }
+
     private void displayConsoleCommands() {
-        System.out.println("-----------");
-        System.out.println("DESCRIPTION:");
-        System.out.println("-----------");
-        System.out.println(currentRoom.toString());
-        System.out.println("--------");
+        System.out.println("------------");
+        System.out.println("CURRENT ROOM:");
+        System.out.println("------------");
+        System.out.println(currentRoom.getName());
+        System.out.println(currentRoom.getDescription());
+        if(playerOne.getInventory().size() > 0) {
+            System.out.println("----------");
+            System.out.println("INVENTORY:");
+            System.out.println("----------");
+            displayInventory();
+        }
+        System.out.println("---------");
         System.out.println("COMMANDS:");
-        System.out.println("--------");
+        System.out.println("---------");
         displayCurrentRoomActions();
+
     }
 
 }
