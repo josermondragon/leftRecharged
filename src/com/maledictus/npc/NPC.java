@@ -37,10 +37,12 @@ public class NPC {
     @Override
     public String toString() {
         return "NPC{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", isHostile=" + getIsHostile() +
+                "id=" + id +
+                ", hitPoints=" + hitPoints +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", isHostile=" + isHostile +
+                ", species=" + species +
                 '}';
     }
 }
