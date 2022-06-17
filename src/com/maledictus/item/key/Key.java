@@ -12,6 +12,10 @@ public class Key extends Item {
         this.keyType = keyType;
     }
 
+    public KeyType getKeyType() {
+        return keyType;
+    }
+
     public void use() {
         System.out.println("You used your Key!");
     }
