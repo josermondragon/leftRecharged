@@ -8,10 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class NPCTest {
 
-    private final Map<Integer, NPC> npcList = NPCFactory.getNPCList();
+    private final Map<Integer, NPC> npcMap = NPCFactory.getNPCList();
+    Map<Integer, NPC> npcMap2 = new HashMap<>();
     Map<Integer, String> dialog;
 
     @Before
@@ -19,26 +21,22 @@ public class NPCTest {
         dialog = new HashMap<>();
         dialog.put(1, "I am a gosh dang ghost.");
         dialog.put(2, "Let's Duel!");
+
         NPCFactory.createNPC(1,100, "ghostly librarian", "A semi translucent librarian, it seems to be focused on something.", false, Species.GHOST, dialog, null);
         NPCFactory.createNPC(2, 100, "Skeleton guard", "A bone guy.", true, Species.SKELETON, EnemyType.STANDARD);
-
-        System.out.println("Name: " + npcList.get(1).getName());
-        System.out.println("Description: " + npcList.get(1).getDescription());
-        Ghost ghost = (Ghost) npcList.get(1);
+        Ghost ghost = (Ghost) npcMap.get(1); // Grab NPC by ID
         ghost.talk(1);
+        ghost.talk(2);
 
-        System.out.println(npcList.entrySet());
-
+        NPC npc = new Ghost(1,100, "ghostly librarian", "A semi translucent librarian, it seems to be focused on something.", false, Species.GHOST, dialog);
+        Skeleton npc2 = new Skeleton(2, 100, "Skeleton guard", "A bone guy.", true, Species.SKELETON, EnemyType.STANDARD);
+        npcMap2.put(1, npc);
+        npcMap2.put(2, npc2);
     }
 
     @Test
     public void testPlayerFactoryCreateNPC_shouldCreateListOfNPCs_whenCreateNPCMethodIsCalled() {
-        Map<Integer, NPC> npcList = new HashMap<>();
-        NPC npc = new Ghost(1,100, "ghostly librarian", "A semi translucent librarian, it seems to be focused on something.", false, Species.GHOST, dialog);
-        NPC npc2 = new Skeleton(2, 100, "Skeleton guard", "A bone guy.", true, Species.SKELETON, EnemyType.STANDARD);
-        npcList.put(1, npc);
-        npcList.put(2, npc2);
-        assertEquals(npcList.entrySet(), npcList.entrySet());
+         assertEquals(npcMap.keySet(), npcMap2.keySet());
     }
 
 }
