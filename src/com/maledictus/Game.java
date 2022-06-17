@@ -1,19 +1,21 @@
 package com.maledictus;
 
 import com.maledictus.item.Item;
+import com.maledictus.music.BattleMusic;
+import com.maledictus.music.GameMusic;
 import com.maledictus.npc.Ghost;
 import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
 import com.maledictus.player.PlayerFactory;
 import com.maledictus.room.Room;
 import com.maledictus.room.RoomFactory;
-import org.json.simple.parser.ParseException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
@@ -29,7 +31,8 @@ public class Game {
     private Room currentRoom;
     private String errorMsg = null;
     private String successMsg = null;
-    private Music music = new Music();
+    private GameMusic gameMusic = new GameMusic();
+    private BattleMusic battleMusic = new BattleMusic();
 
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     }
@@ -42,7 +45,7 @@ public class Game {
         Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
-        music.playMusic();
+        gameMusic.playMusic();
         start();
     }
 
@@ -199,7 +202,7 @@ public class Game {
             }
         }
 
-    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException {
+    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException, org.json.simple.parser.ParseException {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
             if(userInput[0].equalsIgnoreCase("go")) {
                 moveRoom(userInput);
@@ -218,9 +221,16 @@ public class Game {
             } else if(userInput[0].equalsIgnoreCase("options")) {
                 displayOptions();
             } else if(userInput[0].equalsIgnoreCase("battle")) {
-                //Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
-                //System.out.println(currentNPCs);
-                // Battle battle = new Battle(playerOne, currentRoom.getNpcMap());
+                Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
+                for(NPC npc : currentNPCs.values()) {
+                    String current = npc.getName();
+                    if(current.equalsIgnoreCase(userInput[1])) {
+                        Battle battle = new Battle(playerOne, npc);
+                        gameMusic.stopMusic();
+                        battleMusic.playMusic();
+                        battle.start();
+                    }
+                }
             } else {
                 errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
             }
@@ -289,7 +299,7 @@ public class Game {
 
         while (waitingOnInput) {
 
-            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to resume game.");
+            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop GameMusic.\nPress [5] to play GameMusic.\nPress [6] to resume game.");
             String optionInput = scannerUserInput();
 
             switch (optionInput) {
@@ -309,10 +319,10 @@ public class Game {
                     System.out.println("Maledictus is a console text-adventure game. You are a treasure hunter is seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n");
                     break;
                 case "4":
-                    music.stopMusic();
+                    gameMusic.stopMusic();
                     break;
                 case "5":
-                    music.playMusic();
+                    gameMusic.playMusic();
                     break;
                 case "6":
                     waitingOnInput = false;
