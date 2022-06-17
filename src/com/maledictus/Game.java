@@ -125,7 +125,7 @@ public class Game {
             System.out.println("INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')");
         }
     }
-    
+
     private void inspectItem(String[] userInput) {
         boolean itemFound = false;
 
