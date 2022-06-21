@@ -1,11 +1,10 @@
 package com.maledictus.npc.ally;
 
-import java.util.Queue;
+import java.util.Map;
 
 public interface Ally {
 
-    void assignQuest(String quest);
-    void talk(int playerChoice);
-    void giveItem();
+    Map<Integer, String> getDialog();
+    String talk(int playerChoice);
 
 }

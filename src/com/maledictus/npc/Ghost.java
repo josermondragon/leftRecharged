@@ -9,36 +9,80 @@ import java.util.Map;
 public class Ghost extends NPC implements Ally {
 
     Quest quest;
-    Map<Integer, String> dialog;
+    Map<Integer, String> dialogue;
 
-    public Ghost(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialog) {
+    public Ghost(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue) {
         super(id, hitPoints, name, description, isHostile, species);
-        this.dialog = dialog;
+        this.dialogue = dialogue;
     }
 
-    public Ghost(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialog, Quest quest) {
+    public Ghost(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Quest quest) {
         super(id, hitPoints, name, description, isHostile, species);
-        this.dialog = dialog;
+        this.dialogue = dialogue;
         this.quest = quest;
     }
 
-    @Override
-    public void assignQuest(String quest) {
-
-    }
-
-    @Override
-    public void talk(int playerChoice) {
-        for (Map.Entry<Integer, String> option : dialog.entrySet()) {
+    public String questTalk(int playerChoice) {
+        String result = null;
+        for (Map.Entry<Integer, String> option : getQuestDialog().entrySet()) {
             if(playerChoice == option.getKey()) {
-                System.out.println(option.getValue());
+                result = option.getValue();
                 break;
             }
         }
+        return result;
+    }
+
+    public Quest getQuest() {
+        return quest;
+    }
+
+    public void assignQuest(boolean active) {
+        this.quest.setActive(active);
+    }
+
+    public String getQuestWinCondition() {
+        return quest.getWinCondition();
+    }
+
+    public boolean getQuestStatus() {
+        return quest.isActive();
+    }
+
+    public void setQuestCompleted(boolean completed) {
+        this.quest.setCompleted(completed);
+    }
+
+    public Item giveQuestReward() {
+        return quest.getReward();
+    }
+
+    public Map<Integer, String> getQuestDialog() {
+        return quest.getQuestDialogue();
     }
 
     @Override
-    public void giveItem() {
+    public String talk(int playerChoice) {
+        String result = null;
+        for (Map.Entry<Integer, String> option : dialogue.entrySet()) {
+            if(playerChoice == option.getKey()) {
+                result = option.getValue();
+                break;
+            }
+        }
+        return result;
+    }
 
+    @Override
+    public Map<Integer, String> getDialog() {
+        return dialogue;
+    }
+
+    @Override
+    public String toString() {
+        return "Ghost{" +
+                "quest=" + quest +
+                ", dialog=" + dialogue +
+                '}';
     }
 }

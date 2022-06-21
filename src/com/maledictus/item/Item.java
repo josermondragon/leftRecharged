@@ -1,9 +1,5 @@
 package com.maledictus.item;
 
-import com.maledictus.item.key.KeyType;
-import com.maledictus.item.potion.PotionType;
-import com.maledictus.item.weapon.WeaponType;
-
 public class Item {
 
     private final String name;
