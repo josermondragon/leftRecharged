@@ -46,7 +46,7 @@ public class Game {
         Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
-        gameMusic.playMusic();
+        //gameMusic.playMusic();
         start();
     }
 
@@ -319,7 +319,7 @@ public class Game {
                     npc.setQuestCompleted(true);
                     npc.assignQuest(false);
                     playerOne.addItem(npc.giveQuestReward());
-                    System.out.println("You received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
+                    System.out.println("\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
                 } else  {
                    successMsg = npc.getName() + ": " + npc.questTalk(3);
                 }
