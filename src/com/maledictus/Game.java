@@ -37,6 +37,11 @@ public class Game {
     private boolean inBattle = false;
     private Battle battle;
     private int battleEnemy;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
 
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     }
@@ -49,7 +54,7 @@ public class Game {
         Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
-        //gameMusic.playMusic();
+        gameMusic.playMusic();
         start();
     }
 
