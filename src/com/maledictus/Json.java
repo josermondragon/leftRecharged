@@ -290,6 +290,8 @@ public class Json {
         questChefDialog.put(3, "(husband) Well hurry back when you have it!");
         questChefDialog.put(4, "(husband) Thank you for finding my ring!");
 
+        //prisoner
+
         Map<Integer, String> prisonerDialog = new HashMap<>();
         Map<Integer, String> questPrisonerDialog = new HashMap<>();
         prisonerDialog.put(1, "You there! I don't believe it...a human visitor! Please, please! come hither.  I've been locked away in this cage for centuries! The king himself damned thee here. " +
