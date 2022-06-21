@@ -24,15 +24,6 @@ import static com.maledictus.Json.returnGameText;
 
 public class Game {
 
-
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-
-    public static final String ANSI_BLUE = "\u001B[34m";
-
-
     private final Map<String, Room> roomMap = RoomFactory.getRoomMap();
     private final GameMusic gameMusic = new GameMusic();
     private final BattleMusic battleMusic = new BattleMusic();
@@ -46,6 +37,11 @@ public class Game {
     private boolean inBattle = false;
     private Battle battle;
     private int battleEnemy;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
 
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     }
@@ -357,7 +353,7 @@ public class Game {
                     npc.setQuestCompleted(true);
                     npc.assignQuest(false);
                     playerOne.addItem(npc.giveQuestReward());
-                    System.out.println("You received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
+                    System.out.println("\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
                 } else  {
                    successMsg = npc.getName() + ": " + npc.questTalk(3);
                 }
