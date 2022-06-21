@@ -1,5 +1,7 @@
 package com.maledictus.npc;
 
+import com.maledictus.player.Player;
+
 public class NPC {
 
     int id;
@@ -18,6 +20,13 @@ public class NPC {
         this.species = species;
     }
 
+    public int attack(Player player) {
+        System.out.println("Player hit points is " + player.getHitPoints());
+        player.setHitPoints(player.getHitPoints() - 8);
+        System.out.println("Player hit points is " + player.getHitPoints());
+        return player.getHitPoints();
+    }
+
     public String getName() {
         return name;
     }
@@ -32,6 +41,14 @@ public class NPC {
 
     public boolean getIsHostile() {
         return isHostile;
+    }
+
+    public int getHitPoints() {
+        return hitPoints;
+    }
+
+    public void setHitPoints(int hitPoints) {
+        this.hitPoints = hitPoints;
     }
 
     @Override
