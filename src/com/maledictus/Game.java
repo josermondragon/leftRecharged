@@ -24,6 +24,15 @@ import static com.maledictus.Json.returnGameText;
 
 public class Game {
 
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
+    public static final String ANSI_BLUE = "\u001B[34m";
+
+
     private final Map<String, Room> roomMap = RoomFactory.getRoomMap();
     private final GameMusic gameMusic = new GameMusic();
     private final BattleMusic battleMusic = new BattleMusic();
@@ -84,29 +93,33 @@ public class Game {
                 System.out.println("Exiting the game...");
                 System.exit(1);
             } else {
-                errorMsg = "Invalid Selection.  Please enter [1] to start game or [2] to quit.";
+                errorMsg = ANSI_RED+ "Invalid Selection.  Please enter [1] to start game or [2] to quit." +ANSI_RESET;
             }
         }
     }
 
     public void displayGameMap() {
-        String gameMap = null;
-        System.out.println("Enter [1] for Main floor map, [2] for downstairs map");
-        try {
-            String displayMap = scannerUserInput();
-            if(displayMap.equals("1")) {
-                gameMap = Files.readString(Path.of("resources/data/mainfloor_map.txt"));
+        boolean invalidSelection = true;
+        while (invalidSelection) {
+            String gameMap = null;
+            System.out.println("Enter [1] for Main floor map, [2] for downstairs map");
+            try {
+                String displayMap = scannerUserInput();
+                if (displayMap.equals("1")) {
+                    gameMap = Files.readString(Path.of("resources/data/mainfloor_map.txt"));
+                    System.out.println(gameMap);
+                    invalidSelection = false;
+                } else if (displayMap.equals("2")) {
+                    gameMap = Files.readString(Path.of("resources/data/downstairs-map.txt"));
+                    System.out.println(gameMap);
+                    invalidSelection = false;
+                } else {
+                    System.out.println(ANSI_RED + "Invalid Selection.  Please enter [1] to display Main floor map, or  [2] to display downstairs map." + ANSI_RESET);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            else if(displayMap.equals("2")){
-                gameMap = Files.readString(Path.of("resources/data/downstairs-map.txt"));
-            }
-            else {
-                errorMsg = "Invalid Selection.  Please enter [1] to display Main floor map, or  [2] to display downstairs map.";
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        System.out.println(gameMap);
     }
 
     private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
@@ -121,7 +134,7 @@ public class Game {
             // Methods will check if an error or success message needs to be printed
             printSuccessMsg();
             printErrorMsg();
-            System.out.println("\nEnter a command or enter [options] to see game options: ");
+            System.out.println("\n" + ANSI_YELLOW + "Enter a command or enter [options] to see game options: " + ANSI_RESET);
 
             // Take in user input and run through scanner
             String userCommand = scannerUserInput();
@@ -169,7 +182,7 @@ public class Game {
             }
         }
         if (!itemFound) {
-            System.out.println("INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')");
+            System.out.println(ANSI_RED+ "INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')" + ANSI_RESET);
         }
     }
 
@@ -195,7 +208,7 @@ public class Game {
             }
 
             if (!itemFound) {
-                errorMsg = "INVALID ITEM ERROR: You wrote inspect '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')";
+                errorMsg = ANSI_RED + "INVALID ITEM ERROR: You wrote inspect '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')" + ANSI_RESET;
             }
     }
 
@@ -211,7 +224,7 @@ public class Game {
             }
         }
         if (!itemFound) {
-            errorMsg = "INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')";
+            errorMsg = ANSI_RED+ "INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')" + ANSI_RESET;
         }
     }
 
@@ -245,7 +258,7 @@ public class Game {
                         roomItems = currentRoom.getItems();
                         successMsg = "You used the " + foundKey.getName() + " and unlocked the door to the " + targetRoom.getName() + ".\nYou went " + targetDirection + " into the " + targetRoom.getName();
                     } else {
-                        successMsg = "WARNING: You tried to go to the room located in the " + targetDirection + " direction. The door to this room is locked, you must find the proper key first. \nCome back when you have the right key.";
+                        successMsg = ANSI_RED + "WARNING: You tried to go to the room located in the " + targetDirection + " direction. The door to this room is locked, you must find the proper key first. \nCome back when you have the right key." + ANSI_RESET;
                         break;
                     }
                 } else if (userInput[1].equalsIgnoreCase(targetDirection) && !targetRoom.isLocked()) {
@@ -256,7 +269,7 @@ public class Game {
                 }
             }
             if (!roomFound) {
-                errorMsg = "INVALID LOCATION ERROR: You wrote go '" + userInput[1] + "' that is not a valid room option, please try again. (Example: 'go north')";
+                errorMsg = ANSI_RED + "INVALID LOCATION ERROR: You wrote go '" + userInput[1] + "' that is not a valid room option, please try again. (Example: 'go north')" + ANSI_RESET;
             }
         }
 
@@ -291,7 +304,7 @@ public class Game {
                     }
                 }
             } else {
-                errorMsg = "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')";
+                errorMsg = ANSI_RED + "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')" + ANSI_RESET;
             }
     }
 
@@ -306,7 +319,7 @@ public class Game {
             }
         }
         if (!npcFound) {
-            errorMsg = "INVALID NPC ERROR: You wrote go '" + userInput[1] + "' that is not a valid NPC option, please try again. (Example: 'talk ghostly soldier')";
+            errorMsg = ANSI_RED + "INVALID NPC ERROR: You wrote go '" + userInput[1] + "' that is not a valid NPC option, please try again. (Example: 'talk ghostly soldier')" + ANSI_RESET;
         }
     }
 
@@ -390,14 +403,14 @@ public class Game {
                     waitingOnInput = false;
                     break;
                 default:
-                    errorMsg = "Invalid Selection. Please try again.";
+                    errorMsg = ANSI_RED + "Invalid Selection. Please try again." + ANSI_RESET;
                     break;
             }
         }
     }
 
     private void displayIntroText() throws IOException, org.json.simple.parser.ParseException {
-        System.out.println(returnGameText("1") + "\n");
+        System.out.println(returnGameText("1") + "\n" + returnGameText("11")+ "\n");
     }
 
     private void displayCurrentRoomActions() {
@@ -476,18 +489,18 @@ public class Game {
 
     private void displayConsoleCommands() {
         System.out.println("-------------");
-        System.out.println("CURRENT ROOM:");
+        System.out.println(ANSI_GREEN + "CURRENT ROOM:" + ANSI_RESET);
         System.out.println("-------------");
         System.out.println(currentRoom.getName());
         System.out.println(currentRoom.getDescription());
 
         System.out.println("-------------");
-        System.out.println("INVENTORY:");
+        System.out.println(ANSI_BLUE+ "INVENTORY:" + ANSI_RESET);
         System.out.println("-------------");
         displayInventory();
 
         System.out.println("-------------");
-        System.out.println("COMMANDS:");
+        System.out.println(ANSI_YELLOW+ "COMMANDS:" + ANSI_RESET);
         System.out.println("-------------");
         displayCurrentRoomActions();
         System.out.println("-------------");
