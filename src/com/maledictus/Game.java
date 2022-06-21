@@ -34,6 +34,8 @@ public class Game {
 
 
     private final Map<String, Room> roomMap = RoomFactory.getRoomMap();
+    private final GameMusic gameMusic = new GameMusic();
+    private final BattleMusic battleMusic = new BattleMusic();
     private Map<Integer, NPC> npcMap;
     private Player playerOne;
     private ArrayList<Item> roomItems;
@@ -41,8 +43,9 @@ public class Game {
     private Room currentRoom;
     private String errorMsg = null;
     private String successMsg = null;
-    private GameMusic gameMusic = new GameMusic();
-    private BattleMusic battleMusic = new BattleMusic();
+    private boolean inBattle = false;
+    private Battle battle;
+    private int battleEnemy;
 
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     }
@@ -121,7 +124,11 @@ public class Game {
 
     private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean round = true;
-        while (round) {
+        if (playerOne.getHitPoints() == 0) {
+            round = false;
+            System.out.println("You're dead, D. E. D.");
+        }
+        while (round && !this.inBattle) {
 
             displayConsoleCommands();
             // Methods will check if an error or success message needs to be printed
@@ -137,13 +144,29 @@ public class Game {
 
             // Check to see if user input is expected array format
 
-                getUserInput(userInput);
-
-            // TODO: Finish end game scenario
-            if (playerOne.getHitPoints() == 0) {
-                round = false;
+            getUserInput(userInput);
+        }
+        while (round && this.inBattle) {
+            displayBattleCommands();
+            this.battle.start();
+            this.battle.setCombat(false);
+            if(!this.battle.isCombat()) {
+                this.inBattle = false;
             }
+            this.battleMusic.stopMusic();
+            this.gameMusic.playMusic();
+            System.out.println("is it getting here?");
+            npcMap.remove(battleEnemy);
+            this.start();
+            // Take in user input and run through scanner
+            // String userCommand = scannerUserInput();
 
+            // Splitting userCommand into two separate strings. (Verb, Noun)
+            // String[] userInput = userCommand.split(" ", 2);
+
+            // Check to see if user input is expected array format
+
+            // getUserInput(userInput);
         }
     }
 
@@ -210,6 +233,7 @@ public class Game {
         for (Item item : playerOne.getInventory().values()) {
             if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
                 itemFound = true;
+                item.use();
                 playerOne.removeItem(item);
                 break;
             }
@@ -271,11 +295,12 @@ public class Game {
                 Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
                 for(NPC npc : currentNPCs.values()) {
                     String current = npc.getName();
-                    if(current.equalsIgnoreCase(userInput[1])) {
-                        Battle battle = new Battle(playerOne, npc);
+                    if(current.equalsIgnoreCase(userInput[1]) && npc.getIsHostile()) {
+                        this.inBattle = true;
+                        this.battleEnemy = npc.getId();
+                        battle = new Battle(playerOne, npc);
                         gameMusic.stopMusic();
                         battleMusic.playMusic();
-                        battle.start();
                     }
                 }
             } else {
@@ -481,4 +506,22 @@ public class Game {
         System.out.println("-------------");
     }
 
+    private void displayBattleActions() {
+        System.out.println("[attack], [run] or [equip]");
+    }
+
+    private void displayBattleCommands() {
+        System.out.println("----------");
+        System.out.println("IN BATTLE");
+        System.out.println("----------");
+        System.out.println("INVENTORY:");
+        System.out.println("----------");
+        displayInventory();
+
+        System.out.println("-------------");
+        System.out.println("COMMANDS:");
+        System.out.println("-------------");
+        displayBattleActions();
+        System.out.println("-------------");
+    }
 }
