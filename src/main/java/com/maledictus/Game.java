@@ -46,7 +46,7 @@ public class Game {
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     }
 
-    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    public void initiateGame() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
         Json.jsonWrite();
         displaySplash();
         createCharacter();
@@ -118,7 +118,7 @@ public class Game {
         }
     }
 
-    private void start() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    private void start() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean round = true;
         if (playerOne.getHitPoints() == 0) {
             round = false;
@@ -269,7 +269,7 @@ public class Game {
             }
         }
 
-    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException, org.json.simple.parser.ParseException {
+    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, ParseException, org.json.simple.parser.ParseException {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
             if(userInput[0].equalsIgnoreCase("go")) {
                 moveRoom(userInput);
@@ -362,7 +362,7 @@ public class Game {
         }
     }
 
-    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
         boolean waitingOnInput = true;
 
         while (waitingOnInput) {
