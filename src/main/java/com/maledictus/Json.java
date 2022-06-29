@@ -37,6 +37,8 @@ public class Json {
     public static Map<Integer, NPC> diningRoomMap = new HashMap<>();
     public static Map<Integer, NPC> ballRoomNpcMap = new HashMap<>();
     public static Map<Integer, NPC> dungeonNpcMap = new HashMap<>();
+    public static ArrayList<Item> items6 = new ArrayList<>();
+    public static Map<Integer, NPC> throneRoomNpcMap = new HashMap<>();
 
     public static void jsonWrite() throws FileNotFoundException {
         JSONObject data = new JSONObject();
@@ -172,6 +174,16 @@ public class Json {
         data.put("item6", "Iron War Hammer");
         data.put("item6Description", "BIG OL HAMMER");
 
+        data.put("room13Description", "A once stately room that is not defunct, dark and dusted. Around the room, you see the vestiges of a once glorious room, rubies that no longer glint. Ahead of you... is a man, empty of life but still full of power. A crown sits slant on his head. ");
+
+        Map<String, String> throneRoom = new HashMap<>();
+        throneRoom.put("north", "Crypt");
+        data.put("roomDirection13", throneRoom);
+
+
+        data.put("item7", "King's HellSword");
+        data.put("item7Description", "this once beautiful sword, in it's dullness, glints pinkish in the light...");
+
 
         PrintWriter pw = new PrintWriter("GameData.json");
         pw.write(data.toJSONString());
@@ -303,6 +315,19 @@ public class Json {
         questPrisonerDialog.put(3, "Well hurry back when you have it!");
         questPrisonerDialog.put(4, "Please! Just leave me be.");
 
+        //        creating the King
+        Map<Integer, String> kingDialog = new HashMap<>();
+        kingDialog.put(1, "....ahhhhhahhah......");
+        kingDialog.put(2, "....ahhhhhahahaahhh......");
+        kingDialog.put(3, "....aha......");
+        kingDialog.put(4, "....i've been hearing you traipsing around my kingdom......");
+        kingDialog.put(5, "....looting my kingdom. Killing my subjects......");
+        kingDialog.put(6, "I think you need a real battle");
+
+        NPC king = NPCFactory.createKingNPC(13, 150, "the king of the castle!!!", "a man, heavy in stature, with skin barely hanging on the bone", true, Species.GHOST,  kingDialog, items6.get(0));
+
+        throneRoomNpcMap.put(king.getId(), king);
+
         Item healingPotion = ItemFactory.createItem(returnItemName("2"), returnItemDescription("2"), ItemType.POTION, PotionType.HEALING);
 
         Item ironWarHammer = ItemFactory.createItem(returnItemName("6"), returnItemDescription("6"), ItemType.WEAPON, WeaponType.BLUNT);
@@ -339,6 +364,8 @@ public class Json {
 
         Item wine = ItemFactory.createItem("Wine", "bottle of the finest red.", ItemType.POTION, PotionType.HEALING);
         Item ring = ItemFactory.createItem("Wedding ring", "A wedding ring", ItemType.POTION, PotionType.HEALING);
+        Item kingSword = ItemFactory.createItem("King's Hellsword","this once beautiful sword, in it's dullness, glints pinkish in the light...", ItemType.WEAPON, WeaponType.SLASHING );
+        items6.add(kingSword);
 
         items.add(ironSword);
         items2.add(spear);
@@ -374,6 +401,8 @@ public class Json {
         RoomFactory.createRoom(returnRoomName("11"), returnRoomDescription("11"), returnRoomDirections("11"), false, KeyType.DUNGEON, items3);
 
         RoomFactory.createRoom(returnRoomName("12"), returnRoomDescription("12"), returnRoomDirections("12"), false, KeyType.DUNGEON, items2, cryptNpcMap);
+        RoomFactory.createRoom(returnRoomName("13"), returnRoomDescription("13"), returnRoomDirections("13"), false, KeyType.DUNGEON,  throneRoomNpcMap);
+
 
     }
 

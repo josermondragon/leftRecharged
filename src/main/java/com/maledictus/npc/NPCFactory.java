@@ -1,5 +1,6 @@
 package com.maledictus.npc;
 
+import com.maledictus.item.Item;
 import com.maledictus.npc.ally.Quest;
 import com.maledictus.npc.enemy.EnemyType;
 import java.util.HashMap;
@@ -12,6 +13,14 @@ public class NPCFactory {
     private NPCFactory() {
 
     }
+    public static NPC createKingNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Item item) {
+
+        Ghost npc = new Ghost(id, hitPoints, name, description, false, species, dialogue, item);
+
+        npcList.put(npc.getId(), npc);
+        return npc;
+    }
+
 
     public static NPC createNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Quest quest) {
 

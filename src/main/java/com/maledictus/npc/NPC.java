@@ -1,5 +1,6 @@
 package com.maledictus.npc;
 
+import com.maledictus.item.Item;
 import com.maledictus.player.Player;
 
 public class NPC {
@@ -10,6 +11,7 @@ public class NPC {
     String description;
     boolean isHostile;
     Species species;
+    Item item;
 
     public NPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species) {
         this.id = id;
@@ -18,6 +20,12 @@ public class NPC {
         this.description = description;
         this.isHostile = isHostile;
         this.species = species;
+    }
+
+    public NPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Item item){
+        this(id, hitPoints, name, description, isHostile, species);
+        this.item=item;
+
     }
 
     public int attack(Player player) {
