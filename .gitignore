@@ -26,5 +26,7 @@ hs_err_pid*
 out/*
 /src/META-INF/MANIFEST.MF
 
+/target
+
 
 

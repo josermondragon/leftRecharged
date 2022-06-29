@@ -3,11 +3,13 @@
   <properties>
     <property name="idea.version" value="2021.2.4"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+
     <property name="java.vm.version" value="11.0.14+8-LTS-263"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\bin"/>
     <property name="maven.multiModuleProjectDirectory" value="C:\AmazonSDE\leftiesRecharged"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="https://openjdk.java.net/"/>
+
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
     <property name="path.separator" value=";"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
@@ -20,6 +22,7 @@
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="11.0.14+8-LTS-263"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+
     <property name="os.arch" value="amd64"/>
     <property name="java.io.tmpdir" value="C:\Users\mondrajr\AppData\Local\Temp\"/>
     <property name="line.separator" value="
@@ -30,15 +33,18 @@
     <property name="maven.ext.class.path" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.2.4\plugins\maven\lib\maven-event-listener.jar"/>
     <property name="classworlds.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.2.4\plugins\maven\lib\maven3\bin\m2.conf"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
+
     <property name="java.library.path" value="C:\Program Files\Java\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PuTTY\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files (x86)\Quarantine\;C:\Program Files (x86)\ACMEGuardian\;C:\Users\mondrajr\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\mondrajr\AppData\Local\Programs\Python\Python310\;C:\Users\mondrajr\AppData\Local\Microsoft\WindowsApps;C:\Users\mondrajr\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\mondrajr\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Users\mondrajr\AppData\Local\GitHubDesktop\bin;."/>
+
     <property name="maven.conf" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.2.4\plugins\maven\lib\maven3/conf"/>
     <property name="jdk.debug" value="release"/>
-    <property name="java.class.version" value="55.0"/>
+    <property name="java.class.version" value="58.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="os.version" value="10.0"/>
     <property name="user.home" value="C:\Users\mondrajr"/>
     <property name="user.timezone" value="America/New_York"/>
+
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
     <property name="file.encoding" value="ISO-8859-1"/>
     <property name="java.specification.version" value="11"/>
@@ -62,6 +68,7 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="java.vendor.version" value="18.9"/>
     <property name="sun.desktop" value="windows"/>
+
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
   <testcase classname="com.maledictus.NPCTest" name="testPlayerFactoryCreateNPC_shouldCreateListOfNPCs_whenCreateNPCMethodIsCalled" time="0"/>
