@@ -38,7 +38,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.maledictus.Main</mainClass>
+                            <mainClass>com.maledictus.client.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
