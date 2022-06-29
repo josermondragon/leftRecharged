@@ -1,9 +1,9 @@
 package com.maledictus;
 
 import com.maledictus.item.Item;
+import com.maledictus.item.key.Key;
 import com.maledictus.music.BattleMusic;
 import com.maledictus.music.GameMusic;
-import com.maledictus.item.key.Key;
 import com.maledictus.npc.Ghost;
 import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
@@ -14,10 +14,13 @@ import com.maledictus.room.RoomFactory;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static com.maledictus.Input.scannerUserInput;
 import static com.maledictus.Json.returnGameText;
@@ -55,30 +58,28 @@ public class Game {
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
         gameMusic.playMusic();
+
         start();
+
     }
 
     public void createCharacter() {
         playerOne = PlayerFactory.createPlayer();
     }
 
-    public void displaySplash() throws IOException, org.json.simple.parser.ParseException {
+    public static void displaySplash() throws IOException, org.json.simple.parser.ParseException {
 
         boolean play = true;
 
-        String titleBanner = null;
-        try {
-            titleBanner = Files.readString(Path.of("resources/data/splash_banner.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(titleBanner);
-        System.out.println(returnGameText("2") + "\n");
+//        //URL titleBanner = null;
+        URL titleBanner = Game.class.getResource("data/splash_banner.txt");
+        //Printer.print(titleBanner);
+        Printer.print(returnGameText("2") + "\n");
 
         while (play) {
 
-            System.out.println(returnGameText("3"));
-            System.out.println(returnGameText("4"));
+            Printer.print(returnGameText("3"));
+            Printer.print(returnGameText("4"));
 
             String startGame = scannerUserInput();
 
@@ -86,10 +87,10 @@ public class Game {
                 displayIntroText();
                 play = false;
             } else if (startGame.equals("2")) {
-                System.out.println("Exiting the game...");
+                Printer.print("Exiting the game...");
                 System.exit(1);
             } else {
-                errorMsg = ANSI_RED+ "Invalid Selection.  Please enter [1] to start game or [2] to quit." +ANSI_RESET;
+                String errorMsg = ANSI_RED+ "Invalid Selection.  Please enter [1] to start game or [2] to quit." +ANSI_RESET;
             }
         }
     }
@@ -98,19 +99,19 @@ public class Game {
         boolean invalidSelection = true;
         while (invalidSelection) {
             String gameMap = null;
-            System.out.println("Enter [1] for Main floor map, [2] for downstairs map");
+            Printer.print("Enter [1] for Main floor map, [2] for downstairs map");
             try {
                 String displayMap = scannerUserInput();
                 if (displayMap.equals("1")) {
                     gameMap = Files.readString(Path.of("resources/data/mainfloor_map.txt"));
-                    System.out.println(gameMap);
+                    Printer.print(gameMap);
                     invalidSelection = false;
                 } else if (displayMap.equals("2")) {
                     gameMap = Files.readString(Path.of("resources/data/downstairs-map.txt"));
-                    System.out.println(gameMap);
+                    Printer.print(gameMap);
                     invalidSelection = false;
                 } else {
-                    System.out.println(ANSI_RED + "Invalid Selection.  Please enter [1] to display Main floor map, or  [2] to display downstairs map." + ANSI_RESET);
+                    Printer.print(ANSI_RED + "Invalid Selection.  Please enter [1] to display Main floor map, or  [2] to display downstairs map." + ANSI_RESET);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -119,10 +120,11 @@ public class Game {
     }
 
     private void start() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
+
         boolean round = true;
         if (playerOne.getHitPoints() == 0) {
             round = false;
-            System.out.println("You're dead, D. E. D.");
+            Printer.print("You're dead, D. E. D.");
         }
         while (round && !this.inBattle) {
 
@@ -130,7 +132,7 @@ public class Game {
             // Methods will check if an error or success message needs to be printed
             printSuccessMsg();
             printErrorMsg();
-            System.out.println("\n" + ANSI_YELLOW + "Enter a command or enter [options] to see game options: " + ANSI_RESET);
+            Printer.print("\n" + ANSI_YELLOW + "Enter a command or enter [options] to see game options: " + ANSI_RESET);
 
             // Take in user input and run through scanner
             String userCommand = scannerUserInput();
@@ -151,7 +153,7 @@ public class Game {
             }
             this.battleMusic.stopMusic();
             this.gameMusic.playMusic();
-            System.out.println("is it getting here?");
+            Printer.print("is it getting here?");
             npcMap.remove(battleEnemy);
             this.start();
             // Take in user input and run through scanner
@@ -178,7 +180,7 @@ public class Game {
             }
         }
         if (!itemFound) {
-            System.out.println(ANSI_RED+ "INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')" + ANSI_RESET);
+            Printer.print(ANSI_RED+ "INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')" + ANSI_RESET);
         }
     }
 
@@ -323,29 +325,29 @@ public class Game {
         Ghost npc = (Ghost) targetNpc;
 
         if (npc.getQuest() == null || (!npc.getQuestStatus() && !npc.getQuest().isCompleted())) {
-            System.out.println(npc.getName() + ": " + npc.talk(1));
+            Printer.print(npc.getName() + ": " + npc.talk(1));
             for (int i = 2; i < npc.getDialog().entrySet().size() + 1; i++) {
-                System.out.println("Press [1] to continue talking. \nPress [2] to exit.");
+                Printer.print("Press [1] to continue talking. \nPress [2] to exit.");
                  String dialogChoice = scannerUserInput();
                 if (dialogChoice.equals("1")) {
-                    System.out.println(npc.getName() + ": " + npc.talk(i));
+                    Printer.print(npc.getName() + ": " + npc.talk(i));
                  } else if (dialogChoice.equals("2")) {
                      break;
                 }
             }
             if (npc.getQuest() != null) {
-                System.out.println("Press [1] Accept Quest? \nPress [2] to exit.");
+                Printer.print("Press [1] Accept Quest? \nPress [2] to exit.");
                 String questDialogChoice = scannerUserInput();
                 if (questDialogChoice.equals("1")) {
                     npc.assignQuest(true);
                 }
             } else {
-                System.out.println("Press [2] to exit.");
+                Printer.print("Press [2] to exit.");
                 scannerUserInput();
             }
         } else if (npc.getQuestStatus() && !npc.getQuest().isCompleted()) {
                successMsg = npc.getName() + ": " + npc.questTalk(1);
-                System.out.println("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
+                Printer.print("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
                 String questDialogChoice = scannerUserInput();
                 if (questDialogChoice.equals("1") && playerOne.getInventory().containsKey(npc.getQuestWinCondition())) {
                     playerOne.removeItem(playerOne.getInventory().get(npc.getQuestWinCondition()));
@@ -353,7 +355,7 @@ public class Game {
                     npc.setQuestCompleted(true);
                     npc.assignQuest(false);
                     playerOne.addItem(npc.giveQuestReward());
-                    System.out.println("\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
+                    Printer.print("\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
                 } else  {
                    successMsg = npc.getName() + ": " + npc.questTalk(3);
                 }
@@ -367,7 +369,7 @@ public class Game {
 
         while (waitingOnInput) {
 
-            System.out.println("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.");
+            Printer.print("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.\n8 to change game volume");
             String optionInput = scannerUserInput();
 
             switch (optionInput) {
@@ -380,11 +382,11 @@ public class Game {
                     waitingOnInput = false;
                     break;
                 case "2":
-                    System.out.println("Exiting game. Thank you for playing.");
+                    Printer.print("Exiting game. Thank you for playing.");
                     System.exit(1);
                     break;
                 case "3":
-                    System.out.println("Maledictus is a console text-adventure game. You are a treasure hunter is seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n");
+                    Printer.print("Maledictus is a console text-adventure game. You are a treasure hunter is seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n which was then taken into further production by Marcos Cardoso, Jose Mondragon and Samekh Resh");
                     break;
                 case "4":
                     gameMusic.stopMusic();
@@ -398,6 +400,8 @@ public class Game {
                 case "7":
                     waitingOnInput = false;
                     break;
+                case "8":
+                    changeVolume();
                 default:
                     errorMsg = ANSI_RED + "Invalid Selection. Please try again." + ANSI_RESET;
                     break;
@@ -405,8 +409,27 @@ public class Game {
         }
     }
 
-    private void displayIntroText() throws IOException, org.json.simple.parser.ParseException {
-        System.out.println(returnGameText("1") + "\n" + returnGameText("11")+ "\n");
+    private void changeVolume() {
+        Printer.print("1 for low\n2 for med low\n3 for medium\n4 for med-high\n5 for high");
+        String choice = scannerUserInput();
+        if (choice.equals("1")){
+            gameMusic.setMusicLow();
+        }else if (choice.equals("2")){
+            gameMusic.setMusicMidLow();
+        }else if (choice.equals("3")){
+            gameMusic.setMusicMidRange();
+        }else if (choice.equals("4")){
+            gameMusic.setMusicMidHigh();
+        }else if (choice.equals("5")){
+            gameMusic.setMusicHigh();
+        }else {
+            Printer.print(ANSI_RED + "INVALID ENTRY: must use the letters 1 through 5 for volume manipulation");
+            changeVolume();
+        }
+    }
+
+    private static void displayIntroText() throws IOException, org.json.simple.parser.ParseException {
+        Printer.print(returnGameText("1") + "\n" + returnGameText("11")+ "\n");
     }
 
     private void displayCurrentRoomActions() {
@@ -426,7 +449,7 @@ public class Game {
                 displayList.add("take/inspect " + item.getName());
             }
         }
-        System.out.println("Room Items: " + displayList);
+        Printer.print("Room Items: " + displayList);
     }
 
     private void displayInventoryActions() {
@@ -436,7 +459,7 @@ public class Game {
                 displayList.add("use/drop/inspect " + item.getValue().getName());
             }
         }
-        System.out.println("Inventory Items: " + displayList);
+        Printer.print("Inventory Items: " + displayList);
     }
 
     private void displayRoomDirections() {
@@ -447,7 +470,7 @@ public class Game {
                 displayList.add("go " + direction.getKey());
             }
         }
-        System.out.println("Directions: " + displayList);
+        Printer.print("Directions: " + displayList);
     }
 
     private void displayAllRoomNpc() {
@@ -462,62 +485,62 @@ public class Game {
                 }
             }
         }
-        System.out.println("NPCs: " +displayList);
+        Printer.print("NPCs: " +displayList);
     }
 
     private void printErrorMsg() {
         if (errorMsg != null) {
-            System.out.println("\n" + errorMsg);
+            Printer.print("\n" + errorMsg);
             errorMsg = null;
         }
     }
 
     private void printSuccessMsg() {
         if (successMsg != null) {
-            System.out.println("\n" + successMsg);
+            Printer.print("\n" + successMsg);
             successMsg = null;
         }
     }
 
     private void displayInventory() {
-        System.out.println(playerOne.getInventory().keySet());
+        Printer.print(playerOne.getInventory().keySet());
     }
 
     private void displayConsoleCommands() {
-        System.out.println("-------------");
-        System.out.println(ANSI_GREEN + "CURRENT ROOM:" + ANSI_RESET);
-        System.out.println("-------------");
-        System.out.println(currentRoom.getName());
-        System.out.println(currentRoom.getDescription());
+        Printer.print("-------------");
+        Printer.print(ANSI_GREEN + "CURRENT ROOM:" + ANSI_RESET);
+        Printer.print("-------------");
+        Printer.print(currentRoom.getName());
+        Printer.print(currentRoom.getDescription());
 
-        System.out.println("-------------");
-        System.out.println(ANSI_BLUE+ "INVENTORY:" + ANSI_RESET);
-        System.out.println("-------------");
+        Printer.print("-------------");
+        Printer.print(ANSI_BLUE+ "INVENTORY:" + ANSI_RESET);
+        Printer.print("-------------");
         displayInventory();
 
-        System.out.println("-------------");
-        System.out.println(ANSI_YELLOW+ "COMMANDS:" + ANSI_RESET);
-        System.out.println("-------------");
+        Printer.print("-------------");
+        Printer.print(ANSI_YELLOW+ "COMMANDS:" + ANSI_RESET);
+        Printer.print("-------------");
         displayCurrentRoomActions();
-        System.out.println("-------------");
+        Printer.print("-------------");
     }
 
     private void displayBattleActions() {
-        System.out.println("[attack], [run] or [equip]");
+        Printer.print("[attack], [run] or [equip]");
     }
 
     private void displayBattleCommands() {
-        System.out.println("----------");
-        System.out.println("IN BATTLE");
-        System.out.println("----------");
-        System.out.println("INVENTORY:");
-        System.out.println("----------");
+        Printer.print("----------");
+        Printer.print("IN BATTLE");
+        Printer.print("----------");
+        Printer.print("INVENTORY:");
+        Printer.print("----------");
         displayInventory();
 
-        System.out.println("-------------");
-        System.out.println("COMMANDS:");
-        System.out.println("-------------");
+        Printer.print("-------------");
+        Printer.print("COMMANDS:");
+        Printer.print("-------------");
         displayBattleActions();
-        System.out.println("-------------");
+        Printer.print("-------------");
     }
 }

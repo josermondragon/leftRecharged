@@ -1,15 +1,19 @@
-package com.maledictus.music;
+    package com.maledictus.music;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
-public class BattleMusic {
+    public class BattleMusic {
     private Clip audioClip;
     private FloatControl gainControl;
 
     public BattleMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        File audioFile = new File("resources/data/battle-music.wav");
+        //File audioFile = new File("resources/data/battle-music.wav");
+        InputStream audioFile = new BufferedInputStream(BattleMusic.class.getClassLoader().getResourceAsStream("data/battle-music.wav"));
+
 
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
