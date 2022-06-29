@@ -14,6 +14,7 @@ public class Battle {
     private final Player player;
     private final NPC npc;
     private boolean combat = true;
+    private Item spoilsOfWar;
 
 
      public Battle(Player player, NPC npc) {
@@ -27,6 +28,11 @@ public class Battle {
            String userCommand = scannerUserInput();
            battleRound(userCommand);
        }
+        //add to start method after while loop
+        if(npc.getHitPoints()==0 && (npc.getItem() != null)){
+            setSpoilsOfWar(npc.getItem());
+        }
+
     }
 
     public void battleRound(String userCommand) {
@@ -46,6 +52,24 @@ public class Battle {
             System.out.println("You equipped " + itemSelect);
             player.equipWeapon();
         }
+    }
+
+    public Item getSpoilsOfWar() {
+        return spoilsOfWar;
+    }
+
+    public void setSpoilsOfWar(Item spoilsOfWar) {
+        this.spoilsOfWar = spoilsOfWar;
+    }
+
+    public boolean areThereSpoils(){
+         boolean areThere = false;
+         if(this.spoilsOfWar != null){
+             Printer.print("yes there are spoils!!");
+             areThere=true;
+         }
+
+         return areThere;
     }
 
     public boolean isCombat() {

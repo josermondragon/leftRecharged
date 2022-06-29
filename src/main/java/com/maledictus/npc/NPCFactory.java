@@ -13,6 +13,7 @@ public class NPCFactory {
     private NPCFactory() {
 
     }
+
     public static NPC createKingNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Item item) {
 
         Ghost npc = new Ghost(id, hitPoints, name, description, false, species, dialogue, item);
@@ -20,6 +21,8 @@ public class NPCFactory {
         npcList.put(npc.getId(), npc);
         return npc;
     }
+
+
 
 
     public static NPC createNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Quest quest) {

@@ -152,6 +152,14 @@ public class Game {
             if(!this.battle.isCombat()) {
                 this.inBattle = false;
             }
+            if(this.battle.areThereSpoils()){
+                playerOne.addItem(this.battle.getSpoilsOfWar());
+//             the idea is to do validatioin for if the item is in the player's inventory. if it's there, then the player wins, if it's false, then the player continues playing.
+//                for (Item item: playerOne.getInventory()
+//                     ) {
+//
+//                }
+            }
             this.battleMusic.stopMusic();
             this.gameMusic.playMusic();
             Printer.print("is it getting here?");
@@ -370,7 +378,7 @@ public class Game {
 
         while (waitingOnInput) {
 
-            Printer.print("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.\n8 to change game volume");
+            Printer.print("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.\nPress [8] to change game volume");
             String optionInput = scannerUserInput();
 
             switch (optionInput) {
@@ -403,6 +411,7 @@ public class Game {
                     break;
                 case "8":
                     changeVolume();
+                    break;
                 default:
                     errorMsg = ANSI_RED + "Invalid Selection. Please try again." + ANSI_RESET;
                     break;
