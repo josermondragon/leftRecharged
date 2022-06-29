@@ -12,11 +12,11 @@ public class WelcomePage extends JFrame {
     private JButton btnGo;
     private JTextPane youMadeItTheTextPane;
 
-    private static final String IMG_PATH = "resources/data/imageIntro.jpeg";
-    private static final String IMG_PATH2 = "resources/data/instructions.PNG";
-    private static final String IMG_PATH3 = "resources/data/map.png";
-    private static final String IMG_PATH4 = "resources/data/rcommands.png";
-    private static final String IMG_PATH5 = "resources/data/roptions.png";
+    private static final String IMG_PATH = "data/imageIntro.jpeg";
+    private static final String IMG_PATH2 = "data/instructions.PNG";
+    private static final String IMG_PATH3 = "data/map.png";
+    private static final String IMG_PATH4 = "data/rcommands.png";
+    private static final String IMG_PATH5 = "data/roptions.png";
 
     public static void InitImage() throws IOException {
         JFrame f = new JFrame();
@@ -25,7 +25,7 @@ public class WelcomePage extends JFrame {
         JButton close = new JButton("Close");
         panel.add(close);
         ImageIcon img = new ImageIcon();  //***
-        img = new ImageIcon(IMG_PATH); //***
+        img = new ImageIcon(WelcomePage.class.getClassLoader().getResource(IMG_PATH)); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
         panel.add(label);
@@ -54,7 +54,7 @@ public class WelcomePage extends JFrame {
         JButton close2 = new JButton("Close");
         panel.add(close2);
         ImageIcon img = new ImageIcon();  //***
-        img = new ImageIcon(IMG_PATH2); //***
+        img = new ImageIcon(WelcomePage.class.getClassLoader().getResource(IMG_PATH2)); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
         panel.add(label);
@@ -85,7 +85,7 @@ public class WelcomePage extends JFrame {
         JButton close2 = new JButton("Close");
         panel.add(close2);
         ImageIcon img = new ImageIcon();  //***
-        img = new ImageIcon(IMG_PATH3); //***
+        img = new ImageIcon(WelcomePage.class.getClassLoader().getResource(IMG_PATH3)); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
         panel.add(label);
@@ -154,7 +154,7 @@ public class WelcomePage extends JFrame {
         panel.add(close2);
 
         ImageIcon img = new ImageIcon();  //***
-        img = new ImageIcon(IMG_PATH4); //***
+        img = new ImageIcon(WelcomePage.class.getClassLoader().getResource(IMG_PATH4)); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
 
@@ -189,7 +189,7 @@ public class WelcomePage extends JFrame {
         JButton close2 = new JButton("Close");
         panel.add(close2);
         ImageIcon img = new ImageIcon();  //***
-        img = new ImageIcon(IMG_PATH5); //***
+        img = new ImageIcon(WelcomePage.class.getClassLoader().getResource(IMG_PATH5)); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
         panel.add(label);

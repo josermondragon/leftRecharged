@@ -14,6 +14,7 @@ import com.maledictus.room.RoomFactory;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
@@ -70,13 +71,9 @@ public class Game {
 
         boolean play = true;
 
-        String titleBanner = null;
-        try {
-            titleBanner = Files.readString(Path.of("resources/data/splash_banner.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Printer.print(titleBanner);
+//        //URL titleBanner = null;
+        URL titleBanner = Game.class.getResource("data/splash_banner.txt");
+        //Printer.print(titleBanner);
         Printer.print(returnGameText("2") + "\n");
 
         while (play) {

@@ -1,4 +1,4 @@
-com/maledictus/NPCTest.class
-com/maledictus/ItemTest.class
-com/maledictus/RoomTest.class
-com/maledictus/PlayerTest.class
+com\maledictus\RoomTest.class
+com\maledictus\PlayerTest.class
+com\maledictus\NPCTest.class
+com\maledictus\ItemTest.class

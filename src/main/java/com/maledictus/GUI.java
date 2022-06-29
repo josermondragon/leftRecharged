@@ -85,7 +85,7 @@ public class GUI extends JFrame {
         //ImageIcon commands = new ImageIcon("-leftiesRecharged/resources/data/commands.png");
         //JLabel showImage = new JLabel(commands);
         ImageIcon img = new ImageIcon();  //***
-        img = new ImageIcon("resources/data/commands.png"); //***
+        img = new ImageIcon(GUI.class.getClassLoader().getResource("data/commands.png")); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
         label.addMouseListener(new MouseAdapter() {
@@ -101,7 +101,7 @@ public class GUI extends JFrame {
 //        ImageIcon options = new ImageIcon("-leftiesRecharged/resources/data/commands.png");
 //        JLabel showImage2 = new JLabel(options);
         ImageIcon img2 = new ImageIcon();  //***
-        img2 = new ImageIcon("resources/data/options.png"); //***
+        img2 = new ImageIcon(GUI.class.getClassLoader().getResource("data/options.png")); //***
         JLabel label1 = new JLabel(); //***
         label1.setIcon(img2);  //***
         label1.addMouseListener(new MouseAdapter() {
