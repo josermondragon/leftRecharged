@@ -24,20 +24,16 @@ public  class Battle {
     }
 
     public boolean battleStart() throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException {
-//       while(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0) {
-//           // displayInventory();
-//           String userCommand = scannerUserInput();
-//           battleRound(userCommand);
-//       }
+
         boolean result = false;
         if(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0){
-            System.out.println("GETTING GUI");
+
             GUI gui = GUI.getInstance();
             gui.getInputtedUser().addActionListener(e -> {
                 String userCommand = gui.getInputtedUser().getText();
                 gui.getInputtedUser().setText("");
                 gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
-                System.out.println("USER COMMAND IN BATTLE: " + userCommand);
+
                 battleRound(userCommand);
                 try {
                     battleStart();
@@ -56,12 +52,11 @@ public  class Battle {
 //            setSpoilsOfWar(npc.getItem());
 //            System.out.println(npc.getItem());
 //        }
-        System.out.println("BATTLE START RESULT: " + result);
+
         return result;
     }
 
     public void battleRound(String userCommand) {
-        System.out.println("CALL TO BATTLE ROUND " + userCommand);
         if (userCommand.equalsIgnoreCase("attack")) {
             player.attack(npc);
             npc.attack(player);
@@ -69,19 +64,22 @@ public  class Battle {
             this.player.setHitPoints(0);
             Printer.print("You attempt to run away.....");
         } else if (userCommand.equalsIgnoreCase("equip")) {
-            Printer.print("CURRENT ITEMS");
-            Printer.print("-------------");
-            for (Map.Entry<String, Item> item : player.getInventory().entrySet()) {
-                Printer.print(item.getKey());
-            }
-            GUI gui = GUI.getInstance();
-            gui.getInputtedUser().addActionListener(e -> {
-                String itemSelect = gui.getInputtedUser().getText();
-                gui.getInputtedUser().setText("");
-                gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
-                Printer.print("You equipped " + itemSelect);
-                player.equipWeapon();
-            });
+            Printer.print("You equipped your weapon");
+            player.equipWeapon();
+//            Printer.print("CURRENT ITEMS");
+//            Printer.print("-------------");
+//
+//            for (Map.Entry<String, Item> item : player.getInventory().entrySet()) {
+//                Printer.print(item.getKey());
+//            }
+//            GUI gui = GUI.getInstance();
+//            gui.getInputtedUser().addActionListener(e -> {
+//                String itemSelect = gui.getInputtedUser().getText();
+//                gui.getInputtedUser().setText("");
+//                gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
+//                Printer.print("You equipped " + itemSelect);
+//                player.equipWeapon();
+//            });
         }
 
 //        if (userCommand.equalsIgnoreCase("attack")) {

@@ -1,6 +1,7 @@
 package com.maledictus;
 
 import com.maledictus.item.Item;
+import com.maledictus.item.ItemType;
 import com.maledictus.item.key.Key;
 import com.maledictus.music.BattleMusic;
 import com.maledictus.music.GameMusic;
@@ -312,8 +313,8 @@ public class Game {
             System.out.println("NOT IN BATTLE");
             this.inBattle = false;
         }
-        this.battleMusic.stopMusic();
-//            GameMusic.playMusic();
+            BattleMusic.stopMusic();
+            GameMusic.playMusic();
         npcMap.remove(battleEnemy);
         try {
             this.start();
@@ -399,10 +400,14 @@ public class Game {
 
     private void useItem(String[] userInput) {
         boolean itemFound = false;
+        System.out.println("PLAYER HEALTH: " + playerOne.getHitPoints());
         for (Item item : playerOne.getInventory().values()) {
             if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
                 itemFound = true;
                 item.use();
+                if(item.getItemType() == ItemType.POTION) {
+
+                }
                 playerOne.removeItem(item);
                 break;
             }
@@ -411,6 +416,7 @@ public class Game {
             errorMsg = userInput[1] + " is not in your inventory!";
         }
         try {
+            System.out.println("PLAYER HEALTH: " + playerOne.getHitPoints());
             start();
         } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
             ex.printStackTrace();
@@ -454,24 +460,33 @@ public class Game {
 
     private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, ParseException, org.json.simple.parser.ParseException {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
-            if(userInput[0].equalsIgnoreCase("go")) {
-                System.out.println("hello");
+        String input = userInput[0].toLowerCase();
+        switch (input) {
+            case "go" :
                 moveRoom(userInput);
-            } else if(userInput[0].equalsIgnoreCase("take") || userInput[0].equalsIgnoreCase("grab")) {
+                break;
+            case "take" :
                 takeItem(userInput);
-            } else if(userInput[0].equalsIgnoreCase("inspect")) {
+                break;
+            case "inspect" :
                 inspectItem(userInput);
-            } else if(userInput[0].equalsIgnoreCase("drop")) {
+                break;
+            case "drop":
                 dropItem(userInput);
-            } else if(userInput[0].equalsIgnoreCase("use")) {
+                break;
+            case "use":
                 useItem(userInput);
-            } else if(userInput[0].equalsIgnoreCase("heal")) {
+                break;
+            case "heal":
                 useItem(userInput);
-            } else if(userInput[0].equalsIgnoreCase("talk")) {
+                break;
+            case "talk" :
                 talkToNpc(userInput);
-            } else if(userInput[0].equalsIgnoreCase("options")) {
+                break;
+            case "options" :
                 displayOptions();
-            } else if(userInput[0].equalsIgnoreCase("battle")) {
+                break;
+            case "battle" :
                 Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
                 for(NPC npc : currentNPCs.values()) {
                     String current = npc.getName();
@@ -486,9 +501,48 @@ public class Game {
                         start();
                     }
                 }
-            } else {
+                break;
+            default:
                 errorMsg = ANSI_RED + "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')" + ANSI_RESET;
-            }
+                start();
+                break;
+        }
+
+//            if(userInput[0].equalsIgnoreCase("go")) {
+//                moveRoom(userInput);
+//            } else if(userInput[0].equalsIgnoreCase("take")) {
+//                takeItem(userInput);
+//            } else if(userInput[0].equalsIgnoreCase("inspect")) {
+//                inspectItem(userInput);
+//            } else if(userInput[0].equalsIgnoreCase("drop")) {
+//                dropItem(userInput);
+//            } else if(userInput[0].equalsIgnoreCase("use")) {
+//                useItem(userInput);
+//            } else if(userInput[0].equalsIgnoreCase("heal")) {
+//                useItem(userInput);
+//            } else if(userInput[0].equalsIgnoreCase("talk")) {
+//                talkToNpc(userInput);
+//            } else if(userInput[0].equalsIgnoreCase("options")) {
+//                displayOptions();
+//            } else if(userInput[0].equalsIgnoreCase("battle")) {
+//                Map<Integer, NPC> currentNPCs = currentRoom.getNpcMap();
+//                for(NPC npc : currentNPCs.values()) {
+//                    String current = npc.getName();
+//                    if(current.equalsIgnoreCase(userInput[1]) && npc.getIsHostile()) {
+//                        this.inBattle = true;
+//                        this.battleEnemy = npc.getId();
+//                        System.out.println("CREATED NEW BATTLE");
+//                        battle = new Battle(playerOne, npc);
+//                        gameMusic.stopMusic();
+//                        battleMusic.playMusic();
+////                        call to start - may not work
+//                        start();
+//                    }
+//                }
+//            } else {
+//                errorMsg = ANSI_RED + "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')" + ANSI_RESET;
+//                start();
+//            }
     }
 //return boolean value after validating if character has that or not
     public boolean doesPlayerHaveTheHellBlade() {
