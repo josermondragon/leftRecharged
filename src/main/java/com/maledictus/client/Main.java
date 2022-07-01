@@ -1,6 +1,5 @@
 package com.maledictus.client;
 
-import com.maledictus.GUI;
 import com.maledictus.Game;
 import com.maledictus.WelcomePage;
 import com.maledictus.music.GameMusic;
@@ -18,24 +17,8 @@ public class Main {
         game.initiateGame();
 
         GameMusic gameMusic = new GameMusic();
-        gameMusic.playMusic();
-        GUI giu = new GUI();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//        gameMusic.playMusic();
+//        GUI giu = new GUI();
 
     }
 }

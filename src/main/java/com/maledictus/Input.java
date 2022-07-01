@@ -12,12 +12,15 @@ public class Input {
     }
 
     public static String scannerUserInput() {
-        Scanner scanner;
-        String line = "If you see this.. you FAILED!";
-        System.out.print(">>>");
-        scanner = new Scanner( System.in);
-        line = scanner.nextLine();
-        return line;
+//        Scanner scanner;
+//        String line = "If you see this.. you FAILED!";
+//        System.out.print(">>>");
+//        scanner = new Scanner( System.in);
+//        line = scanner.nextLine();
+//        return line;
+        System.out.println("DEBUG:::: ORIGINAL SCANNER CALL");
+        return "hi";
+
     }
 
     public static String scannerTextInput(File text) {

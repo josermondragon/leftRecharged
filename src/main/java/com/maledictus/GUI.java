@@ -8,12 +8,15 @@ import java.io.IOException;
 
 public class GUI extends JFrame {
 
-
-
-
+    private JTextField inputtedUser;
     private static GUI instance;
 //    TODO: make this a JTextPane
     private JTextPane jta;
+    private String userInput = "";
+
+    public JTextField getInputtedUser() {
+        return this.inputtedUser;
+    }
 
     public GUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -47,11 +50,10 @@ public class GUI extends JFrame {
 
 //        panel1.add(textScrollPane(jta),abc);
         panel1.add(textScrollPane(jta), abc);
+
         //user input
         JLabel userInput = new JLabel("Type here your option or command: ");
-
-
-        JTextField inputtedUser = new JTextField("",15);
+        inputtedUser = new JTextField("",15);
 
         abc.gridx = 0;
         abc.gridy = 2;

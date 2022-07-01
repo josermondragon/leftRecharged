@@ -23,11 +23,23 @@ public class Battle {
     }
 
     public void start() {
-       while(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0) {
-           // displayInventory();
-           String userCommand = scannerUserInput();
-           battleRound(userCommand);
-       }
+//       while(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0) {
+//           // displayInventory();
+//           String userCommand = scannerUserInput();
+//           battleRound(userCommand);
+//       }
+
+        if(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0){
+            GUI gui = GUI.getInstance();
+            gui.getInputtedUser().addActionListener(e -> {
+                String userCommand = gui.getInputtedUser().getText();
+                gui.getInputtedUser().setText("");
+                gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
+                battleRound(userCommand);
+                start();
+            });
+        }
+
         //add to start method after while loop
         if(npc.getHitPoints()==0 && (npc.getItem() != null)){
             setSpoilsOfWar(npc.getItem());
@@ -39,21 +51,43 @@ public class Battle {
     public void battleRound(String userCommand) {
         if (userCommand.equalsIgnoreCase("attack")) {
             player.attack(npc);
-            Printer.print("the npc used their weapon " + npc.getItem());
             npc.attack(player);
         } else if (userCommand.equalsIgnoreCase("run")) {
             this.player.setHitPoints(0);
-            System.out.println("You attempt to run away.....");
+            Printer.print("You attempt to run away.....");
         } else if (userCommand.equalsIgnoreCase("equip")) {
-            System.out.println("CURRENT ITEMS");
-            System.out.println("-------------");
+            Printer.print("CURRENT ITEMS");
+            Printer.print("-------------");
             for (Map.Entry<String, Item> item : player.getInventory().entrySet()) {
-                System.out.println(item.getKey());
+                Printer.print(item.getKey());
             }
-            String itemSelect = scannerUserInput();
-            System.out.println("You equipped " + itemSelect);
-            player.equipWeapon();
+            GUI gui = GUI.getInstance();
+            gui.getInputtedUser().addActionListener(e -> {
+                String itemSelect = gui.getInputtedUser().getText();
+                gui.getInputtedUser().setText("");
+                gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
+                Printer.print("You equipped " + itemSelect);
+                player.equipWeapon();
+            });
         }
+
+//        if (userCommand.equalsIgnoreCase("attack")) {
+//            player.attack(npc);
+//            Printer.print("the npc used their weapon " + npc.getItem());
+//            npc.attack(player);
+//        } else if (userCommand.equalsIgnoreCase("run")) {
+//            this.player.setHitPoints(0);
+//            System.out.println("You attempt to run away.....");
+//        } else if (userCommand.equalsIgnoreCase("equip")) {
+//            System.out.println("CURRENT ITEMS");
+//            System.out.println("-------------");
+//            for (Map.Entry<String, Item> item : player.getInventory().entrySet()) {
+//                System.out.println(item.getKey());
+//            }
+//            String itemSelect = scannerUserInput();
+//            System.out.println("You equipped " + itemSelect);
+//            player.equipWeapon();
+//        }
     }
 
     public Item getSpoilsOfWar() {
