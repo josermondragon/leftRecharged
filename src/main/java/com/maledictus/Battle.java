@@ -1,15 +1,16 @@
 package com.maledictus;
 
 import com.maledictus.item.Item;
-import com.maledictus.item.ItemType;
 import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
+import org.json.simple.parser.ParseException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.Map;
 
-import static com.maledictus.Input.scannerUserInput;
-
-public class Battle {
+public  class Battle {
 
     private final Player player;
     private final NPC npc;
@@ -22,33 +23,45 @@ public class Battle {
         this.npc = npc;
     }
 
-    public void start() {
+    public boolean battleStart() throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException {
 //       while(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0) {
 //           // displayInventory();
 //           String userCommand = scannerUserInput();
 //           battleRound(userCommand);
 //       }
-
+        boolean result = false;
         if(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0){
+            System.out.println("GETTING GUI");
             GUI gui = GUI.getInstance();
             gui.getInputtedUser().addActionListener(e -> {
                 String userCommand = gui.getInputtedUser().getText();
                 gui.getInputtedUser().setText("");
                 gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
+                System.out.println("USER COMMAND IN BATTLE: " + userCommand);
                 battleRound(userCommand);
-                start();
+                try {
+                    battleStart();
+                } catch (UnsupportedAudioFileException | IOException | ParseException | java.text.ParseException | LineUnavailableException ex) {
+                    ex.printStackTrace();
+                }
             });
+        } else {
+            result = true;
+            Game game = Game.getInstance();
+            game.endfight();
         }
 
-        //add to start method after while loop
-        if(npc.getHitPoints()==0 && (npc.getItem() != null)){
-            setSpoilsOfWar(npc.getItem());
-            System.out.println(npc.getItem());
-        }
-
+//        //add to start method after while loop
+//        if(npc.getHitPoints()==0 && (npc.getItem() != null)){
+//            setSpoilsOfWar(npc.getItem());
+//            System.out.println(npc.getItem());
+//        }
+        System.out.println("BATTLE START RESULT: " + result);
+        return result;
     }
 
     public void battleRound(String userCommand) {
+        System.out.println("CALL TO BATTLE ROUND " + userCommand);
         if (userCommand.equalsIgnoreCase("attack")) {
             player.attack(npc);
             npc.attack(player);

@@ -14,7 +14,6 @@ import com.maledictus.room.RoomFactory;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
@@ -22,23 +21,22 @@ import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
 import static com.maledictus.Json.returnGameText;
-import static com.maledictus.Json.winningItem;
 
 public class Game {
 
-    private final Map<String, Room> roomMap = RoomFactory.getRoomMap();
-    private final GameMusic gameMusic = new GameMusic();
+    private static final Map<String, Room> roomMap = RoomFactory.getRoomMap();
+    private  final GameMusic gameMusic = new GameMusic();
     private final BattleMusic battleMusic = new BattleMusic();
-    private Map<Integer, NPC> npcMap;
-    private Player playerOne;
-    private ArrayList<Item> roomItems;
-    private Map<String, String> roomDirections;
-    private Room currentRoom;
-    private String errorMsg = null;
-    private String successMsg = null;
-    private boolean inBattle = false;
-    private Battle battle;
-    private int battleEnemy;
+    private static Map<Integer, NPC> npcMap;
+    private static Player playerOne;
+    private static ArrayList<Item> roomItems;
+    private static Map<String, String> roomDirections;
+    private static Room currentRoom;
+    private static String errorMsg = null;
+    private static String successMsg = null;
+    private static boolean inBattle = false;
+    private static Battle battle;
+    private static int battleEnemy;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -47,8 +45,17 @@ public class Game {
     public boolean doesPlayerHaveHellBlade= false;
     public boolean hasPlayerWon = false;//boolean to measure win game for getting the sword
     public boolean hasPlayerLost = false;//boolean for loss, that happens when Hp hits 0
+    private static Game instance;
 
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    }
+
+
+    public static Game getInstance() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        if(instance == null) {
+            instance = new Game();
+        }
+        return instance;
     }
 
     public void initiateGame() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
@@ -120,47 +127,6 @@ public class Game {
         return startGame;
     }
 
-    public void displaySplash() throws IOException, org.json.simple.parser.ParseException {
-//        boolean play = true;
-
-//        String titleBanner = null;
-//        try {
-//            titleBanner = Files.readString(Path.of("resources/data/splash_banner.txt"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Printer.print(titleBanner);
-//        Printer.print(returnGameText("2") + "\n");
-//        startGame();
-
-
-
-//
-//        boolean play = true;
-//
-////        //URL titleBanner = null;
-//        URL titleBanner = Game.class.getResource("data/splash_banner.txt");
-//        //Printer.print(titleBanner);
-//        Printer.print(returnGameText("2") + "\n");
-//
-//        while (play) {
-//
-//            Printer.print(returnGameText("3"));
-//            Printer.print(returnGameText("4"));
-//
-//            String startGame = scannerUserInput();
-//
-//            if (startGame.equals("1")) {
-//                displayIntroText();
-//                play = false;
-//            } else if (startGame.equals("2")) {
-//                Printer.print("Exiting the game...");
-//                System.exit(1);
-//            } else {
-//                String errorMsg = ANSI_RED+ "Invalid Selection.  Please enter [1] to start game or [2] to quit." +ANSI_RESET;
-//            }
-//        }
-    }
 
     public void displayGameMap() {
         boolean invalidSelection = true;
@@ -193,6 +159,14 @@ public class Game {
             round = false;
             Printer.print("You're dead, D. E. D.");
         }
+        if (validateIfPlayerWonBasedONIfTheyHveTheHellBlade()){
+            Printer.print("OMG you do have the hell blade");
+            setDoesPlayerHaveHellBlade(true);
+            Printer.print("omg you won");
+            setHasThePlayerWon(true);
+//            create timer then exit!
+            System.exit(0);
+                }
         boolean test = round && this.inBattle;
         System.out.println("BATLLE " + test);
 
@@ -228,22 +202,27 @@ public class Game {
         if (round && this.inBattle) {
             displayBattleCommands();
             GUI gui = GUI.getInstance();
-            gui.getInputtedUser().addActionListener(e -> {
-                this.battle.start();
-                this.battle.setCombat(false);
-                if (!this.battle.isCombat()) {
-                    this.inBattle = false;
-                }
-                this.battleMusic.stopMusic();
-                this.gameMusic.playMusic();
-                Printer.print("is it getting here?");
-                npcMap.remove(battleEnemy);
-                try {
-                    this.start();
-                } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
-                    ex.printStackTrace();
-                }
-            });
+            this.battle.battleStart();
+//            fight(tester);
+//            boolean fight = this.battle.start();
+//            System.out.println("PRE FIGHT CHECK");
+//            while(fight) {
+//                System.out.println("RESETTING COMBAT TO FALSE");
+//                this.battle.setCombat(false);
+//                if (!this.battle.isCombat()) {
+//                    System.out.println("NOT IN BATTLE");
+//                    this.inBattle = false;
+//                }
+//                this.battleMusic.stopMusic();
+////            GameMusic.playMusic();
+//                npcMap.remove(battleEnemy);
+//                try {
+//                    this.start();
+//                } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+
 
         }
 //        boolean round = true;
@@ -323,6 +302,24 @@ public class Game {
 //
 //            // getUserInput(userInput);
 //        }
+    }
+
+    public void endfight() throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException {
+
+        System.out.println("RESETTING COMBAT TO FALSE");
+        this.battle.setCombat(false);
+        if (!this.battle.isCombat()) {
+            System.out.println("NOT IN BATTLE");
+            this.inBattle = false;
+        }
+        this.battleMusic.stopMusic();
+//            GameMusic.playMusic();
+        npcMap.remove(battleEnemy);
+        try {
+            this.start();
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+            ex.printStackTrace();
+        }
     }
 
 
@@ -481,6 +478,7 @@ public class Game {
                     if(current.equalsIgnoreCase(userInput[1]) && npc.getIsHostile()) {
                         this.inBattle = true;
                         this.battleEnemy = npc.getId();
+                        System.out.println("CREATED NEW BATTLE");
                         battle = new Battle(playerOne, npc);
                         gameMusic.stopMusic();
                         battleMusic.playMusic();
