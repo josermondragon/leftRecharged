@@ -18,24 +18,8 @@ public class Main {
         game.initiateGame();
 
         GameMusic gameMusic = new GameMusic();
-        gameMusic.playMusic();
-        GUI giu = new GUI();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//        gameMusic.playMusic();
+//        GUI giu = new GUI();
 
     }
 }
