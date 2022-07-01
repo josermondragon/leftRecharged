@@ -39,6 +39,8 @@ public class Json {
     public static Map<Integer, NPC> dungeonNpcMap = new HashMap<>();
     public static ArrayList<Item> items6 = new ArrayList<>();
     public static Map<Integer, NPC> throneRoomNpcMap = new HashMap<>();
+    public static Item winningItem = ItemFactory.createItem("hell blade","an old sword that still glints pink in the light", ItemType.WEAPON, WeaponType.SLASHING );
+
 
     public static void jsonWrite() throws FileNotFoundException {
         JSONObject data = new JSONObject();
@@ -80,6 +82,10 @@ public class Json {
 
         data.put("room12", "Crypt");
         data.put("room12Description", "A stone chamber lined with coffins beneath the floor of the dungeon.");
+
+        data.put("room13", "Throne Room");
+        data.put("room13Description", "A once stately room that is not defunct, dark and dusted. Around the room, you see the vestiges of a once glorious room, rubies that no longer glint. Ahead of you... is a man, empty of life but still full of power. A crown sits slant on his head. ");
+
 
         ///game text///
 
@@ -153,6 +159,7 @@ public class Json {
 
         Map<String, String> crypt = new HashMap<>();
         crypt.put("west", "Dungeon");
+        crypt.put("south", "Throne Room");
         data.put("roomDirection12", crypt);
 
         ////items/////
@@ -174,14 +181,14 @@ public class Json {
         data.put("item6", "Iron War Hammer");
         data.put("item6Description", "BIG OL HAMMER");
 
-        data.put("room13Description", "A once stately room that is not defunct, dark and dusted. Around the room, you see the vestiges of a once glorious room, rubies that no longer glint. Ahead of you... is a man, empty of life but still full of power. A crown sits slant on his head. ");
+
 
         Map<String, String> throneRoom = new HashMap<>();
         throneRoom.put("north", "Crypt");
         data.put("roomDirection13", throneRoom);
 
 
-        data.put("item7", "King's HellSword");
+        data.put("item13", "King's HellSword");
         data.put("item7Description", "this once beautiful sword, in it's dullness, glints pinkish in the light...");
 
 
@@ -262,7 +269,25 @@ public class Json {
 
         return npcDialogue;
     }
+    ////////create item/room methods/////////
 
+    public static void createItems() throws IOException, ParseException, org.json.simple.parser.ParseException {
+        Item ironSword = ItemFactory.createItem(returnItemName("1"), returnItemDescription("1"), ItemType.WEAPON, WeaponType.SLASHING);
+        Item spear = ItemFactory.createItem(returnItemName("3"), returnItemDescription("3"), ItemType.WEAPON, WeaponType.PIERCING);
+        Item key = ItemFactory.createItem(returnItemName("4"), returnItemDescription("4"), ItemType.KEY, KeyType.DUNGEON);
+        Item wine = ItemFactory.createItem("Wine", "bottle of the finest red.", ItemType.POTION, PotionType.HEALING);
+        Item ring = ItemFactory.createItem("Wedding ring", "A wedding ring", ItemType.POTION, PotionType.HEALING);
+//creating the kings sword and then adding it to the appropriate list
+        Item kingSword = ItemFactory.createItem("Hell Blade","an old sword that still glints pink in the light", ItemType.WEAPON, WeaponType.SLASHING );
+
+        items.add(ironSword);
+        items2.add(spear);
+        items3.add(wine);
+        items4.add(ring);
+        items5.add(key);
+        items6.add(kingSword);
+
+    }
     public static void createNPCs() throws IOException, org.json.simple.parser.ParseException, ParseException {
         Map<Integer, String> librarianDialogue = new HashMap<>();
         librarianDialogue.put(1, "Look, I'm very busy, I have read every book at least 10,038... *closes book* okay make that 10,039 times, and I am still not any closer to figuring out a " +
@@ -324,10 +349,6 @@ public class Json {
         kingDialog.put(5, "....looting my kingdom. Killing my subjects......");
         kingDialog.put(6, "I think you need a real battle");
 
-        NPC king = NPCFactory.createKingNPC(13, 150, "the king of the castle!!!", "a man, heavy in stature, with skin barely hanging on the bone", true, Species.GHOST,  kingDialog, items6.get(0));
-
-        throneRoomNpcMap.put(king.getId(), king);
-
         Item healingPotion = ItemFactory.createItem(returnItemName("2"), returnItemDescription("2"), ItemType.POTION, PotionType.HEALING);
 
         Item ironWarHammer = ItemFactory.createItem(returnItemName("6"), returnItemDescription("6"), ItemType.WEAPON, WeaponType.BLUNT);
@@ -353,27 +374,12 @@ public class Json {
         ballRoomNpcMap.put(ballRoomGhost.getId(), ballRoomGhost);
 
         dungeonNpcMap.put(prisoner.getId(), prisoner);
+//        NPC king = NPCFactory.createKingNPC(13, 150, "The Fervent King", "a man, heavy in stature, with skin barely hanging on the bone", true, Species.SKELETON,  kingDialog, items6.get(0), EnemyType.STANDARD);
+        NPC aKing = NPCFactory.createNPCWithItem(7, 100, "The King", "the big guy", true, Species.SKELETON, EnemyType.STANDARD, items6.get(0));
+
+        throneRoomNpcMap.put(aKing.getId(), aKing);
 
     }
-
-    ////////create item/room methods/////////
-    public static void createItems() throws IOException, ParseException, org.json.simple.parser.ParseException {
-        Item ironSword = ItemFactory.createItem(returnItemName("1"), returnItemDescription("1"), ItemType.WEAPON, WeaponType.SLASHING);
-        Item spear = ItemFactory.createItem(returnItemName("3"), returnItemDescription("3"), ItemType.WEAPON, WeaponType.PIERCING);
-        Item key = ItemFactory.createItem(returnItemName("4"), returnItemDescription("4"), ItemType.KEY, KeyType.DUNGEON);
-
-        Item wine = ItemFactory.createItem("Wine", "bottle of the finest red.", ItemType.POTION, PotionType.HEALING);
-        Item ring = ItemFactory.createItem("Wedding ring", "A wedding ring", ItemType.POTION, PotionType.HEALING);
-        Item kingSword = ItemFactory.createItem("King's Hellsword","this once beautiful sword, in it's dullness, glints pinkish in the light...", ItemType.WEAPON, WeaponType.SLASHING );
-        items6.add(kingSword);
-
-        items.add(ironSword);
-        items2.add(spear);
-        items3.add(wine);
-        items4.add(ring);
-        items5.add(key);
-    }
-
 
     public static void createRoomList () throws IOException, ParseException, org.json.simple.parser.ParseException {
         RoomFactory.createRoom(returnRoomName("0"), returnRoomDescription("0"), returnRoomDirections("0"), false, KeyType.DUNGEON);
@@ -401,9 +407,13 @@ public class Json {
         RoomFactory.createRoom(returnRoomName("11"), returnRoomDescription("11"), returnRoomDirections("11"), false, KeyType.DUNGEON, items3);
 
         RoomFactory.createRoom(returnRoomName("12"), returnRoomDescription("12"), returnRoomDirections("12"), false, KeyType.DUNGEON, items2, cryptNpcMap);
-        RoomFactory.createRoom(returnRoomName("13"), returnRoomDescription("13"), returnRoomDirections("13"), false, KeyType.DUNGEON,  throneRoomNpcMap);
+        RoomFactory.createRoom(returnRoomName("13"), returnRoomDescription("13"), returnRoomDirections("13"), false, KeyType.DUNGEON, items6,  throneRoomNpcMap);
 
 
     }
 
+    public static void main(String[] args) {
+        Printer.print(items6.get(0).getName());
+    }
 }
+

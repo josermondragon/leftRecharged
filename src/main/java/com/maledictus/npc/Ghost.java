@@ -24,7 +24,6 @@ public class Ghost extends NPC implements Ally {
     public Ghost(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Item item) {
         super(id, hitPoints, name, description, isHostile, species);
         this.dialogue = dialogue;
-        this.quest = quest;
     }
 
     public String questTalk(int playerChoice) {
