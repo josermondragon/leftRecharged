@@ -1,6 +1,5 @@
 package com.maledictus.client;
 
-import com.maledictus.GUI;
 import com.maledictus.Game;
 import com.maledictus.WelcomePage;
 import com.maledictus.music.GameMusic;
