@@ -21,9 +21,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.maledictus.Input.scannerUserInput;
 import static com.maledictus.Json.returnGameText;
+import static com.maledictus.Json.winningItem;
 
 public class Game {
 
@@ -45,7 +47,9 @@ public class Game {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_BLUE = "\u001B[34m";
-    public boolean hasPlayerWon = false;//boolean to measure win game
+    public boolean doesPlayerHaveHellBlade= false;
+    public boolean hasPlayerWon = false;//boolean to measure win game for getting the sword
+    public boolean hasPlayerLost = false;//boolean for loss, that happens when Hp hits 0
 
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     }
@@ -128,6 +132,8 @@ public class Game {
             Printer.print("You're dead, D. E. D.");
         }
         while (round && !this.inBattle) {
+//            check if they're in the throne room to intitiate winning validation
+
 
             displayConsoleCommands();
             // Methods will check if an error or success message needs to be printed
@@ -144,17 +150,39 @@ public class Game {
             // Check to see if user input is expected array format
 
             getUserInput(userInput);
+            if(Objects.equals(currentRoom.getName(), "Throne Room")){
+                if(validateIfPlayerHasZeroHP()){
+                    Printer.print("YOU LOSE");
+                }else{
+                    Printer.print("may you keep being alive");
+                    System.out.println(doesPlayerHaveTheHellBlade()+ " should be true ") ;
+                }
+
+
+                if (validateIfPlayerWonBasedONIfTheyHveTheHellBlade()){
+                    Printer.print("OMG you do have the hell blade");
+                    setDoesPlayerHaveHellBlade(true);
+                    Printer.print("omg you won");
+                    setHasThePlayerWon(true);
+//            create timer then exit!
+                }else{
+                    Printer.print("guess you don't have it");
+                }
+            }
         }
         while (round && this.inBattle) {
             displayBattleCommands();
             this.battle.start();
             this.battle.setCombat(false);
+            if(this.battle.areThereSpoils()){
+                this.roomItems.add(this.battle.getSpoilsOfWar());
+//
             if(!this.battle.isCombat()) {
                 this.inBattle = false;
             }
-            if(this.battle.areThereSpoils()){
-                playerOne.addItem(this.battle.getSpoilsOfWar());
-//             the idea is to do validatioin for if the item is in the player's inventory. if it's there, then the player wins, if it's false, then the player continues playing.
+
+//                playerOne.addItem(this.battle.getSpoilsOfWar());
+//             the idea is to do validation for if the item is in the player's inventory. if it's there, then the player wins, if it's false, then the player continues playing.
 //                for (Item item: playerOne.getInventory()
 //                     ) {
 //
@@ -176,6 +204,8 @@ public class Game {
             // getUserInput(userInput);
         }
     }
+
+
 
     private void dropItem(String[] userInput) {
         boolean itemFound = false;
@@ -313,6 +343,57 @@ public class Game {
             } else {
                 errorMsg = ANSI_RED + "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')" + ANSI_RESET;
             }
+    }
+//return boolean value after validating if character has that or not
+    public boolean doesPlayerHaveTheHellBlade() {
+        return playerOne.getInventory().containsKey("Hell Blade");
+    }
+//    getter
+    public boolean returnDoesPlayerHaveHellBlackField(){
+        return doesPlayerHaveHellBlade;
+    }
+//    setter
+    public void setDoesPlayerHaveHellBlade(boolean doesPlayerHaveHellBlade) {
+        this.doesPlayerHaveHellBlade = doesPlayerHaveHellBlade;
+    }
+
+//    validation for if the player won
+    public boolean validateIfPlayerWonBasedONIfTheyHveTheHellBlade(){
+        return doesPlayerHaveTheHellBlade();
+    }
+//getter
+    public boolean hasThePlayerWon() {
+        return hasPlayerWon;
+    }
+///setter throw the validate IfPlayer one into the param.
+    public void setHasThePlayerWon(boolean hasPlayerWon) {
+        this.hasPlayerWon = hasPlayerWon;
+    }
+//validate if the player has died
+    public boolean validateIfPlayerHasZeroHP(){
+        return playerOne.getHitPoints() < 0;
+    }
+    public boolean returnHasThePlayerDied() {
+        return hasPlayerLost;
+    }
+
+//    public void main(String[] args) {
+//        if(validateIfPlayerHasZeroHP()){
+//            Printer.print("YOU LOSE");
+//        }else{
+//            Printer.print("may keep being alive");
+//        }
+//
+//        if (validateIfPlayerWonBasedONIfTheyHveTheHellBlade()){
+//            Printer.print("OMG you do have the hell blade");
+//            setDoesPlayerHaveHellBlade(true);
+//            Printer.print("omg you won");
+//            setHasThePlayerWon(true);
+////            create timer then exit!
+//        }
+//    }
+    public void setHasThePlayerDied(boolean hasPlayerLost) {
+        this.hasPlayerLost = hasPlayerLost;
     }
 
     private void talkToNpc(String[] userInput) {

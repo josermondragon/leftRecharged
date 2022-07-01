@@ -14,9 +14,9 @@ public class NPCFactory {
 
     }
 
-    public static NPC createKingNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Item item) {
+    public static NPC createKingNPC(int id, int hitPoints, String name, String description, boolean isHostile, Species species, Map<Integer, String> dialogue, Item item,EnemyType enemy) {
 
-        Ghost npc = new Ghost(id, hitPoints, name, description, false, species, dialogue, item);
+        Skeleton npc = new Skeleton(id, hitPoints, name, description, false, species, dialogue, item, enemy);
 
         npcList.put(npc.getId(), npc);
         return npc;
@@ -49,6 +49,34 @@ public class NPCFactory {
                 break;
             case SKELETON:
                 npc = new Skeleton(id, hitPoints, name, description, true, species, enemyType);
+                break;
+            case SPIDER:
+                npc = new Spider(id, hitPoints, name, description, true, species, enemyType);
+                break;
+            case GHOUL:
+                npc = new Ghoul(id, hitPoints, name, description, true, species, enemyType);
+                break;
+            case ZOMBIE:
+                npc = new Zombie(id, hitPoints, name, description, true, species, enemyType);
+                break;
+        }
+
+        assert npc != null;
+        npcList.put(npc.getId(), npc);
+        return npc;
+    }
+
+    public static NPC createNPCWithItem(int id, int hitPoints, String name, String description, boolean isHostile, Species species, EnemyType enemyType, Item item) {
+
+        NPC npc = null;
+
+        switch (species) {
+            case BANSHEE:
+                npc = new Banshee(id, hitPoints, name, description, true, species, enemyType);
+                break;
+//                i only added the item to this npc for testing
+            case SKELETON:
+                npc = new Skeleton(id, hitPoints, name, description, true, species, enemyType, item);
                 break;
             case SPIDER:
                 npc = new Spider(id, hitPoints, name, description, true, species, enemyType);

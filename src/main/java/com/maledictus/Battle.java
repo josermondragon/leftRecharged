@@ -31,6 +31,7 @@ public class Battle {
         //add to start method after while loop
         if(npc.getHitPoints()==0 && (npc.getItem() != null)){
             setSpoilsOfWar(npc.getItem());
+            System.out.println(npc.getItem());
         }
 
     }
@@ -38,6 +39,7 @@ public class Battle {
     public void battleRound(String userCommand) {
         if (userCommand.equalsIgnoreCase("attack")) {
             player.attack(npc);
+            Printer.print("the npc used their weapon " + npc.getItem());
             npc.attack(player);
         } else if (userCommand.equalsIgnoreCase("run")) {
             this.player.setHitPoints(0);

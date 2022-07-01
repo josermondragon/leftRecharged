@@ -28,7 +28,5 @@ class npcCreate {
         Banshee banny = new Banshee(8, 50, "mareger"," an AMAZING banshee", true, Species.BANSHEE, bannyDialogue, healPotion);
 
 
-
-
     }
 }
