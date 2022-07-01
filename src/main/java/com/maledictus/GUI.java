@@ -3,10 +3,7 @@ package com.maledictus;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 
 public class GUI extends JFrame {
@@ -35,7 +32,7 @@ public class GUI extends JFrame {
 
         panel1.setLayout(layout);
 
-        //game
+        //where the game information renders
         JLabel game = new JLabel("Game: ");
         jta = new JTextPane();
 //        jta.setContentType("text/html;charset=UTF-16");
@@ -52,6 +49,7 @@ public class GUI extends JFrame {
         panel1.add(textScrollPane(jta), abc);
         //user input
         JLabel userInput = new JLabel("Type here your option or command: ");
+
 
         JTextField inputtedUser = new JTextField("",15);
 
@@ -121,16 +119,6 @@ public class GUI extends JFrame {
         abc.gridy = 1;
         panel1.add(label1,abc);
 
-
-
-
-
-
-
-
-
-
-
         //button for map and instructions to show themselves.
         JButton map = new JButton("map");
         JButton instructions = new JButton("instructions");
@@ -159,7 +147,6 @@ public class GUI extends JFrame {
         fj.add(panel1);
         fj.setVisible(true);
     }
-
 
     public static GUI getInstance() {
         if(instance == null) {
@@ -193,16 +180,14 @@ public class GUI extends JFrame {
         WelcomePage.Map();
     }
 
-//    private void userInputEnter(KeyEvent arg0){
-//        if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-//            String inputtedUser = "";
-//            jta.setText("Hello" + inputtedUser);
-//            System.out.println("Enter was pressed");
-//            }
-//
-//        }
+    private void userInputEnter(KeyEvent arg0){
+        if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+            String inputtedUser = "";
+            jta.setText("Hello" + inputtedUser);
+            System.out.println("Enter was pressed");
+            }
 
-
+        }
 
     public void buttonAddText(String string) {
 
