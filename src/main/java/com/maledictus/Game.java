@@ -298,10 +298,6 @@ public class Game {
             if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
                 itemFound = true;
                 item.use();
-//                TODO: fix potion
-                if(item.getItemType() == ItemType.POTION) {
-
-                }
                 playerOne.removeItem(item);
                 break;
             }
@@ -380,7 +376,7 @@ public class Game {
                 useItem(userInput);
                 break;
             case "heal":
-                useItem(userInput);
+                healPlayer();
                 break;
             case "talk" :
                 talkToNpc(userInput);
@@ -412,7 +408,31 @@ public class Game {
 
     }
 
-//return boolean value after validating if character has that or not
+    private void healPlayer() {
+
+        boolean itemFound = false;
+        for(Item item : playerOne.getInventory().values()) {
+            if(item.getName().equalsIgnoreCase("Healing Potion")) {
+                itemFound = true;
+                playerOne.removeItem(item);
+                playerOne.heal(50);
+                successMsg = "You feel rejuvenated! You now have: " + playerOne.getHitPoints() + " hit points";
+                printSuccessMsg();
+                break;
+            }
+        }
+        if (!itemFound) {
+            Printer.print(ANSI_RED, "You do not have any potions at this time");
+        }
+        try {
+            start();
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    //return boolean value after validating if character has that or not
     public boolean doesPlayerHaveTheHellBlade() {
         return playerOne.getInventory().containsKey("Hell Blade");
     }
