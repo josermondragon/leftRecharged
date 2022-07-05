@@ -225,6 +225,7 @@ public class Game {
 
         if (round && this.inBattle) {
             displayBattleCommands();
+            npcMap.get(battleEnemy).setItem(items6.get(0));
             this.battle.battleStart();
 //            fight(tester);
 //            boolean fight = this.battle.start();
@@ -335,7 +336,7 @@ public class Game {
             this.inBattle = false;
         }
         if(Objects.equals(npcMap.get(battleEnemy).getName(), "The King")){
-            currentRoom.addItem(items6.get(0));
+            currentRoom.addItem(npcMap.get(battleEnemy).getItem());
             System.out.println("item added to room");
         }
             BattleMusic.stopMusic();
