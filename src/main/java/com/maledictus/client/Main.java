@@ -17,9 +17,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
         WelcomePage.InitImage();
-        sleep(2000);
-        GameMusic gameMusic = new GameMusic();
-      // gameMusic.playMusic();
+
+        sleep(1000);
+
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             Game game = null;
