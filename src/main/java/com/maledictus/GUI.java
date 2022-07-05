@@ -150,6 +150,19 @@ public class GUI extends JFrame {
             }
         });
 
+
+        JButton volumeOn = new JButton("Volume On");
+        abc.gridx = 60;
+        abc.gridy = 3;
+        panel1.add(volumeOn, abc);
+        volumeOn.addActionListener(e -> {
+            try {
+                buttonPressed4();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
         return panel1;
     }
 
@@ -178,7 +191,12 @@ public class GUI extends JFrame {
 
         static void buttonPressed3 () throws IOException {
             GameMusic.stopMusic();
-            //BattleMusic.stopMusic();
+
+    }
+
+        static void buttonPressed4 () throws IOException {
+            GameMusic.playMusic();
+
     }
 
     public void addGameText(String string){
