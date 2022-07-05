@@ -412,8 +412,5 @@ public class Json {
 
     }
 
-    public static void main(String[] args) {
-        Printer.print(items6.get(0).getName());
-    }
 }
 

@@ -1,6 +1,5 @@
 package com.maledictus;
 
-import com.maledictus.music.BattleMusic;
 import com.maledictus.music.GameMusic;
 
 import javax.swing.*;
@@ -10,7 +9,9 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public class GUI extends JFrame {
@@ -22,7 +23,7 @@ public class GUI extends JFrame {
 
 
     public JTextField getInputtedUser() {
-        return this.inputtedUser;
+        return inputtedUser;
     }
 
     public GUI() {
@@ -78,7 +79,7 @@ public class GUI extends JFrame {
         panel1.add(inputtedUser, abc);
 
         //utilities like command(img) and options(img)
-        ImageIcon img = new ImageIcon();  //***
+        ImageIcon img ;
         img = new ImageIcon(GUI.class.getClassLoader().getResource("data/commands.png")); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
@@ -92,7 +93,7 @@ public class GUI extends JFrame {
                 }
             }
         });
-        ImageIcon img2 = new ImageIcon();  //***
+        ImageIcon img2 ;
         img2 = new ImageIcon(GUI.class.getClassLoader().getResource("data/options.png")); //***
         JLabel label1 = new JLabel(); //***
         label1.setIcon(img2);  //***
@@ -162,16 +163,6 @@ public class GUI extends JFrame {
             }
         });
 
-
-
-
-
-
-
-
-
-
-
         return panel1;
     }
 
@@ -181,18 +172,8 @@ public class GUI extends JFrame {
             }
             return instance;
         }
-        // Area that show the text in the game in real time
-        private static JTextArea textArea () {
-            JTextArea output = new JTextArea();
-            //output.setSize(600,200);
-            output.setLineWrap(true); // Text return to line, so no horizontal scrollbar
-            output.setForeground(Color.BLACK);
-            output.setBackground(Color.WHITE);
 
-            return output;
-        }
-
-        private static JScrollPane textScrollPane (JTextPane jta){
+    private static JScrollPane textScrollPane (JTextPane jta){
             JScrollPane scrollPane = new JScrollPane(jta);
             scrollPane.setBounds(0, 0, 500, 500);
             scrollPane.getViewport().setViewPosition(new Point(0, 0));
@@ -218,16 +199,7 @@ public class GUI extends JFrame {
 
     }
 
-        private void userInputEnter (KeyEvent arg0){
-            if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-                String inputtedUser = "";
-                jta.setText("Hello" + inputtedUser);
-                System.out.println("Enter was pressed");
-            }
-
-        }
-
-        public void buttonAddText (String string){
+    public void addGameText(String string){
         Document doc = jta.getDocument();
             try {
                 SimpleAttributeSet set = new SimpleAttributeSet();
@@ -240,7 +212,7 @@ public class GUI extends JFrame {
         }
 
 
-    public void buttonAddText (String string, Color color){
+    public void addGameText(String string, Color color){
         Document doc = jta.getDocument();
         try {
             SimpleAttributeSet set = new SimpleAttributeSet();

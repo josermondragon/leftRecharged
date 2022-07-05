@@ -15,7 +15,7 @@ import static java.lang.Thread.sleep;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         WelcomePage.InitImage();
 
         sleep(1000);
