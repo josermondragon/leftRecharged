@@ -533,7 +533,7 @@ public class Game {
                 start();
                 break;
         }
-        return input;
+
 //            if(userInput[0].equalsIgnoreCase("go")) {
 //                moveRoom(userInput);
 //            } else if(userInput[0].equalsIgnoreCase("take")) {
@@ -744,7 +744,7 @@ public class Game {
                     Printer.print("Maledictus is a console text-adventure game. You are a treasure hunter in seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n which was then taken into further production by Marcos Cardoso, Jose Mondragon and Samekh Resh");
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                     break;
@@ -752,7 +752,7 @@ public class Game {
                     GameMusic.stopMusic();
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                     break;
@@ -760,7 +760,7 @@ public class Game {
                     GameMusic.playMusic();
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                     break;
@@ -768,7 +768,7 @@ public class Game {
                     displayGameMap();
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                     break;
@@ -785,7 +785,7 @@ public class Game {
                     errorMsg = ANSI_RED + "Invalid Selection. Please try again." + ANSI_RESET;
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                     break;
