@@ -15,35 +15,24 @@ import static java.lang.Thread.sleep;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
+    public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
         WelcomePage.InitImage();
+
         sleep(1000);
 
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Game game = null;
-                try {
-                    game = new Game();
-                } catch (UnsupportedAudioFileException e) {
-                    e.printStackTrace();
-                } catch (LineUnavailableException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    game.initiateGame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (org.json.simple.parser.ParseException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedAudioFileException e) {
-                    e.printStackTrace();
-                } catch (LineUnavailableException e) {
-                    e.printStackTrace();
-                }
+
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            Game game = null;
+            try {
+                game = new Game();
+            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                assert game != null;
+                game.initiateGame();
+            } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException e) {
+                e.printStackTrace();
             }
         });
     }

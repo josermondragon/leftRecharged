@@ -3,7 +3,6 @@ package com.maledictus.room;
 import com.maledictus.item.Item;
 import com.maledictus.item.key.KeyType;
 import com.maledictus.npc.NPC;
-import com.maledictus.npc.NPCFactory;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -87,5 +86,9 @@ public class Room {
                 ", requiredKeyType=" + requiredKeyType +
                 ", npcMap=" + npcMap +
                 '}';
+    }
+
+    public void addItem(Item item) {
+        list.add(item);
     }
 }

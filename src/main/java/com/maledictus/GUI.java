@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -51,7 +53,11 @@ public class GUI extends JFrame {
         //where the game information renders
         JLabel game = new JLabel("Game: ");
         jta = new JTextPane();
+
         jta.setPreferredSize(new Dimension(600, 300));
+
+
+        jta.setBackground(Color.BLACK);
 
         jta.setEditable(false);
         abc.gridx = 0;
@@ -207,8 +213,9 @@ public class GUI extends JFrame {
         public void buttonAddText (String string){
         Document doc = jta.getDocument();
             try {
-//                jta.getDocument().insertString(0, string, null);
-                doc.insertString(doc.getLength(), string, null);
+                SimpleAttributeSet set = new SimpleAttributeSet();
+                StyleConstants.setForeground(set, Color.WHITE);
+                doc.insertString(doc.getLength(), string, set);
 
             } catch (BadLocationException exp) {
                 exp.printStackTrace();
@@ -216,8 +223,17 @@ public class GUI extends JFrame {
         }
 
 
+    public void buttonAddText (String string, Color color){
+        Document doc = jta.getDocument();
+        try {
+            SimpleAttributeSet set = new SimpleAttributeSet();
+            StyleConstants.setForeground(set, color);
+            doc.insertString(doc.getLength(), string, set);
 
-
+        } catch (BadLocationException exp) {
+            exp.printStackTrace();
+        }
+    }
 
     //Decorate main frame with Jlayer (Simulates a lamp in a dark house)
     class SpotlightLayerUI extends LayerUI<JPanel> {

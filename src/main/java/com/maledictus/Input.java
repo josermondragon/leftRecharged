@@ -20,7 +20,6 @@ public class Input {
 //        return line;
         System.out.println("DEBUG:::: ORIGINAL SCANNER CALL");
         return "hi";
-
     }
 
     public static String scannerTextInput(File text) {
