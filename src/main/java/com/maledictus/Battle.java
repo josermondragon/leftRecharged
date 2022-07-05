@@ -59,7 +59,10 @@ public  class Battle {
     public void battleRound(String userCommand) {
         if (userCommand.equalsIgnoreCase("attack")) {
             player.attack(npc);
-            npc.attack(player);
+            if(npc.getHitPoints() > 0){
+                npc.attack(player);
+            }
+
         } else if (userCommand.equalsIgnoreCase("run")) {
             this.player.setHitPoints(0);
             Printer.print("You attempt to run away.....");

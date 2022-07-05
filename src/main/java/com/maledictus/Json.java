@@ -407,7 +407,7 @@ public class Json {
         RoomFactory.createRoom(returnRoomName("11"), returnRoomDescription("11"), returnRoomDirections("11"), false, KeyType.DUNGEON, items3);
 
         RoomFactory.createRoom(returnRoomName("12"), returnRoomDescription("12"), returnRoomDirections("12"), false, KeyType.DUNGEON, items2, cryptNpcMap);
-        RoomFactory.createRoom(returnRoomName("13"), returnRoomDescription("13"), returnRoomDirections("13"), false, KeyType.DUNGEON, items6,  throneRoomNpcMap);
+        RoomFactory.createRoom(returnRoomName("13"), returnRoomDescription("13"), returnRoomDirections("13"), false, KeyType.DUNGEON,  throneRoomNpcMap);
 
 
     }
