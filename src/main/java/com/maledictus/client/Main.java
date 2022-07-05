@@ -17,9 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
         WelcomePage.InitImage();
-        sleep(3000);
-        GameMusic gameMusic = new GameMusic();
-      // gameMusic.playMusic();
+        sleep(1000);
 
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {

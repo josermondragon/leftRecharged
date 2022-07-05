@@ -1,5 +1,8 @@
 package com.maledictus;
 
+import com.maledictus.music.BattleMusic;
+import com.maledictus.music.GameMusic;
+
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.BadLocationException;
@@ -21,7 +24,6 @@ public class GUI extends JFrame {
     }
 
     public GUI() {
-
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame fj = new JFrame("MALEDICTUS... Cuz some things have to be done right...not left...");
         LayerUI<JPanel> layerUI = new SpotlightLayerUI();
@@ -29,30 +31,36 @@ public class GUI extends JFrame {
         JLayer<JPanel> jlayer = new JLayer<JPanel>(panel1, layerUI);
         fj.add(jlayer);
         fj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fj.setSize(800, 600);
+        fj.setSize(1000, 750);
         fj.setLocationRelativeTo(null);
         fj.setVisible(true);
-
         }
+
     private static JPanel createPanel() {
         GridBagConstraints abc = new GridBagConstraints();
         abc.fill = GridBagConstraints.BOTH;
+
         //panel1 that holds name (label and text field), btn for map and instructions
         JPanel panel1 = new JPanel();
+        panel1.setBackground(Color.GRAY);
+
         //setting up the grid
         GridBagLayout layout = new GridBagLayout();
         panel1.setLayout(layout);
+
         //where the game information renders
         JLabel game = new JLabel("Game: ");
         jta = new JTextPane();
+        jta.setPreferredSize(new Dimension(600, 300));
+
         jta.setEditable(false);
         abc.gridx = 0;
         abc.gridy = 0;
         panel1.add(game, abc);
         abc.gridx = 0;
         abc.gridy = 1;
-        //panel1.add(textScrollPane(jta),abc);
         panel1.add(textScrollPane(jta), abc);
+
         //user input
         JLabel userInput = new JLabel("Type here your option or command: ");
         inputtedUser = new JTextField("", 15);
@@ -92,18 +100,18 @@ public class GUI extends JFrame {
                 }
             }
         });
-        abc.gridx = 30;
-        abc.gridy = 1;
-        panel1.add(label, abc);
         abc.gridx = 60;
-        abc.gridy = 1;
+        abc.gridy = 4;
+        panel1.add(label, abc);
+        abc.gridx = 30;
+        abc.gridy = 4;
         panel1.add(label1, abc);
 
         //button for map and instructions to show themselves.
         JButton map = new JButton("map");
         JButton instructions = new JButton("instructions");
-        abc.gridx = 30;
-        abc.gridy = 2;
+        abc.gridx = 60;
+        abc.gridy = 1;
         panel1.add(map, abc);
         map.addActionListener(e -> {
             try {
@@ -112,8 +120,8 @@ public class GUI extends JFrame {
                 ex.printStackTrace();
             }
         });
-        abc.gridx = 60;
-        abc.gridy = 2;
+        abc.gridx = 30;
+        abc.gridy = 1;
         panel1.add(instructions, abc);
         instructions.addActionListener(e -> {
             try {
@@ -122,6 +130,28 @@ public class GUI extends JFrame {
                 ex.printStackTrace();
             }
         });
+
+        JButton volumeOff = new JButton("Volume Off");
+        abc.gridx = 30;
+        abc.gridy = 3;
+        panel1.add(volumeOff, abc);
+        volumeOff.addActionListener(e -> {
+            try {
+                buttonPressed3();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+
+
+
+
+
+
+
+
+
 
 
         return panel1;
@@ -136,6 +166,7 @@ public class GUI extends JFrame {
         // Area that show the text in the game in real time
         private static JTextArea textArea () {
             JTextArea output = new JTextArea();
+            //output.setSize(600,200);
             output.setLineWrap(true); // Text return to line, so no horizontal scrollbar
             output.setForeground(Color.BLACK);
             output.setBackground(Color.WHITE);
@@ -159,6 +190,11 @@ public class GUI extends JFrame {
             WelcomePage.Map();
         }
 
+        static void buttonPressed3 () throws IOException {
+            GameMusic.stopMusic();
+            //BattleMusic.stopMusic();
+    }
+
         private void userInputEnter (KeyEvent arg0){
             if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
                 String inputtedUser = "";
@@ -178,6 +214,11 @@ public class GUI extends JFrame {
                 exp.printStackTrace();
             }
         }
+
+
+
+
+
     //Decorate main frame with Jlayer (Simulates a lamp in a dark house)
     class SpotlightLayerUI extends LayerUI<JPanel> {
         private boolean mActive;
