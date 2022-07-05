@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
     public class BattleMusic {
-    private Clip audioClip;
+    private static Clip audioClip;
     private FloatControl gainControl;
 
     public BattleMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -30,7 +30,7 @@ import java.io.InputStream;
         audioClip.loop(audioClip.LOOP_CONTINUOUSLY);
     }
 
-    public void stopMusic() {
+    public static void stopMusic() {
         audioClip.stop();
     }
 }
