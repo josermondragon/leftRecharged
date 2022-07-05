@@ -42,13 +42,15 @@ public class Player {
     }
 
     public int attack(NPC npc) {
-        if(equipped) {
+        int damage = 30;
+        if(isEquipped()) {
             System.out.println("NPC hit points is " + npc.getHitPoints());
-            npc.setHitPoints(npc.getHitPoints() - 50);
+            damage = 50;
+            npc.setHitPoints(npc.getHitPoints() - damage);
             System.out.println("NPC hit points is " + npc.getHitPoints());
         } else {
             System.out.println("NPC hit points is " + npc.getHitPoints());
-            npc.setHitPoints(npc.getHitPoints() - 30);
+            npc.setHitPoints(npc.getHitPoints() - damage);
             System.out.println("NPC hit points is " + npc.getHitPoints());
         } return npc.getHitPoints();
     }
@@ -63,10 +65,6 @@ public class Player {
 
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
-    }
-
-    public void setEquipped(boolean equipped) {
-        this.equipped = equipped;
     }
 
     public boolean isEquipped() {
