@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import static com.maledictus.Input.scannerUserInput;
+import static com.maledictus.Json.items6;
 import static com.maledictus.Json.returnGameText;
 
 public class Game {
@@ -85,7 +86,7 @@ public class Game {
             playerOne = PlayerFactory.createPlayer(text);
             try {
                 start();
-            } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+            } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                 ex.printStackTrace();
             }
         });
@@ -153,21 +154,40 @@ public class Game {
         }
     }
 
-    private void start() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    private void start() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
+
+        if(doesPlayerHaveTheHellBlade()){
+            System.out.println("you actually have the award? ");
+            Thread.sleep(2000);
+            System.out.println("the spirit of tornomous awakens");
+            Thread.sleep(2000);
+            System.out.println(" a the hellblade begins to grow larger and larger, with eyes appearing on the hilt \n why thank you...");
+            Thread.sleep(2000);
+            System.out.println("been a while since I've seen the sun, ever since he took me to die with him... this dark decrepit place");
+            Thread.sleep(3000);
+            System.out.println("Can you take me to see the sun?");
+            Thread.sleep(3000);
+            System.out.println("YOU WON GAME OVER");
+            System.exit(0);
+        }else{
+            System.out.println("game ongoing");
+        }
         //        -------- START FUNCTION -------
         boolean round = true;
         if (playerOne.getHitPoints() == 0) {
             round = false;
             Printer.print("You're dead, D. E. D.");
         }
-        if (validateIfPlayerWonBasedONIfTheyHveTheHellBlade()){
-            Printer.print("OMG you do have the hell blade");
-            setDoesPlayerHaveHellBlade(true);
-            Printer.print("omg you won");
-            setHasThePlayerWon(true);
-//            create timer then exit!
-            System.exit(0);
-                }
+//        if (validateIfPlayerWonBasedONIfTheyHveTheHellBlade()){
+//            Printer.print("OMG you do have the hell blade");
+//            setDoesPlayerHaveHellBlade(true);
+//            Printer.print("omg you won");
+//            setHasThePlayerWon(true);
+////            create timer then exit!
+//            System.exit(0);
+//                }else{
+//            System.out.println("not winning yet love..");
+//        }
         boolean test = round && this.inBattle;
         System.out.println("BATLLE " + test);
 
@@ -194,7 +214,7 @@ public class Game {
                     getUserInput(userInput);
 //                    System.out.println("CALL TO START IN START");
 //                    start();
-                } catch (UnsupportedAudioFileException | LineUnavailableException | IOException | org.json.simple.parser.ParseException | ParseException ex) {
+                } catch (UnsupportedAudioFileException | LineUnavailableException | IOException | org.json.simple.parser.ParseException | ParseException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
             });
@@ -313,12 +333,17 @@ public class Game {
             System.out.println("NOT IN BATTLE");
             this.inBattle = false;
         }
+        if(Objects.equals(npcMap.get(battleEnemy).getName(), "The King")){
+            currentRoom.addItem(items6.get(0));
+            System.out.println("item added to room");
+        }
             BattleMusic.stopMusic();
             GameMusic.playMusic();
         npcMap.remove(battleEnemy);
+
         try {
             this.start();
-        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
@@ -341,7 +366,7 @@ public class Game {
         }
         try {
             start();
-        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
@@ -372,7 +397,7 @@ public class Game {
             }
         try {
             start();
-        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
@@ -393,7 +418,7 @@ public class Game {
         }
         try {
             start();
-        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
@@ -418,7 +443,7 @@ public class Game {
         try {
             System.out.println("PLAYER HEALTH: " + playerOne.getHitPoints());
             start();
-        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
@@ -453,12 +478,12 @@ public class Game {
             }
         try {
             start();
-        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
             ex.printStackTrace();
         }
         }
 
-    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, ParseException, org.json.simple.parser.ParseException {
+    private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, ParseException, org.json.simple.parser.ParseException, InterruptedException {
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
         String input = userInput[0].toLowerCase();
         switch (input) {
@@ -548,6 +573,10 @@ public class Game {
     public boolean doesPlayerHaveTheHellBlade() {
         return playerOne.getInventory().containsKey("Hell Blade");
     }
+
+    public boolean isKingDead(){
+        return npcMap.get(battleEnemy).getName() == "The King";
+    }
 //    getter
     public boolean returnDoesPlayerHaveHellBlackField(){
         return doesPlayerHaveHellBlade;
@@ -559,7 +588,7 @@ public class Game {
 
 //    validation for if the player won
     public boolean validateIfPlayerWonBasedONIfTheyHveTheHellBlade(){
-        return doesPlayerHaveTheHellBlade();
+        return (doesPlayerHaveTheHellBlade() && isKingDead()) ;
     }
 //getter
     public boolean hasThePlayerWon() {
@@ -596,7 +625,7 @@ public class Game {
         this.hasPlayerLost = hasPlayerLost;
     }
 
-    private void talkToNpc(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException {
+    private void talkToNpc(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException, InterruptedException {
         boolean npcFound = false;
         for (Map.Entry<Integer, NPC> npc : npcMap.entrySet()) {
             if (userInput[1].equalsIgnoreCase(npc.getValue().getName())) {
@@ -611,7 +640,7 @@ public class Game {
         }
     }
 
-    private void chooseDialog(NPC targetNpc) throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException {
+    private void chooseDialog(NPC targetNpc) throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException, InterruptedException {
         Ghost npc = (Ghost) targetNpc;
         GUI gui = GUI.getInstance();
 
@@ -636,7 +665,7 @@ public class Game {
                         npc.assignQuest(true);
                         try {
                             start();
-                        } catch (IOException | org.json.simple.parser.ParseException | UnsupportedAudioFileException | ParseException | LineUnavailableException ex) {
+                        } catch (IOException | org.json.simple.parser.ParseException | UnsupportedAudioFileException | ParseException | LineUnavailableException | InterruptedException ex) {
                             ex.printStackTrace();
                         }
                     }
@@ -662,14 +691,14 @@ public class Game {
                     Printer.print("\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     successMsg = npc.getName() + ": " + npc.questTalk(3);
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -763,7 +792,7 @@ public class Game {
                 case "7":
                     try {
                         start();
-                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                         ex.printStackTrace();
                     }
                     break;
@@ -775,7 +804,7 @@ public class Game {
             }
             try {
                 start();
-            } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+            } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
                 ex.printStackTrace();
             }
         });
