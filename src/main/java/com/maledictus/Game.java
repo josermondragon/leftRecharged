@@ -16,13 +16,10 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 
-import static com.maledictus.Input.scannerUserInput;
 import static com.maledictus.Json.items6;
 import static com.maledictus.Json.returnGameText;
 
@@ -74,7 +71,7 @@ public class Game {
         Json.createNPCs();
         Json.createRoomList();
         currentRoom = roomMap.get("Great Hall");
-        gameMusic.playMusic();
+        GameMusic.playMusic();
 
     }
 
@@ -115,7 +112,7 @@ public class Game {
 
     }
 
-    public String validatePlayerInput(String startGame) throws IOException, org.json.simple.parser.ParseException {
+    public void validatePlayerInput(String startGame) throws IOException, org.json.simple.parser.ParseException {
 //        ---------- VALIDATE PLAYER INPUT ---------
         if (startGame.equals("1")) {
             displayIntroText();
@@ -125,12 +122,11 @@ public class Game {
             System.exit(0);
         } else {
             errorMsg =  "Invalid Selection.  Please enter [1] to start game or [2] to quit." ;
+            printErrorMsg();
             startGame();
         }
-        return startGame;
     }
 
-//TODO: function may be obsolete given GUI implementation
     public void displayGameMap() {
         try{
             WelcomePage.Map();
@@ -155,20 +151,17 @@ public class Game {
             Thread.sleep(3000);
             System.out.println("YOU WON GAME OVER");
             System.exit(0);
-        }else{
-            System.out.println("game ongoing");
         }
-        //        -------- START FUNCTION -------
+
         boolean round = true;
         if (playerOne.getHitPoints() == 0) {
             round = false;
             Printer.print("You're dead, D. E. D.");
         }
 
-        if (round && !this.inBattle) {
+        if (round && !inBattle) {
             // Methods will check if an error or success message needs to be printed
-            printSuccessMsg();
-            printErrorMsg();
+
             Printer.print(ANSI_YELLOW, "\n Enter a command or enter [options] to see game options:" );
 
 
@@ -189,20 +182,20 @@ public class Game {
             });
         }
 
-        if (round && this.inBattle) {
+        if (round && inBattle) {
             displayBattleCommands();
             npcMap.get(battleEnemy).setItem(items6.get(0));
-            this.battle.battleStart();
+            battle.battleStart();
         }
     }
 
-    public void endfight() {
+    public void endFight() {
 
-        this.battle.setCombat(false);
-        if (!this.battle.isCombat()) {
-
-            this.inBattle = false;
+        battle.setCombat(false);
+        if (!battle.isCombat()) {
+            inBattle = false;
         }
+
         if(Objects.equals(npcMap.get(battleEnemy).getName(), "The King")){
             currentRoom.addItem(npcMap.get(battleEnemy).getItem());
             System.out.println("item added to room");
@@ -226,6 +219,7 @@ public class Game {
                 playerOne.removeItem(item);
                 roomItems.add(item);
                 successMsg = item.getName() + " was dropped from your inventory.";
+                printSuccessMsg();
                 break;
             }
         }
@@ -247,6 +241,7 @@ public class Game {
                 if(userInput[1].equalsIgnoreCase(item.getKey())) {
                     itemFound = true;
                     successMsg = "Inspect: " +  item.getValue().getDescription();
+                    printSuccessMsg();
                     break;
                 }
             }
@@ -255,6 +250,7 @@ public class Game {
                     if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
                         itemFound = true;
                         successMsg = "Inspect: " + item.getDescription();
+                        printSuccessMsg();
                         break;
                     }
                 }
@@ -262,6 +258,7 @@ public class Game {
 
             if (!itemFound) {
                 errorMsg = "INVALID ITEM ERROR: You wrote inspect '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')" ;
+                printErrorMsg();
             }
         try {
             start();
@@ -279,11 +276,13 @@ public class Game {
                 roomItems.remove(item);
                 displayConsoleCommands();
                 successMsg = item.getName() + " was added to your inventory.";
+                printSuccessMsg();
                 break;
             }
         }
         if (!itemFound) {
             errorMsg = "INVALID ITEM ERROR: You wrote take '" + userInput[1] + "' that is not a valid item option, please try again. (Example: 'take iron sword')" ;
+            printErrorMsg();
         }
         try {
             start();
@@ -309,6 +308,7 @@ public class Game {
         }
         if(!itemFound) {
             errorMsg = userInput[1] + " is not in your inventory!";
+            printErrorMsg();
         }
         try {
             System.out.println("PLAYER HEALTH: " + playerOne.getHitPoints());
@@ -332,8 +332,10 @@ public class Game {
                         currentRoom = roomMap.get(direction.getValue());
                         roomItems = currentRoom.getItems();
                         successMsg = "You used the " + foundKey.getName() + " and unlocked the door to the " + targetRoom.getName() + ".\nYou went " + targetDirection + " into the " + targetRoom.getName();
+                        printSuccessMsg();
                     } else {
                         successMsg = "WARNING: You tried to go to the room located in the " + targetDirection + " direction. The door to this room is locked, you must find the proper key first. \nCome back when you have the right key." ;
+                        printSuccessMsg();
                         break;
                     }
                 } else if (userInput[1].equalsIgnoreCase(targetDirection) && !targetRoom.isLocked()) {
@@ -341,10 +343,12 @@ public class Game {
                     currentRoom = roomMap.get(direction.getValue());
                     roomItems = currentRoom.getItems();
                     successMsg = "You went " + targetDirection + " into the " + targetRoom.getName();
+                    printSuccessMsg();
                 }
             }
             if (!roomFound) {
                 errorMsg =  "INVALID LOCATION ERROR: You wrote go '" + userInput[1] + "' that is not a valid room option, please try again. (Example: 'go north')" ;
+                printErrorMsg();
             }
         try {
             displayConsoleCommands();
@@ -389,10 +393,10 @@ public class Game {
                 for(NPC npc : currentNPCs.values()) {
                     String current = npc.getName();
                     if(current.equalsIgnoreCase(userInput[1]) && npc.getIsHostile()) {
-                        this.inBattle = true;
-                        this.battleEnemy = npc.getId();
+                        inBattle = true;
+                        battleEnemy = npc.getId();
                         battle = new Battle(playerOne, npc);
-                        gameMusic.stopMusic();
+                        GameMusic.stopMusic();
                         battleMusic.playMusic();
 //                        call to start - may not work
                         start();
@@ -401,6 +405,7 @@ public class Game {
                 break;
             default:
                 errorMsg =  "INVALID ACTION ERROR: user input of '" + userInput[0] + "' is an invalid action input. (Example: 'go', 'take')" ;
+                printErrorMsg();
                 start();
                 break;
         }
@@ -410,45 +415,6 @@ public class Game {
 //return boolean value after validating if character has that or not
     public boolean doesPlayerHaveTheHellBlade() {
         return playerOne.getInventory().containsKey("Hell Blade");
-    }
-
-
-    public boolean isKingDead(){
-        return npcMap.get(battleEnemy).getName() == "The King";
-    }
-
-//    getter
-    public boolean returnDoesPlayerHaveHellBlackField(){
-        return doesPlayerHaveHellBlade;
-    }
-
-//    setter
-    public void setDoesPlayerHaveHellBlade(boolean doesPlayerHaveHellBlade) {
-        this.doesPlayerHaveHellBlade = doesPlayerHaveHellBlade;
-    }
-
-//    validation for if the player won
-    public boolean validateIfPlayerWonBasedONIfTheyHveTheHellBlade(){
-        return (doesPlayerHaveTheHellBlade() && isKingDead()) ;
-    }
-
-//getter
-    public boolean hasThePlayerWon() {
-        return hasPlayerWon;
-    }
-
-///setter throw the validate IfPlayer one into the param.
-    public void setHasThePlayerWon(boolean hasPlayerWon) {
-        this.hasPlayerWon = hasPlayerWon;
-    }
-
-//validate if the player has died
-    public boolean validateIfPlayerHasZeroHP(){
-        return playerOne.getHitPoints() < 0;
-    }
-
-    public boolean returnHasThePlayerDied() {
-        return hasPlayerLost;
     }
 
     private void talkToNpc(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException, InterruptedException {
@@ -463,13 +429,13 @@ public class Game {
         }
         if (!npcFound) {
             errorMsg = "INVALID NPC ERROR: You wrote talk '" + userInput[1] + "' that is not a valid NPC option, please try again. (Example: 'talk ghostly soldier')";
+            printErrorMsg();
         }
     }
 
     private void chooseDialog(NPC targetNpc) throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException, InterruptedException {
         Ghost npc = (Ghost) targetNpc;
         GUI gui = GUI.getInstance();
-
 
         if (npc.getQuest() == null || (!npc.getQuestStatus() && !npc.getQuest().isCompleted())) {
 
@@ -497,9 +463,11 @@ public class Game {
         }
         // active quest
         else if (npc.getQuestStatus() && !npc.getQuest().isCompleted()) {
-            System.out.println("DEBUG:::: ACTIVE QUEST ::::");
             successMsg = npc.getName() + ": " + npc.questTalk(1);
+            printSuccessMsg();
+
             Printer.print("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
+
             gui.getInputtedUser().addActionListener(e -> {
                 String questDialogChoice = gui.getInputtedUser().getText();
                 gui.getInputtedUser().setText("");
@@ -507,6 +475,7 @@ public class Game {
                 if (questDialogChoice.equals("1") && playerOne.getInventory().containsKey(npc.getQuestWinCondition())) {
                     playerOne.removeItem(playerOne.getInventory().get(npc.getQuestWinCondition()));
                     successMsg = npc.getName() + ": " + npc.questTalk(2) + "\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName();
+                    printSuccessMsg();
                     npc.setQuestCompleted(true);
                     npc.assignQuest(false);
                     playerOne.addItem(npc.giveQuestReward());
@@ -518,6 +487,7 @@ public class Game {
                     }
                 } else {
                     successMsg = npc.getName() + ": " + npc.questTalk(3);
+                    printSuccessMsg();
                     try {
                         start();
                     } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
@@ -528,6 +498,7 @@ public class Game {
 
         } else {
             successMsg = npc.getName() + ": " + npc.questTalk(4);
+            printSuccessMsg();
             start();
         }
 
@@ -535,9 +506,8 @@ public class Game {
 
     private void displayOptions() {
         GUI gui = GUI.getInstance();
-        Printer.print("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.\n8 to change game volume");
+        Printer.print("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.\n");
         gui.getInputtedUser().addActionListener(e -> {
-            System.out.println(e.getSource());
             String optionInput = gui.getInputtedUser().getText();
             gui.getInputtedUser().setText("");
             gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
@@ -596,10 +566,9 @@ public class Game {
                         ex.printStackTrace();
                     }
                     break;
-                case "8":
-                    changeVolume();
                 default:
                     errorMsg =  "Invalid Selection. Please try again." ;
+                    printErrorMsg();
                     try {
                         start();
                     } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
@@ -610,31 +579,6 @@ public class Game {
         });
     }
 
-    private void changeVolume() {
-        Printer.print("1 for low\n2 for med low\n3 for medium\n4 for med-high\n5 for high");
-        String choice = scannerUserInput();
-        switch (choice) {
-            case "1":
-                gameMusic.setMusicLow();
-                break;
-            case "2":
-                gameMusic.setMusicMidLow();
-                break;
-            case "3":
-                gameMusic.setMusicMidRange();
-                break;
-            case "4":
-                gameMusic.setMusicMidHigh();
-                break;
-            case "5":
-                gameMusic.setMusicHigh();
-                break;
-            default:
-                Printer.print(ANSI_RED , "INVALID ENTRY: must use the letters 1 through 5 for volume manipulation");
-                changeVolume();
-                break;
-        }
-    }
 
     private void displayCurrentRoomActions() {
         if(currentRoom != null) {

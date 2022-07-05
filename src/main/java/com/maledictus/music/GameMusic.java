@@ -25,7 +25,7 @@ public class GameMusic {
         audioClip = (Clip) AudioSystem.getLine(info);
         audioClip.open(audioStream);
         gainControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-8.0f);
+        gainControl.setValue(-17.0f);
     }
 
     public static void playMusic() {
