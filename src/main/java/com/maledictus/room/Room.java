@@ -87,4 +87,8 @@ public class Room {
                 ", npcMap=" + npcMap +
                 '}';
     }
+
+    public void addItem(Item item) {
+        list.add(item);
+    }
 }
