@@ -169,7 +169,7 @@ public class Game {
             // Methods will check if an error or success message needs to be printed
             printSuccessMsg();
             printErrorMsg();
-            Printer.print(ANSI_YELLOW, "\n" + "Enter a command or enter [options] to see game options: " );
+            Printer.print(ANSI_YELLOW, "\n Enter a command or enter [options] to see game options:" );
 
 
             GUI gui = GUI.getInstance();
