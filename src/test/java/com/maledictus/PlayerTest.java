@@ -3,30 +3,37 @@ package com.maledictus;
 import com.maledictus.item.*;
 import com.maledictus.item.potion.*;
 import com.maledictus.item.weapon.*;
+import com.maledictus.npc.Ghost;
+import com.maledictus.npc.NPC;
+import com.maledictus.npc.Species;
 import com.maledictus.player.*;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class PlayerTest {
 
     private final File text = new File("test/PlayerTest.txt");
     String[] items;
 
-    private final Player playerOne = new Player("Ryan");
-    private final Item sword = new Weapon("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
-    private final Item hammer = new Weapon("Iron War Hammer", "A blunt heavy war hammer made of the finest iron", ItemType.WEAPON, WeaponType.BLUNT);
+    private Player playerOne;
+    private  Ghost ghost;
+    private  Item sword ;
+
+    @Before
+    public void setUp() {
+        playerOne = new Player("Ryan");
+        ghost = new Ghost(3, 100, "Ghost", "A ghost", true, Species.GHOST );
+        sword = new Weapon("Iron Sword", "A sharp sword made of the finest iron", ItemType.WEAPON, WeaponType.SLASHING);
+    }
 
     @Test
     public void testAddItem_shouldPutTheItemIntoPlayerInventory_whenItemIsPassedIntoMethod() {
         playerOne.addItem(sword);
-        playerOne.addItem(hammer);
-        items = new String[]{};
-        System.out.println(playerOne.getInventory().keySet());
-//        assertEquals(playerOne.getInventory().keySet(), "[Iron Sword, Iron War Hammer]");
+        assertTrue(playerOne.getInventory().containsKey(sword.getName()));
     }
 
     @Test
@@ -40,4 +47,18 @@ public class PlayerTest {
         Player playerOne = PlayerFactory.createPlayer(Input.scannerTextInput(text));
         assertNotEquals(playerOne.getPlayerName(), "Ryan");
     }
+
+    @Test
+    public void attackShouldDealLessDamageWhenWeaponIsNotEquipped(){
+        int ghostHp = playerOne.attack(ghost);
+        assertEquals(70, ghostHp);
+    }
+
+    @Test
+    public void attackShouldDealMoreDamageWhenWeaponIsEquipped(){
+        playerOne.equipWeapon();
+        int ghostHp = playerOne.attack(ghost);
+        assertEquals(50, ghostHp);
+    }
+
 }

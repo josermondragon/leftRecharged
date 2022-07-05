@@ -8,7 +8,7 @@ public class Printer {
 
     public static Component print(Object string) {
         String obj = string.toString() ;
-        gui.buttonAddText(obj);
+        gui.buttonAddText(obj+"\n");
        // gui.MainFrame();
         System.out.println(string);
         return null;

@@ -26,9 +26,12 @@ import static com.maledictus.Json.returnGameText;
 
 public class Game {
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
     private static final Map<String, Room> roomMap = RoomFactory.getRoomMap();
-    private  final GameMusic gameMusic = new GameMusic();
-    private final BattleMusic battleMusic = new BattleMusic();
     private static Map<Integer, NPC> npcMap;
     private static Player playerOne;
     private static ArrayList<Item> roomItems;
@@ -39,15 +42,12 @@ public class Game {
     private static boolean inBattle = false;
     private static Battle battle;
     private static int battleEnemy;
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
+    private static Game instance;
+    private  final GameMusic gameMusic = new GameMusic();
+    private final BattleMusic battleMusic = new BattleMusic();
     public boolean doesPlayerHaveHellBlade= false;
     public boolean hasPlayerWon = false;//boolean to measure win game for getting the sword
     public boolean hasPlayerLost = false;//boolean for loss, that happens when Hp hits 0
-    private static Game instance;
 
     public Game() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     }
@@ -58,6 +58,10 @@ public class Game {
             instance = new Game();
         }
         return instance;
+    }
+
+    private static void displayIntroText() throws IOException, org.json.simple.parser.ParseException {
+        Printer.print(returnGameText("1") + "\n" + returnGameText("11")+ "\n");
     }
 
     public void initiateGame() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
@@ -104,7 +108,6 @@ public class Game {
 //            setUserInput(text);
 //            Input.setPerformed(true);
             try {
-                System.out.println(Arrays.toString(gui.getInputtedUser().getActionListeners()));
                 gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
                 validatePlayerInput(text);
             } catch (IOException | org.json.simple.parser.ParseException ex) {
@@ -129,7 +132,7 @@ public class Game {
         return startGame;
     }
 
-
+//TODO: function may be obsolete given GUI implementation
     public void displayGameMap() {
         boolean invalidSelection = true;
         while (invalidSelection) {
@@ -222,7 +225,6 @@ public class Game {
 
         if (round && this.inBattle) {
             displayBattleCommands();
-            GUI gui = GUI.getInstance();
             this.battle.battleStart();
 //            fight(tester);
 //            boolean fight = this.battle.start();
@@ -325,12 +327,11 @@ public class Game {
 //        }
     }
 
-    public void endfight() throws UnsupportedAudioFileException, LineUnavailableException, IOException, org.json.simple.parser.ParseException, ParseException {
+    public void endfight() {
 
-        System.out.println("RESETTING COMBAT TO FALSE");
         this.battle.setCombat(false);
         if (!this.battle.isCombat()) {
-            System.out.println("NOT IN BATTLE");
+
             this.inBattle = false;
         }
         if(Objects.equals(npcMap.get(battleEnemy).getName(), "The King")){
@@ -347,8 +348,6 @@ public class Game {
             ex.printStackTrace();
         }
     }
-
-
 
     private void dropItem(String[] userInput) {
         boolean itemFound = false;
@@ -430,6 +429,7 @@ public class Game {
             if(userInput[1] != null && item.getName().equalsIgnoreCase(userInput[1])) {
                 itemFound = true;
                 item.use();
+//                TODO: fix potion
                 if(item.getItemType() == ItemType.POTION) {
 
                 }
@@ -483,7 +483,9 @@ public class Game {
         }
         }
 
+
     private void getUserInput(String[] userInput) throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, ParseException, org.json.simple.parser.ParseException, InterruptedException {
+
         // Making sure the user uses the valid syntax of "verb[word]" + SPACE + "noun[word(s)]" (example: take Iron Sword)
         String input = userInput[0].toLowerCase();
         switch (input) {
@@ -518,7 +520,6 @@ public class Game {
                     if(current.equalsIgnoreCase(userInput[1]) && npc.getIsHostile()) {
                         this.inBattle = true;
                         this.battleEnemy = npc.getId();
-                        System.out.println("CREATED NEW BATTLE");
                         battle = new Battle(playerOne, npc);
                         gameMusic.stopMusic();
                         battleMusic.playMusic();
@@ -532,7 +533,7 @@ public class Game {
                 start();
                 break;
         }
-
+        return input;
 //            if(userInput[0].equalsIgnoreCase("go")) {
 //                moveRoom(userInput);
 //            } else if(userInput[0].equalsIgnoreCase("take")) {
@@ -569,18 +570,22 @@ public class Game {
 //                start();
 //            }
     }
+
 //return boolean value after validating if character has that or not
     public boolean doesPlayerHaveTheHellBlade() {
         return playerOne.getInventory().containsKey("Hell Blade");
     }
 
+
     public boolean isKingDead(){
         return npcMap.get(battleEnemy).getName() == "The King";
     }
+
 //    getter
     public boolean returnDoesPlayerHaveHellBlackField(){
         return doesPlayerHaveHellBlade;
     }
+
 //    setter
     public void setDoesPlayerHaveHellBlade(boolean doesPlayerHaveHellBlade) {
         this.doesPlayerHaveHellBlade = doesPlayerHaveHellBlade;
@@ -590,18 +595,22 @@ public class Game {
     public boolean validateIfPlayerWonBasedONIfTheyHveTheHellBlade(){
         return (doesPlayerHaveTheHellBlade() && isKingDead()) ;
     }
+
 //getter
     public boolean hasThePlayerWon() {
         return hasPlayerWon;
     }
+
 ///setter throw the validate IfPlayer one into the param.
     public void setHasThePlayerWon(boolean hasPlayerWon) {
         this.hasPlayerWon = hasPlayerWon;
     }
+
 //validate if the player has died
     public boolean validateIfPlayerHasZeroHP(){
         return playerOne.getHitPoints() < 0;
     }
+
     public boolean returnHasThePlayerDied() {
         return hasPlayerLost;
     }
@@ -636,7 +645,7 @@ public class Game {
             }
         }
         if (!npcFound) {
-            errorMsg = ANSI_RED + "INVALID NPC ERROR: You wrote go '" + userInput[1] + "' that is not a valid NPC option, please try again. (Example: 'talk ghostly soldier')" + ANSI_RESET;
+            errorMsg = ANSI_RED + "INVALID NPC ERROR: You wrote talk '" + userInput[1] + "' that is not a valid NPC option, please try again. (Example: 'talk ghostly soldier')" + ANSI_RESET;
         }
     }
 
@@ -647,16 +656,10 @@ public class Game {
 
         if (npc.getQuest() == null || (!npc.getQuestStatus() && !npc.getQuest().isCompleted())) {
 
-//            TODO: fix bug -- need to call start at end of interation with non quest npc
-            System.out.println("INCOMPLETE OR NO QUEST DIALOGUE");
             Printer.print(npc.getName() + ": " + npc.talk(1));
-
             if (npc.getQuest() != null) {
                 Printer.print("Press [1] Accept Quest? \nPress [2] to exit.");
-                System.out.println("----------------QUEST !== NULL ------------------");
-//                String questDialogChoice = scannerUserInput();
                 gui.getInputtedUser().addActionListener(e -> {
-                    System.out.println("----- FIRING IN ACTIONLISTENER -----");
                     String questDialogChoice = gui.getInputtedUser().getText();
                     gui.getInputtedUser().setText("");
                     gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
@@ -671,13 +674,15 @@ public class Game {
                     }
                 });
             }
+            else {
+                start();
+            }
         }
         // active quest
         else if (npc.getQuestStatus() && !npc.getQuest().isCompleted()) {
             System.out.println("DEBUG:::: ACTIVE QUEST ::::");
             successMsg = npc.getName() + ": " + npc.questTalk(1);
             Printer.print("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
-//                String questDialogChoice = scannerUserInput();
             gui.getInputtedUser().addActionListener(e -> {
                 String questDialogChoice = gui.getInputtedUser().getText();
                 gui.getInputtedUser().setText("");
@@ -705,53 +710,13 @@ public class Game {
             });
 
         } else {
-            System.out.println("::::: QUEST TALK :::::");
             successMsg = npc.getName() + ": " + npc.questTalk(4);
             start();
         }
-//        Ghost npc = (Ghost) targetNpc;
-//
-//        if (npc.getQuest() == null || (!npc.getQuestStatus() && !npc.getQuest().isCompleted())) {
-//            Printer.print(npc.getName() + ": " + npc.talk(1));
-//            for (int i = 2; i < npc.getDialog().entrySet().size() + 1; i++) {
-//                Printer.print("Press [1] to continue talking. \nPress [2] to exit.");
-//                 String dialogChoice = scannerUserInput();
-//                if (dialogChoice.equals("1")) {
-//                    Printer.print(npc.getName() + ": " + npc.talk(i));
-//                 } else if (dialogChoice.equals("2")) {
-//                     break;
-//                }
-//            }
-//            if (npc.getQuest() != null) {
-//                Printer.print("Press [1] Accept Quest? \nPress [2] to exit.");
-//                String questDialogChoice = scannerUserInput();
-//                if (questDialogChoice.equals("1")) {
-//                    npc.assignQuest(true);
-//                }
-//            } else {
-//                Printer.print("Press [2] to exit.");
-//                scannerUserInput();
-//            }
-//        } else if (npc.getQuestStatus() && !npc.getQuest().isCompleted()) {
-//               successMsg = npc.getName() + ": " + npc.questTalk(1);
-//                Printer.print("Press [1] give " + npc.getQuestWinCondition() + "\nPress [2] to exit.");
-//                String questDialogChoice = scannerUserInput();
-//                if (questDialogChoice.equals("1") && playerOne.getInventory().containsKey(npc.getQuestWinCondition())) {
-//                    playerOne.removeItem(playerOne.getInventory().get(npc.getQuestWinCondition()));
-//                    successMsg = npc.getName() + ": " + npc.questTalk(2) + "\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName();
-//                    npc.setQuestCompleted(true);
-//                    npc.assignQuest(false);
-//                    playerOne.addItem(npc.giveQuestReward());
-//                    Printer.print("\nYou received a(n) " + npc.getQuest().getReward().getName() + " from " + npc.getName());
-//                } else  {
-//                   successMsg = npc.getName() + ": " + npc.questTalk(3);
-//                }
-//        } else {
-//           successMsg = npc.getName() + ": " + npc.questTalk(4);
-//        }
+
     }
 
-    private void displayOptions() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException {
+    private void displayOptions() {
         GUI gui = GUI.getInstance();
         Printer.print("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.\n8 to change game volume");
         gui.getInputtedUser().addActionListener(e -> {
@@ -762,7 +727,6 @@ public class Game {
 
             switch (optionInput) {
                 case "1":
-                    //TODO: RESET NEEDS TO BE IMPLETEMENTED - DOES NOT WORK AS IS.
                     RoomFactory.clearRoomMap();
                     Json.items.clear();
                     Json.items2.clear();
@@ -771,7 +735,6 @@ public class Game {
                     } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
                         ex.printStackTrace();
                     }
-//                    waitingOnInput = false;
                     break;
                 case "2":
                     Printer.print("Exiting game. Thank you for playing.");
@@ -779,15 +742,35 @@ public class Game {
                     break;
                 case "3":
                     Printer.print("Maledictus is a console text-adventure game. You are a treasure hunter in seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n which was then taken into further production by Marcos Cardoso, Jose Mondragon and Samekh Resh");
+                    try {
+                        start();
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case "4":
-                    gameMusic.stopMusic();
+                    GameMusic.stopMusic();
+                    try {
+                        start();
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case "5":
-                    gameMusic.playMusic();
+                    GameMusic.playMusic();
+                    try {
+                        start();
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case "6":
                     displayGameMap();
+                    try {
+                        start();
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
                 case "7":
                     try {
@@ -800,58 +783,14 @@ public class Game {
                     changeVolume();
                 default:
                     errorMsg = ANSI_RED + "Invalid Selection. Please try again." + ANSI_RESET;
+                    try {
+                        start();
+                    } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                        ex.printStackTrace();
+                    }
                     break;
             }
-            try {
-                start();
-            } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
-                ex.printStackTrace();
-            }
         });
-
-        //        boolean waitingOnInput = true;
-//
-//        while (waitingOnInput) {
-//
-//            Printer.print("Press [1] to start a new game.\nPress [2] to quit.\nPress [3] for game info.\nPress [4] to stop Music.\nPress [5] to play Music.\nPress [6] to display game maps.\nPress [7] to resume game.\nPress [8] to change game volume");
-//            String optionInput = scannerUserInput();
-//
-//            switch (optionInput) {
-//                case "1":
-//                    //TODO: Test and confirm reset works.
-//                    RoomFactory.clearRoomMap();
-//                    Json.items.clear();
-//                    Json.items2.clear();
-//                    initiateGame();
-//                    waitingOnInput = false;
-//                    break;
-//                case "2":
-//                    Printer.print("Exiting game. Thank you for playing.");
-//                    System.exit(1);
-//                    break;
-//                case "3":
-//                    Printer.print("Maledictus is a console text-adventure game. You are a treasure hunter is seek of riches.  Your goal is to traverse the map, discover what lies within, and make it out alive!\nGame created by team Lefties: Ryan Mosser, Michael Herman, and Nikko Colby\n which was then taken into further production by Marcos Cardoso, Jose Mondragon and Samekh Resh");
-//                    break;
-//                case "4":
-//                    gameMusic.stopMusic();
-//                    break;
-//                case "5":
-//                    gameMusic.playMusic();
-//                    break;
-//                case "6":
-//                    displayGameMap();
-//                    break;
-//                case "7":
-//                    waitingOnInput = false;
-//                    break;
-//                case "8":
-//                    changeVolume();
-//                    break;
-//                default:
-//                    errorMsg = ANSI_RED + "Invalid Selection. Please try again." + ANSI_RESET;
-//                    break;
-//            }
-//        }
     }
 
     private void changeVolume() {
@@ -878,10 +817,6 @@ public class Game {
                 changeVolume();
                 break;
         }
-    }
-
-    private static void displayIntroText() throws IOException, org.json.simple.parser.ParseException {
-        Printer.print(returnGameText("1") + "\n" + returnGameText("11")+ "\n");
     }
 
     private void displayCurrentRoomActions() {
