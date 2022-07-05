@@ -3,6 +3,7 @@ package com.maledictus;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -22,13 +23,13 @@ public class GUI extends JFrame {
     public GUI() {
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame fj = new JFrame("MALEDICTUS... Cuz some things have to be done right...no left...");
+        JFrame fj = new JFrame("MALEDICTUS... Cuz some things have to be done right...not left...");
         LayerUI<JPanel> layerUI = new SpotlightLayerUI();
         JPanel panel1 = createPanel();
         JLayer<JPanel> jlayer = new JLayer<JPanel>(panel1, layerUI);
         fj.add(jlayer);
         fj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fj.setSize(700, 600);
+        fj.setSize(800, 600);
         fj.setLocationRelativeTo(null);
         fj.setVisible(true);
 
@@ -168,11 +169,13 @@ public class GUI extends JFrame {
         }
 
         public void buttonAddText (String string){
-
+        Document doc = jta.getDocument();
             try {
-                jta.getDocument().insertString(0, string, null);
+//                jta.getDocument().insertString(0, string, null);
+                doc.insertString(doc.getLength(), string, null);
+
             } catch (BadLocationException exp) {
-                System.out.println(exp);
+                exp.printStackTrace();
             }
         }
     //Decorate main frame with Jlayer (Simulates a lamp in a dark house)
