@@ -120,7 +120,7 @@ public class Game {
             createCharacter();
         } else if (startGame.equals("2")) {
             Printer.print("Exiting the game...");
-            System.exit(1);
+            System.exit(0);
         } else {
             errorMsg = ANSI_RED + "Invalid Selection.  Please enter [1] to start game or [2] to quit." + ANSI_RESET;
             startGame();
