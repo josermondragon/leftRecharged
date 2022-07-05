@@ -139,7 +139,7 @@ public class GUI extends JFrame {
 
         JButton volumeOff = new JButton("Volume Off");
         abc.gridx = 30;
-        abc.gridy = 3;
+        abc.gridy = 2;
         panel1.add(volumeOff, abc);
         volumeOff.addActionListener(e -> {
             try {
@@ -151,7 +151,7 @@ public class GUI extends JFrame {
 
 
         JButton volumeOn = new JButton("Volume On");
-        abc.gridx = 60;
+        abc.gridx = 30;
         abc.gridy = 3;
         panel1.add(volumeOn, abc);
         volumeOn.addActionListener(e -> {
@@ -163,15 +163,29 @@ public class GUI extends JFrame {
         });
 
 
+        JButton volumeLow = new JButton("Volume Low");
+        abc.gridx = 60;
+        abc.gridy = 3;
+        panel1.add(volumeLow, abc);
+        volumeLow.addActionListener(e -> {
+            try {
+                buttonPressed5();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
 
-
-
-
-
-
-
-
-
+        JButton volumeHigh = new JButton("Volume High");
+        abc.gridx = 60;
+        abc.gridy = 2;
+        panel1.add(volumeHigh, abc);
+        volumeHigh.addActionListener(e -> {
+            try {
+                buttonPressed6();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         return panel1;
     }
 
@@ -184,7 +198,6 @@ public class GUI extends JFrame {
         // Area that show the text in the game in real time
         private static JTextArea textArea () {
             JTextArea output = new JTextArea();
-            //output.setSize(600,200);
             output.setLineWrap(true); // Text return to line, so no horizontal scrollbar
             output.setForeground(Color.BLACK);
             output.setBackground(Color.WHITE);
@@ -215,6 +228,16 @@ public class GUI extends JFrame {
 
         static void buttonPressed4 () throws IOException {
             GameMusic.playMusic();
+
+    }
+
+        static void buttonPressed5 () throws IOException {
+        GameMusic.setMusicLow();
+
+    }
+
+        static void buttonPressed6 () throws IOException {
+        GameMusic.setMusicHigh();
 
     }
 
