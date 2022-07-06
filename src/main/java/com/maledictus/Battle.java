@@ -1,51 +1,64 @@
 package com.maledictus;
 
-import com.maledictus.item.Item;
-import com.maledictus.item.ItemType;
 import com.maledictus.npc.NPC;
 import com.maledictus.player.Player;
+import org.json.simple.parser.ParseException;
 
-import java.util.Map;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 
-import static com.maledictus.Input.scannerUserInput;
-
-public class Battle {
+public  class Battle {
 
     private final Player player;
     private final NPC npc;
     private boolean combat = true;
-
 
      public Battle(Player player, NPC npc) {
         this.player = player;
         this.npc = npc;
     }
 
-    public void start() {
-       while(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0) {
-           // displayInventory();
-           String userCommand = scannerUserInput();
-           battleRound(userCommand);
-       }
+    public void battleStart() throws UnsupportedAudioFileException, LineUnavailableException, IOException, ParseException, java.text.ParseException {
+
+        if(combat && player.getHitPoints() > 0 && npc.getHitPoints() > 0){
+
+            GUI gui = GUI.getInstance();
+            gui.getInputtedUser().addActionListener(e -> {
+                String userCommand = gui.getInputtedUser().getText();
+                gui.getInputtedUser().setText("");
+                gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
+
+                battleRound(userCommand);
+                try {
+                    battleStart();
+                } catch (UnsupportedAudioFileException | IOException | ParseException | java.text.ParseException | LineUnavailableException ex) {
+                    ex.printStackTrace();
+                }
+            });
+        } else {
+            Game game = Game.getInstance();
+
+            game.endFight();
+        }
+
     }
 
     public void battleRound(String userCommand) {
         if (userCommand.equalsIgnoreCase("attack")) {
             player.attack(npc);
-            npc.attack(player);
+            if(npc.getHitPoints() > 0){
+                npc.attack(player);
+            }
+
         } else if (userCommand.equalsIgnoreCase("run")) {
             this.player.setHitPoints(0);
-            System.out.println("You attempt to run away.....");
+            Printer.print("You attempt to run away.....");
         } else if (userCommand.equalsIgnoreCase("equip")) {
-            System.out.println("CURRENT ITEMS");
-            System.out.println("-------------");
-            for (Map.Entry<String, Item> item : player.getInventory().entrySet()) {
-                System.out.println(item.getKey());
-            }
-            String itemSelect = scannerUserInput();
-            System.out.println("You equipped " + itemSelect);
+            Printer.print("You equipped your weapon");
             player.equipWeapon();
         }
+
     }
 
     public boolean isCombat() {

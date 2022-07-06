@@ -1,11 +1,13 @@
 package com.maledictus.player;
 
+import com.maledictus.Printer;
 import com.maledictus.item.Item;
 import com.maledictus.item.ItemType;
 import com.maledictus.item.key.Key;
 import com.maledictus.item.key.KeyType;
 import com.maledictus.npc.NPC;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,14 +44,16 @@ public class Player {
     }
 
     public int attack(NPC npc) {
-        if(equipped) {
-            System.out.println("NPC hit points is " + npc.getHitPoints());
-            npc.setHitPoints(npc.getHitPoints() - 50);
-            System.out.println("NPC hit points is " + npc.getHitPoints());
+        int damage = 30;
+        if(isEquipped()) {
+            Printer.print(Color.ORANGE,"NPC is hit for: " + damage + " from " + npc.getHitPoints());
+            damage = 50;
+            npc.setHitPoints(npc.getHitPoints() - damage);
+            Printer.print(Color.RED, "NPC hit points is " + npc.getHitPoints());
         } else {
-            System.out.println("NPC hit points is " + npc.getHitPoints());
-            npc.setHitPoints(npc.getHitPoints() - 30);
-            System.out.println("NPC hit points is " + npc.getHitPoints());
+            Printer.print(Color.ORANGE, "NPC is hit for: " + damage + " from " + npc.getHitPoints());
+            npc.setHitPoints(npc.getHitPoints() - damage);
+            Printer.print(Color.RED, "NPC hit points is " + npc.getHitPoints());
         } return npc.getHitPoints();
     }
 
@@ -63,10 +67,6 @@ public class Player {
 
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
-    }
-
-    public void setEquipped(boolean equipped) {
-        this.equipped = equipped;
     }
 
     public boolean isEquipped() {

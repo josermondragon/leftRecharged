@@ -6,12 +6,16 @@ public class Printer {
 
     public static GUI gui = GUI.getInstance();
 
-    public static Component print(Object string) {
+    public static void print(Object string) {
         String obj = string.toString() ;
-        gui.buttonAddText(obj);
-       // gui.MainFrame();
+        gui.addGameText(obj+"\n");
+        System.out.println(string); // allows us to still observe game in console
+    }
+
+    public static void print(Color color, Object string) {
+        String obj = string.toString() ;
+        gui.addGameText(obj+"\n", color);
         System.out.println(string);
-        return null;
     }
 
 }
