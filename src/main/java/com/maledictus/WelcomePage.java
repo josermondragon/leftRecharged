@@ -50,7 +50,7 @@ public class WelcomePage extends JFrame {
     public static void Instructions()  {
         JFrame f1 = new JFrame();
         JPanel panel = new JPanel();
-        panel.setBounds(0, 0, 1000, 700);
+        panel.setBounds(0, 0, 700, 500);
         JButton close2 = new JButton("Close");
         panel.add(close2);
         ImageIcon img ;  //***
