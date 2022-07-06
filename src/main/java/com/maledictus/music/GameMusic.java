@@ -16,7 +16,6 @@ public class GameMusic {
 
         InputStream audioFile = new BufferedInputStream(GameMusic.class.getClassLoader().getResourceAsStream("data/lavender-town-music.wav"));
 
-
         //File audioFile = new File("resources/data/lavender-town-music.wav");
 
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
