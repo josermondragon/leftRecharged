@@ -54,12 +54,8 @@ public class GUI extends JFrame {
         //where the game information renders
         JLabel game = new JLabel("Game: ");
         jta = new JTextPane();
-
         jta.setPreferredSize(new Dimension(600, 300));
-
-
         jta.setBackground(Color.BLACK);
-
         jta.setEditable(false);
         abc.gridx = 0;
         abc.gridy = 0;
@@ -282,7 +278,7 @@ public class GUI extends JFrame {
         }
     }
 
-    //Decorate main frame with Jlayer (Simulates a lamp in a dark house)
+    //Decorate main frame with Jlayer and LayerUI (Simulates a lamp in a dark house)
     class SpotlightLayerUI extends LayerUI<JPanel> {
         private boolean mActive;
         private int mX, mY;
@@ -321,7 +317,7 @@ public class GUI extends JFrame {
                         new RadialGradientPaint(center, radius, dist, colors);
                 g2.setPaint(p);
                 g2.setComposite(AlphaComposite.getInstance(
-                        AlphaComposite.SRC_OVER, .6f));
+                        AlphaComposite.SRC_OVER, 0.6f));
                 g2.fillRect(0, 0, c.getWidth(), c.getHeight());
             }
 

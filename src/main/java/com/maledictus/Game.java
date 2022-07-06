@@ -161,9 +161,7 @@ public class Game {
 
         if (round && !inBattle) {
             // Methods will check if an error or success message needs to be printed
-
             Printer.print(ANSI_YELLOW, "\n Enter a command or enter [options] to see game options:" );
-
 
             GUI gui = GUI.getInstance();
 
@@ -200,11 +198,19 @@ public class Game {
             currentRoom.addItem(npcMap.get(battleEnemy).getItem());
             System.out.println("item added to room");
         }
+
             BattleMusic.stopMusic();
             GameMusic.playMusic();
             npcMap.remove(battleEnemy);
 
+//        BattleMusic.stopMusic();
+//        BattleMusic.setMusicLow();
+//        GameMusic.playMusic();
+        //npcMap.remove(battleEnemy);
+
+
         try {
+            displayConsoleCommands();
             this.start();
         } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException ex) {
             ex.printStackTrace();
@@ -392,9 +398,9 @@ public class Game {
                         inBattle = true;
                         battleEnemy = npc.getId();
                         battle = new Battle(playerOne, npc);
-                        GameMusic.stopMusic();
-                        battleMusic.playMusic();
-//                        call to start - may not work
+//                        GameMusic.stopMusic();
+//                        BattleMusic.playMusic();
+//                        BattleMusic.setMusicHigh();
                         start();
                     }
                 }
@@ -405,7 +411,6 @@ public class Game {
                 start();
                 break;
         }
-
     }
 
     private void healPlayer() {
@@ -467,7 +472,6 @@ public class Game {
                     gui.getInputtedUser().setText("");
                     gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
                     if (questDialogChoice.equals("1")) {
-                        System.out.println("===== ASSIGNING QUEST TO TRUE =====");
                         npc.assignQuest(true);
                         try {
                             start();

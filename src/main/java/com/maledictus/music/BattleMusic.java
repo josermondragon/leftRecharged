@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-    public class BattleMusic {
+public class BattleMusic {
     private static Clip audioClip;
-    private FloatControl gainControl;
+    private static FloatControl gainControl;
 
     public BattleMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         //File audioFile = new File("resources/data/battle-music.wav");
@@ -25,7 +25,7 @@ import java.io.InputStream;
         gainControl.setValue(-30.0f);
     }
 
-    public void playMusic() {
+    public static void playMusic() {
         audioClip.start();
         audioClip.loop(audioClip.LOOP_CONTINUOUSLY);
     }
@@ -33,5 +33,13 @@ import java.io.InputStream;
     public static void stopMusic() {
          audioClip.stop();
 
+    }
+
+    public static void setMusicHigh(){
+        gainControl.setValue(-18.0f);
+    }
+
+    public static void setMusicLow(){
+        gainControl.setValue(-80.0f);
     }
 }
