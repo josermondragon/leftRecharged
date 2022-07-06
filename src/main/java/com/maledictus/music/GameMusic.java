@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class GameMusic {
     private static Clip audioClip;
-    private FloatControl gainControl;
+    private static FloatControl gainControl;
 
     public GameMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 
@@ -38,7 +38,7 @@ public class GameMusic {
         audioClip.stop();
     }
 
-    public void setMusicLow(){
+    public static void setMusicLow(){
         gainControl.setValue(-30.0f);
     }
     public void setMusicMidLow(){
@@ -53,7 +53,7 @@ public class GameMusic {
         gainControl.setValue(-2.0f);
     }
 
-    public void setMusicHigh(){
+    public static void setMusicHigh(){
         gainControl.setValue(5.0f);
     }
 

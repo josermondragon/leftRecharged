@@ -1,8 +1,11 @@
 package com.maledictus;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.text.ParseException;
 
 
 public class WelcomePage extends JFrame {
@@ -22,7 +25,7 @@ public class WelcomePage extends JFrame {
         JFrame f = new JFrame();
         JPanel panel = new JPanel();
         panel.setBounds(0, 0, 700, 600);
-        JButton close = new JButton("Close");
+        JButton close = new JButton("START GAME");
         panel.add(close);
         ImageIcon img;  //***
         img = new ImageIcon(WelcomePage.class.getClassLoader().getResource(IMG_PATH)); //***
@@ -38,9 +41,24 @@ public class WelcomePage extends JFrame {
         f.setUndecorated(true);                              //remove upper bar
         f.setVisible(true);
         f.getContentPane().setBackground(Color.black);
-        f.setLocationRelativeTo(null);                       //center the frame
+        f.setLocationRelativeTo(null);//center the frame
+
         close.addActionListener(e -> {
             f.dispose();
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                Game game = null;
+                try {
+                    game = new Game();
+                } catch (UnsupportedAudioFileException | LineUnavailableException | IOException exp) {
+                    exp.printStackTrace();
+                }
+                try {
+                    assert game != null;
+                    game.initiateGame();
+                } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException exp) {
+                    exp.printStackTrace();
+                }
+            });
         });
         close.setBackground(new Color(0, 0, 0));
         close.setForeground(Color.WHITE);

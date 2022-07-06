@@ -37,7 +37,7 @@ public class GUI extends JFrame {
         fj.setSize(1000, 750);
         fj.setLocationRelativeTo(null);
         fj.setVisible(true);
-        }
+    }
 
     private static JPanel createPanel() {
         GridBagConstraints abc = new GridBagConstraints();
@@ -79,7 +79,7 @@ public class GUI extends JFrame {
         panel1.add(inputtedUser, abc);
 
         //utilities like command(img) and options(img)
-        ImageIcon img ;
+        ImageIcon img;
         img = new ImageIcon(GUI.class.getClassLoader().getResource("data/commands.png")); //***
         JLabel label = new JLabel(); //***
         label.setIcon(img);  //***
@@ -93,7 +93,7 @@ public class GUI extends JFrame {
                 }
             }
         });
-        ImageIcon img2 ;
+        ImageIcon img2;
         img2 = new ImageIcon(GUI.class.getClassLoader().getResource("data/options.png")); //***
         JLabel label1 = new JLabel(); //***
         label1.setIcon(img2);  //***
@@ -140,7 +140,7 @@ public class GUI extends JFrame {
 
         JButton volumeOff = new JButton("Volume Off");
         abc.gridx = 30;
-        abc.gridy = 3;
+        abc.gridy = 2;
         panel1.add(volumeOff, abc);
         volumeOff.addActionListener(e -> {
             try {
@@ -152,7 +152,7 @@ public class GUI extends JFrame {
 
 
         JButton volumeOn = new JButton("Volume On");
-        abc.gridx = 60;
+        abc.gridx = 30;
         abc.gridy = 3;
         panel1.add(volumeOn, abc);
         volumeOn.addActionListener(e -> {
@@ -163,17 +163,51 @@ public class GUI extends JFrame {
             }
         });
 
+
+        JButton volumeLow = new JButton("Volume Low");
+        abc.gridx = 60;
+        abc.gridy = 3;
+        panel1.add(volumeLow, abc);
+        volumeLow.addActionListener(e -> {
+            try {
+                buttonPressed5();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        JButton volumeHigh = new JButton("Volume High");
+        abc.gridx = 60;
+        abc.gridy = 2;
+        panel1.add(volumeHigh, abc);
+        volumeHigh.addActionListener(e -> {
+            try {
+                buttonPressed6();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
         return panel1;
     }
 
-        public static GUI getInstance () {
-            if (instance == null) {
-                instance = new GUI();
-            }
-            return instance;
+    public static GUI getInstance() {
+        if (instance == null) {
+            instance = new GUI();
+        }
+        return instance;
+    }
+
+
+        // Area that show the text in the game in real time
+        private static void textArea () {
+            JTextArea output = new JTextArea();
+            output.setLineWrap(true); // Text return to line, so no horizontal scrollbar
+            output.setForeground(Color.BLACK);
+            output.setBackground(Color.WHITE);
         }
 
-    private static JScrollPane textScrollPane (JTextPane jta){
+         private static JScrollPane textScrollPane (JTextPane jta){
             JScrollPane scrollPane = new JScrollPane(jta);
             scrollPane.setBounds(0, 0, 500, 500);
             scrollPane.getViewport().setViewPosition(new Point(0, 0));
@@ -199,7 +233,31 @@ public class GUI extends JFrame {
 
     }
 
-    public void addGameText(String string){
+
+        static void buttonPressed5 () throws IOException {
+        GameMusic.setMusicLow();
+
+    }
+
+        static void buttonPressed6 () throws IOException {
+        GameMusic.setMusicHigh();
+
+    }
+
+        private void userInputEnter (KeyEvent arg0){
+            if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+                String inputtedUser = "";
+                jta.setText("Hello" + inputtedUser);
+                System.out.println("Enter was pressed");
+            }
+
+        }
+
+        public void buttonAddText (String string){
+            }
+
+        public void addGameText(String string){
+
         Document doc = jta.getDocument();
             try {
                 SimpleAttributeSet set = new SimpleAttributeSet();
@@ -285,5 +343,5 @@ public class GUI extends JFrame {
             l.repaint();
         }
 
-}
-}
+
+}}
