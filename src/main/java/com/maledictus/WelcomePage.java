@@ -130,7 +130,7 @@ public class WelcomePage extends JFrame {
 
         JFrame f3 = new JFrame();
         JPanel panel = new JPanel();
-        panel.setBounds(0, 0, 700, 500);
+        panel.setBounds(0, 0, 750, 500);
         JButton close2 = new JButton("Close");
         panel.add(close2);
 

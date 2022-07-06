@@ -31,7 +31,8 @@ public class BattleMusic {
     }
 
     public static void stopMusic() {
-        audioClip.stop();
+         audioClip.stop();
+
     }
 
     public static void setMusicHigh(){

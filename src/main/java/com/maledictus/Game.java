@@ -198,10 +198,16 @@ public class Game {
             currentRoom.addItem(npcMap.get(battleEnemy).getItem());
             System.out.println("item added to room");
         }
+
+            BattleMusic.stopMusic();
+            GameMusic.playMusic();
+            npcMap.remove(battleEnemy);
+
 //        BattleMusic.stopMusic();
 //        BattleMusic.setMusicLow();
 //        GameMusic.playMusic();
-        npcMap.remove(battleEnemy);
+        //npcMap.remove(battleEnemy);
+
 
         try {
             displayConsoleCommands();
