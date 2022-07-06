@@ -1,10 +1,12 @@
 package com.maledictus.npc;
 
+import com.maledictus.Printer;
 import com.maledictus.item.Item;
 import com.maledictus.npc.enemy.Enemy;
 import com.maledictus.npc.enemy.EnemyType;
 import com.maledictus.player.Player;
 
+import java.awt.*;
 import java.util.Map;
 
 public class Skeleton extends NPC {
@@ -27,16 +29,13 @@ public class Skeleton extends NPC {
         this.item = item;
     }
 
-//    @Override
-//    public void takeDamage() {
-//
-//    }
 
     @Override
     public int attack(Player player) {
-        System.out.println("Player hit points is " + player.getHitPoints());
-        player.setHitPoints(player.getHitPoints() - 30);
-        System.out.println("Player hit points is " + player.getHitPoints());
+        int damage = 30;
+        Printer.print(Color.GREEN, "Player hit points is for: " + damage + " from: " + player.getHitPoints());
+        player.setHitPoints(player.getHitPoints() - damage);
+        Printer.print(Color.MAGENTA, "Player HP is: " + player.getHitPoints());
         return player.getHitPoints();
     }
 
@@ -51,8 +50,4 @@ public class Skeleton extends NPC {
         return result;
     }
 
-//    @Override
-//    public void dropItem() {
-//
-//    }
 }

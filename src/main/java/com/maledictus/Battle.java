@@ -38,6 +38,7 @@ public  class Battle {
             });
         } else {
             Game game = Game.getInstance();
+
             game.endFight();
         }
 
