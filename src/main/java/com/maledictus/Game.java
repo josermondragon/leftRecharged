@@ -202,7 +202,7 @@ public class Game {
         }
             BattleMusic.stopMusic();
             GameMusic.playMusic();
-        npcMap.remove(battleEnemy);
+            npcMap.remove(battleEnemy);
 
         try {
             this.start();

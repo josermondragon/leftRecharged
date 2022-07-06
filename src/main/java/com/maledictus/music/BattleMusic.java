@@ -31,6 +31,7 @@ import java.io.InputStream;
     }
 
     public static void stopMusic() {
-        audioClip.stop();
+         audioClip.stop();
+
     }
 }
