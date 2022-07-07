@@ -139,25 +139,24 @@ public class Game {
     private void start() throws IOException, org.json.simple.parser.ParseException, ParseException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
 
         if(doesPlayerHaveTheHellBlade()){
-            System.out.println("you actually have the award? ");
-            Thread.sleep(2000);
-            System.out.println("the spirit of tornomous awakens");
-            Thread.sleep(2000);
-            System.out.println(" a the hellblade begins to grow larger and larger, with eyes appearing on the hilt \n why thank you...");
-            Thread.sleep(2000);
-            System.out.println("been a while since I've seen the sun, ever since he took me to die with him... this dark decrepit place");
-            Thread.sleep(3000);
-            System.out.println("Can you take me to see the sun?");
-            Thread.sleep(3000);
-            System.out.println("YOU WON GAME OVER");
-            System.exit(0);
+            Printer.print(Color.CYAN,"you actually have the treasure? ");
+            Printer.print(Color.GREEN,"the spirit of Tornomous awakens");
+            Printer.print(Color.GREEN,"a the hellblade begins to grow larger and larger, with eyes appearing on the hilt \n why thank you...");
+            Printer.print(Color.GREEN, "been a while since I've seen the sun, ever since he took me to die with him... this dark decrepit place");
+            Printer.print(Color.ORANGE, "Can you take me to see the sun?");
+            Printer.print(Color.GREEN, "YOU WON. GAME OVER");
+            endGameOptions();
+        }
+
+        if (playerOne.getHitPoints() <= 0) {
+            Printer.print(Color.RED, "The Room grows dark...");
+            Printer.print(ANSI_RED, "You feel the Kings icy grip tearing your soul from your body.");
+            Printer.print(ANSI_RED, "You must now bear his curse with all other wretched creatures in this kingdom.");
+            Printer.print(ANSI_RED, "You are D.E.D");
+            endGameOptions();
         }
 
         boolean round = true;
-        if (playerOne.getHitPoints() == 0) {
-            round = false;
-            Printer.print("You're dead, D. E. D.");
-        }
 
         if (round && !inBattle) {
             // Methods will check if an error or success message needs to be printed
@@ -187,6 +186,38 @@ public class Game {
         }
     }
 
+    private void endGameOptions(){
+            GUI gui = GUI.getInstance();
+            Printer.print("Press [1] to start a new game.\nPress [2] to quit.");
+            gui.getInputtedUser().addActionListener(e -> {
+                String optionInput = gui.getInputtedUser().getText();
+                gui.getInputtedUser().setText("");
+                gui.getInputtedUser().removeActionListener(gui.getInputtedUser().getActionListeners()[0]);
+
+                switch (optionInput) {
+                    case "1":
+                        System.out.println("OPTION 1");
+                        RoomFactory.clearRoomMap();
+                        Json.items.clear();
+                        Json.items2.clear();
+                        try {
+                            initiateGame();
+                        } catch (IOException | org.json.simple.parser.ParseException | ParseException | UnsupportedAudioFileException | LineUnavailableException ex) {
+                            ex.printStackTrace();
+                        }
+                        break;
+                    case "2":
+                        Printer.print("Exiting game. Thank you for playing.");
+                        System.exit(0);
+                        break;
+                    default:
+                        errorMsg =  "Invalid Selection. Please try again." ;
+                        printErrorMsg();
+                        endGameOptions();
+                        break;
+                }
+            });
+    }
     public void endFight() {
 
         battle.setCombat(false);
@@ -198,15 +229,7 @@ public class Game {
             currentRoom.addItem(npcMap.get(battleEnemy).getItem());
             System.out.println("item added to room");
         }
-
-            BattleMusic.stopMusic();
-            GameMusic.playMusic();
             npcMap.remove(battleEnemy);
-
-//        BattleMusic.stopMusic();
-//        BattleMusic.setMusicLow();
-//        GameMusic.playMusic();
-        //npcMap.remove(battleEnemy);
 
 
         try {
@@ -398,9 +421,6 @@ public class Game {
                         inBattle = true;
                         battleEnemy = npc.getId();
                         battle = new Battle(playerOne, npc);
-//                        GameMusic.stopMusic();
-//                        BattleMusic.playMusic();
-//                        BattleMusic.setMusicHigh();
                         start();
                     }
                 }
@@ -420,7 +440,7 @@ public class Game {
             if(item.getName().equalsIgnoreCase("Healing Potion")) {
                 itemFound = true;
                 playerOne.removeItem(item);
-                playerOne.heal(50);
+                playerOne.heal(100);
                 successMsg = "You feel rejuvenated! You now have: " + playerOne.getHitPoints() + " hit points";
                 printSuccessMsg();
                 break;

@@ -317,7 +317,7 @@ public class GUI extends JFrame {
                         new RadialGradientPaint(center, radius, dist, colors);
                 g2.setPaint(p);
                 g2.setComposite(AlphaComposite.getInstance(
-                        AlphaComposite.SRC_OVER, 0.6f));
+                        AlphaComposite.SRC_OVER, 0.7f));
                 g2.fillRect(0, 0, c.getWidth(), c.getHeight());
             }
 
