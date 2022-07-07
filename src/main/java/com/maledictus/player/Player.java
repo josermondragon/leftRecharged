@@ -47,7 +47,7 @@ public class Player {
         int damage = 30;
         if(isEquipped()) {
             Printer.print(Color.ORANGE,"NPC is hit for: " + damage + " from " + npc.getHitPoints());
-            damage = 50;
+            damage = 40;
             npc.setHitPoints(npc.getHitPoints() - damage);
             Printer.print(Color.RED, "NPC hit points is " + npc.getHitPoints());
         } else {
